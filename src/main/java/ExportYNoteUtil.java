@@ -13,8 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ClassName: ExportUtil <br>
@@ -37,6 +37,9 @@ public class ExportYNoteUtil {
 	// home
 	private static final String home_storagePath = "C:/Users/PLZ/AppData/Local/YNote/data/dzpanxiwei@163.com";
 	private static final String home_outPath = "F:/Git/rtry.github.io/source/_posts";
+
+	// 转存成功所有路径
+	public static List<String> dirs = new ArrayList<String>();
 
 	public static void export(String storagePath, String outPath) throws IOException {
 		File storagefile = new File(storagePath);
@@ -97,22 +100,21 @@ public class ExportYNoteUtil {
 						while ((n = in.read(b)) != -1) {
 							out.write(b, 0, n);
 						}
+						dirs.add(name);
 						out.close();
 						in.close();
 					}
 				}
 			}
 		}
+		println("==========成功转换：" + dirs.size() + "条==========");
+		for (String s : dirs) {
+			println(s);
+		}
 	}
 
 	private static void println(String str) {
-		if (str != null) {
-			try {
-				System.out.println(URLEncoder.encode(str, "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		}
+		System.out.println(str);
 	}
 
 	public static void main(String[] args) {
