@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * ClassName: ExportUtil <br>
@@ -45,16 +47,16 @@ public class ExportYNoteUtil {
 			for (File temp : outs) {
 				temp.delete();
 			}
-			System.out.println("[" + outPath + "] is clear");
+			println("[" + outPath + "] is clear");
 		}
 		if (!storagefile.isDirectory()) {
-			System.out.println("[" + storagePath + "] is not directory");
+			println("[" + storagePath + "] is not directory");
 			return;
 		}
 		File[] subs = storagefile.listFiles();
 		for (File sub : subs) {
 			if (!sub.isDirectory()) {
-				System.out.println("[" + sub.getName() + "] is not directory");
+				println("[" + sub.getName() + "] is not directory");
 				continue;
 			}
 			File[] files = sub.listFiles();
@@ -65,7 +67,7 @@ public class ExportYNoteUtil {
 						String outFileName = outPath + "/" + name;
 						// 1.去除临时文件
 						if (name.startsWith("(冲突)") || name.startsWith("无标题")) {
-							System.out.println("[" + file.getName() + "] is auto mk , skip it");
+							println("[" + file.getName() + "] is auto mk , skip it");
 							continue;
 
 						}
@@ -73,7 +75,7 @@ public class ExportYNoteUtil {
 						// 2.去除系统生成的空文件
 						FileInputStream in = new FileInputStream(file);
 						if (in.available() == 0) {
-							System.out.println("[" + file.getName() + "] is empty , skip it");
+							println("[" + file.getName() + "] is empty , skip it");
 							continue;
 						}
 
@@ -81,7 +83,7 @@ public class ExportYNoteUtil {
 						FileReader fr = new FileReader(file);
 						BufferedReader rd = new BufferedReader(fr);
 						if (!rd.readLine().equals("---")) {
-							System.out.println("[" + file.getName() + "] Not allow public");
+							println("[" + file.getName() + "] Not allow public");
 							rd.close();
 							fr.close();
 							continue;
@@ -103,20 +105,30 @@ public class ExportYNoteUtil {
 		}
 	}
 
+	private static void println(String str) {
+		if (str != null) {
+			try {
+				System.out.println(URLEncoder.encode(str, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 		try {
 			String storagePath;
 			String outPath;
 			if (args == null || args.length == 0 || args[0].equalsIgnoreCase("w")) {
-				System.out.println("工作空间...");
+				println("工作空间...");
 				storagePath = work_storagePath;
 				outPath = work_outPath;
 			} else if (args[0].equalsIgnoreCase("h")) {
-				System.out.println("家庭空间...");
+				println("家庭空间...");
 				storagePath = home_storagePath;
 				outPath = home_outPath;
 			} else {
-				System.out.println("工作空间...");
+				println("工作空间...");
 				storagePath = work_storagePath;
 				outPath = work_outPath;
 			}
