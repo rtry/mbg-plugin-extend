@@ -7,7 +7,6 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.Enums.ExampleProperty;
 
 /**
  * 类名称：Enums <br>

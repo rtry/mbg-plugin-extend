@@ -7,8 +7,6 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 
-import org.mybatis.generator.api.dom.xml.Attribute;
-import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 
 /**
