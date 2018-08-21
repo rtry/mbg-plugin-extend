@@ -7,12 +7,20 @@
  *
  */
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +45,8 @@ public class ExportYNoteUtil {
 	// home
 	private static final String home_storagePath = "C:/Users/PLZ/AppData/Local/YNote/data/dzpanxiwei@163.com";
 	private static final String home_outPath = "F:/Git/rtry.github.io/source/_posts";
+
+	private static final String upload_path = "uploads";
 
 	// 转存成功所有路径
 	public static List<String> dirs = new ArrayList<String>();
@@ -70,51 +80,90 @@ public class ExportYNoteUtil {
 						String outFileName = outPath + "/" + name;
 						// 1.去除临时文件
 						if (name.startsWith("(冲突)") || name.startsWith("无标题")) {
-							println("[" + file.getName() + "] is auto mk , skip it");
+							// println("[" + file.getName() +
+							// "] is auto mk , skip it");
 							continue;
-
 						}
 
 						// 2.去除系统生成的空文件
 						FileInputStream in = new FileInputStream(file);
 						if (in.available() == 0) {
-							println("[" + file.getName() + "] is empty , skip it");
+							// println("[" + file.getName() +
+							// "] is empty , skip it");
 							continue;
 						}
+						in.close();
 
+						String saveDirBase = outPath.substring(0, outPath.length() - 6);
 						// 3.去除不想发布的内容
-						FileReader fr = new FileReader(file);
+//						FileReader fr = new FileReader(file);
+						InputStreamReader fr = new InputStreamReader(new FileInputStream(file), "UTF-8");
 						BufferedReader rd = new BufferedReader(fr);
-						if (!rd.readLine().equals("---")) {
-							println("[" + file.getName() + "] Not allow public");
+						String line = "";
+						if (!(line = rd.readLine()).equals("---")) {
+							// 展示不转换的文件
 							rd.close();
 							fr.close();
 							continue;
+						} else {
+							// 单个需要转换的文件
+//							FileWriter fw = new FileWriter(outFileName);
+							OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(outFileName),"UTF-8");
+							BufferedWriter wb = new BufferedWriter(fw);
+							String nName = name.toLowerCase().replaceAll("[\u4e00-\u9fa5]", "");
+							nName = nName.substring(0, nName.length() - 3).trim();
+
+							String saveDir = saveDirBase + upload_path + "/" + nName;
+							println("正在处理文件：" + name);
+							do {
+
+								if (line.indexOf("![") != -1) {
+									int start = line.indexOf("](");
+									int last = line.indexOf(")");
+									// IMG URL 地址
+									String url = line.substring(start + 2, last);
+									// IMG Simple Name
+									String fileName = url.substring(url.lastIndexOf("/") + 1,
+											url.length());
+									// 修改后的单行数据
+
+									String modifyLine = line.substring(0, start) + "](/"
+											+ upload_path + "/" + nName + "/" + fileName
+											+ line.substring(last, line.length());
+
+									download(url, saveDir, fileName);
+
+									line = modifyLine;
+									// System.out.println(modifyLine);
+								}
+								// 写之前转换回来
+								wb.write(line);
+								wb.newLine();
+							} while (((line = rd.readLine()) != null));
+							System.out.println("================================");
+							wb.close();
+							fw.close();
+
 						}
 						rd.close();
 						fr.close();
-
-						FileOutputStream out = new FileOutputStream(outFileName);
-						byte[] b = new byte[1024];
-						int n = 0;
-						while ((n = in.read(b)) != -1) {
-							out.write(b, 0, n);
-						}
 						dirs.add(name);
-						out.close();
-						in.close();
 					}
 				}
 			}
 		}
-		println("==========成功转换：" + dirs.size() + "条==========");
-		for (String s : dirs) {
-			println(s);
-		}
+		println("==========成功转换" + dirs.size() + "==========");
+		// for (String s : dirs) {
+		// println(s);
+		// }
 	}
 
 	private static void println(String str) {
-		System.out.println(str);
+		try {
+			System.out.println(new String(str.getBytes("UTF-8"), Charset.defaultCharset()));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -137,6 +186,48 @@ public class ExportYNoteUtil {
 			ExportYNoteUtil.export(storagePath, outPath);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void download(String url, String saveDir, String fileName) {
+
+		BufferedOutputStream bos = null;
+		InputStream is = null;
+		try {
+			File file = new File(saveDir, fileName);
+			if (file.exists()) {
+				return;
+			}
+			println("=========正在下载：" + fileName + "=========");
+			file.getParentFile().mkdirs();
+
+			byte[] buff = new byte[2048];
+			URLConnection conn = new URL(url).openConnection();
+			conn.connect();
+			is = conn.getInputStream();
+			bos = new BufferedOutputStream(new FileOutputStream(file));
+			int count = 0;
+			while ((count = is.read(buff)) != -1) {
+				bos.write(buff, 0, count);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (bos != null) {
+				try {
+					bos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
