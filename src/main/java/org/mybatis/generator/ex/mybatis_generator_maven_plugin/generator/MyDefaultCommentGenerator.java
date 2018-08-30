@@ -56,6 +56,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	private String currentDateStr;
 
 	/** If suppressAllComments is true, this option is ignored. */
+	@SuppressWarnings("unused")
 	private boolean addRemarkComments;
 
 	private SimpleDateFormat dateFormat;
@@ -299,7 +300,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 			field.addJavaDocLine(" */");
 		}
 	}
-	
+
 	/**
 	 * 生成Mapper对象方法的注解
 	 * */
@@ -366,7 +367,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	}
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
-		System.out.println("xxx:"+innerClass);
+		System.out.println("xxx:" + innerClass);
 		// if (suppressAllComments) {
 		// return;
 		// }
@@ -382,7 +383,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable,
 			boolean markAsDoNotDelete) {
-		 System.out.println("vvv:"+innerClass);
+		System.out.println("vvv:" + innerClass);
 		//
 		// if (suppressAllComments) {
 		// return;
