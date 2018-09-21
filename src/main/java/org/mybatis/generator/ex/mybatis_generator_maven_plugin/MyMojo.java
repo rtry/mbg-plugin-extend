@@ -167,6 +167,9 @@ public class MyMojo extends AbstractMojo {
 	@Parameter(property = "mybatis.generator.includeAllDependencies", defaultValue = "false")
 	private boolean includeAllDependencies;
 
+	private String sLine = "------------------------------------------------------------------------";
+	private String bLine = "========================================================================";
+
 	@Override
 	public String toString() {
 		return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project
@@ -244,23 +247,23 @@ public class MyMojo extends AbstractMojo {
 			ConfigurationParser cp = new ConfigurationParser(project.getProperties(), warnings);
 			Configuration config = cp.parseConfiguration(configurationFile);
 			for (Context t : config.getContexts()) {
-				getLog().info("========================================================================");
-				getLog().info("欢迎切换扩 mybatis.generator 展插件.");
-				getLog().info("========================================================================");
+				getLog().info(bLine);
+				getLog().info("欢迎切换 mybatis.generator 扩展插件.");
+				getLog().info(bLine);
 
 				try {
 					Field f = t.getClass().getDeclaredField("commentGenerator");
 					f.setAccessible(true);
 
-					getLog().info("切换自定义扩展：文档注释");
-					getLog().info("------------------------------------------------------------------------");
+					getLog().info("加载自定义扩展：文档注释");
+					getLog().info(sLine);
 					MyDefaultCommentGenerator myComment = new MyDefaultCommentGenerator();
 					myComment.setLog(getLog());
 					f.set(t, myComment);
 
-					getLog().info("切换自定义扩展：类型转换");
-					getLog().info("------------------------------------------------------------------------");
-					
+					getLog().info("加载自定义扩展：类型转换");
+					getLog().info(sLine);
+
 					MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
 					t.setJavaTypeResolverConfiguration(myType);
 
@@ -274,8 +277,8 @@ public class MyMojo extends AbstractMojo {
 			}
 			ShellCallback callback = new MavenShellCallback(this, overwrite);
 
-			getLog().info("切换自定义扩展：mapper.xml 文件强制覆盖");
-			getLog().info("------------------------------------------------------------------------");
+			getLog().info("加载自定义扩展：mapper.xml 文件强制覆盖");
+			getLog().info(sLine);
 
 			// 自定义的生成器
 			MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
@@ -317,6 +320,8 @@ public class MyMojo extends AbstractMojo {
 		}
 
 		restoreClassLoader();
+		getLog().info(sLine);
+		getLog().info("All OVER :-) ");
 	}
 
 	private void calculateClassPath() throws MojoExecutionException {
