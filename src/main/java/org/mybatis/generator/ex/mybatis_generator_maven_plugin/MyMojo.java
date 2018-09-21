@@ -94,8 +94,11 @@ public class MyMojo extends AbstractMojo {
 	 * Specifies whether the mojo overwrites existing Java files. Default is
 	 * false. <br>
 	 * Note that XML files are always merged.
+	 * 强制修改为TRUE
 	 */
-	@Parameter(property = "mybatis.generator.overwrite", defaultValue = "false")
+	@Parameter(property = "mybatis.generator.overwrite", defaultValue = "true")
+	// @Parameter(property = "mybatis.generator.overwrite", defaultValue =
+	// "false")
 	private boolean overwrite;
 
 	/**

@@ -61,7 +61,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	private boolean addRemarkComments;
 
 	private SimpleDateFormat dateFormat;
-	
+
 	private Log log;
 
 	public void setLog(Log log) {
@@ -91,6 +91,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 */
 	@Override
 	public void addComment(XmlElement xmlElement) {
+
 		// if (suppressAllComments) {
 		// return;
 		// }
@@ -118,6 +119,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	@Override
 	public void addRootComment(XmlElement rootElement) {
+		log.toString();
 		// add no document level comments by default
 	}
 
@@ -276,7 +278,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addFieldComment(Field field, IntrospectedTable introspectedTable,
 			IntrospectedColumn introspectedColumn) {
-		log.info("生成:" + field.getName() + "的注解");
+		// log.info("生成:" + field.getName() + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
@@ -293,7 +295,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
 		String name = field.getName();
-		log.info("生成Example对象:" + name + "的注解");
+		// log.info("生成Example对象:" + name + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
@@ -313,7 +315,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
 		String name = method.getName();
-		log.info("生成Mapper对象方法:" + name + "的注解");
+		// log.info("生成Mapper对象方法:" + name + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
