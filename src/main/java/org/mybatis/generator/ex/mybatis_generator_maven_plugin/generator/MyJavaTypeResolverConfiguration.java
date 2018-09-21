@@ -23,7 +23,6 @@ import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 public class MyJavaTypeResolverConfiguration extends JavaTypeResolverConfiguration {
 
 	public String getConfigurationType() {
-		System.out.println("绑定自定义类型转换");
 		// return super.getConfigurationType();
 		return MyJavaTypeResolverDefaultImpl.class.getName();
 	}

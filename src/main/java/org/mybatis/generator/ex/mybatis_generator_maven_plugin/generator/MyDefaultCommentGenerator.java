@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.maven.plugin.logging.Log;
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -60,6 +61,12 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	private boolean addRemarkComments;
 
 	private SimpleDateFormat dateFormat;
+	
+	private Log log;
+
+	public void setLog(Log log) {
+		this.log = log;
+	}
 
 	public MyDefaultCommentGenerator() {
 		super();
@@ -269,7 +276,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addFieldComment(Field field, IntrospectedTable introspectedTable,
 			IntrospectedColumn introspectedColumn) {
-		System.out.println("生成:" + field.getName() + "的注解");
+		log.info("生成:" + field.getName() + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
@@ -286,7 +293,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
 		String name = field.getName();
-		System.out.println("生成Example对象:" + name + "的注解");
+		log.info("生成Example对象:" + name + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
@@ -306,7 +313,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * */
 	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
 		String name = method.getName();
-		System.out.println("生成Mapper对象方法:" + name + "的注解");
+		log.info("生成Mapper对象方法:" + name + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
@@ -367,7 +374,6 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	}
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
-		System.out.println("xxx:" + innerClass);
 		// if (suppressAllComments) {
 		// return;
 		// }
@@ -383,7 +389,6 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable,
 			boolean markAsDoNotDelete) {
-		System.out.println("vvv:" + innerClass);
 		//
 		// if (suppressAllComments) {
 		// return;

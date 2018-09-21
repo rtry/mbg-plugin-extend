@@ -31,13 +31,7 @@ public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 		FullyQualifiedJavaType answer = null;
 		JdbcTypeInformation jdbcTypeInformation = typeMap.get(introspectedColumn.getJdbcType());
 
-		// 自定义实现开始
-		// System.out.println("JDBC TYPE :" +
-		// introspectedColumn.getJdbcTypeName() + "  File:"
-		// + introspectedColumn.getActualColumnName() + "  Length:"
-		// + introspectedColumn.getLength() + " >:" +
-		// introspectedColumn.getRemarks() + "|||"
-		// + introspectedColumn.toString());
+		// ======================自定义实现开始======================
 		String columnName = introspectedColumn.getActualColumnName();
 		int columnType = introspectedColumn.getJdbcType();
 		int length = introspectedColumn.getLength();
@@ -47,7 +41,7 @@ public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 						.indexOf("ID") != -1)) {
 			jdbcTypeInformation = typeMap.get(Types.BIGINT);
 		}
-		// 自定义实现结束
+		// ======================自定义实现结束======================
 
 		if (jdbcTypeInformation != null) {
 			answer = jdbcTypeInformation.getFullyQualifiedJavaType();

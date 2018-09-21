@@ -34,11 +34,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
@@ -244,12 +244,26 @@ public class MyMojo extends AbstractMojo {
 			ConfigurationParser cp = new ConfigurationParser(project.getProperties(), warnings);
 			Configuration config = cp.parseConfiguration(configurationFile);
 			for (Context t : config.getContexts()) {
-				getLog().info("自动调整为调用自定义注解实现...");
+				getLog().info("========================================================================");
+				getLog().info("欢迎切换扩 mybatis.generator 展插件.");
+				getLog().info("========================================================================");
+
 				try {
 					Field f = t.getClass().getDeclaredField("commentGenerator");
 					f.setAccessible(true);
-					f.set(t, new MyDefaultCommentGenerator());
-					t.setJavaTypeResolverConfiguration(new MyJavaTypeResolverConfiguration());
+
+					getLog().info("切换自定义扩展：文档注释");
+					getLog().info("------------------------------------------------------------------------");
+					MyDefaultCommentGenerator myComment = new MyDefaultCommentGenerator();
+					myComment.setLog(getLog());
+					f.set(t, myComment);
+
+					getLog().info("切换自定义扩展：类型转换");
+					getLog().info("------------------------------------------------------------------------");
+					
+					MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
+					t.setJavaTypeResolverConfiguration(myType);
+
 				} catch (NoSuchFieldException | SecurityException e) {
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
@@ -260,7 +274,11 @@ public class MyMojo extends AbstractMojo {
 			}
 			ShellCallback callback = new MavenShellCallback(this, overwrite);
 
-			MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+			getLog().info("切换自定义扩展：mapper.xml 文件强制覆盖");
+			getLog().info("------------------------------------------------------------------------");
+
+			// 自定义的生成器
+			MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
 
 			myBatisGenerator.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun,
 					fullyqualifiedTables);
