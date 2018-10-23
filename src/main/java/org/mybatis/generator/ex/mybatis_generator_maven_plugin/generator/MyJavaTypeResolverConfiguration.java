@@ -11,7 +11,7 @@ import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 
 /**
  * 类名称：MyJavaTypeResolverConfiguration <br>
- * 类描述: <br>
+ * 类描述: 自定义类型转换设置<br>
  * 创建人：felicity <br>
  * 创建时间：2018年4月25日 下午2:25:27 <br>
  * 修改人：felicity <br>

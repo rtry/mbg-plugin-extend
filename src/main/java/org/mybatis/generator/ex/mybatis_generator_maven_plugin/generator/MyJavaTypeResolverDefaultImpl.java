@@ -15,7 +15,7 @@ import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
 
 /**
  * 类名称：MyJavaTypeResolverDefaultImpl <br>
- * 类描述: <br>
+ * 类描述: 自定义类型转换实现<br>
  * 创建人：felicity <br>
  * 创建时间：2018年4月25日 下午2:44:29 <br>
  * 修改人：felicity <br>

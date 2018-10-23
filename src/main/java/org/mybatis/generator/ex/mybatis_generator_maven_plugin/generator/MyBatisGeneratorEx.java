@@ -10,10 +10,13 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 import static org.mybatis.generator.internal.util.ClassloaderUtility.getCustomClassloader;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,8 +26,13 @@ import java.util.Set;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.GeneratedXmlFile;
+import org.mybatis.generator.api.JavaFormatter;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.ShellCallback;
+import org.mybatis.generator.api.dom.java.CompilationUnit;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
@@ -280,9 +288,104 @@ public class MyBatisGeneratorEx {
 		}
 		callback.generationStarted(totalSteps);
 
+		// 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
+		// PluginConfiguration pluginExtend = new PluginConfiguration();
+		// pluginExtend.setConfigurationType(pluginExtendClass);
+
+		List<GeneratedJavaFile> adds = new ArrayList<GeneratedJavaFile>();
+		List<GeneratedJavaFile> removes = new ArrayList<GeneratedJavaFile>();
+
 		for (Context context : contextsToRun) {
+			// context.addPluginConfiguration(pluginExtend);
 			context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
+
+			// ==============================================================================
+			// 针对: JavaClientGenerator 如果配置了supportCustomInterface 做特殊处理
+			// 条件： supportCustomInterface=x.y.BaseMapper
+			// 方式：如果路径中没有文档，生成新的文档（继承指定接口），存在则跳过
+			// ==============================================================================
+			String mapperInterfaceClass = context.getJavaClientGeneratorConfiguration()
+					.getProperty("supportCustomInterface");
+			if (mapperInterfaceClass != null && !mapperInterfaceClass.trim().equals("")
+					&& mapperInterfaceClass.lastIndexOf(".") != -1) {
+				logger();
+
+				// Java Class File
+				for (GeneratedJavaFile javaFile : generatedJavaFiles) {
+
+					CompilationUnit unit = javaFile.getCompilationUnit();
+					String daoTargetDir = javaFile.getTargetProject();
+
+					FullyQualifiedJavaType baseModelJavaType = unit.getType();
+					String shortName = baseModelJavaType.getShortName();
+					JavaFormatter javaFormatter = context.getJavaFormatter();
+
+					// 更改结构
+					if (shortName.endsWith("Mapper")) {
+
+						String exampleClassPackage = context.getJavaModelGeneratorConfiguration()
+								.getTargetPackage();
+
+						// mapperInterfaceClass 的类名
+						int lastIndex = mapperInterfaceClass.lastIndexOf(".");
+						String mapperInterfaceClassName = mapperInterfaceClass.substring(
+								lastIndex + 1, mapperInterfaceClass.length());
+
+						String newMapperTargetDir = javaFile.getTargetProject();
+
+						// 删除程序生成的，生成新的
+						String newMapperTargetPackage = baseModelJavaType.getPackageName();
+						String fullName = baseModelJavaType.getFullyQualifiedName();
+
+						Interface mapperInterface = new Interface(fullName);
+						mapperInterface.setVisibility(JavaVisibility.PUBLIC);
+						mapperInterface.addJavaDocLine("/**");
+						mapperInterface.addJavaDocLine(" * " + shortName + "继承标准接口"
+								+ mapperInterfaceClassName);
+						mapperInterface.addJavaDocLine(" */");
+
+						FullyQualifiedJavaType daoSuperType = new FullyQualifiedJavaType(
+								mapperInterfaceClass);
+						// 添加泛型支持
+
+						daoSuperType.addTypeArgument(new FullyQualifiedJavaType(exampleClassPackage
+								+ "." + shortName.replace("Mapper", "")));
+						FullyQualifiedJavaType longType = new FullyQualifiedJavaType(
+								"java.lang.Long");
+						daoSuperType.addTypeArgument(longType);
+						String exampleClass = exampleClassPackage + "."
+								+ shortName.replace("Mapper", "Example");
+						daoSuperType.addTypeArgument(new FullyQualifiedJavaType(exampleClass));
+
+						// mapperInterface.addImportedType(daoSuperType);
+						mapperInterface.addSuperInterface(daoSuperType);
+
+						GeneratedJavaFile mapperJavafile = new GeneratedJavaFile(mapperInterface,
+								newMapperTargetDir, javaFormatter);
+						try {
+							File mapperDir = shellCallback.getDirectory(daoTargetDir,
+									newMapperTargetPackage);
+							File mapperFile = new File(mapperDir, mapperJavafile.getFileName());
+							removes.add(javaFile);
+							// 文件不存在
+							if (!mapperFile.exists()) {
+								adds.add(mapperJavafile);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 		}
+		for (GeneratedJavaFile f : removes) {
+			generatedJavaFiles.remove(f);
+		}
+		for (GeneratedJavaFile f : adds) {
+			generatedJavaFiles.add(f);
+		}
+		// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+		// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 		// 强制覆盖文件
 		for (GeneratedXmlFile f : generatedXmlFiles)
@@ -308,6 +411,31 @@ public class MyBatisGeneratorEx {
 		}
 
 		callback.done();
+	}
+
+	private void logger() {
+		System.out.println("");
+		System.out
+				.println("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓继承BaseMapper.java的类文件↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+		System.out.println("");
+		String packageName = "BaseMapper.tpl";
+		InputStream is = MyBatisGeneratorEx.class.getClassLoader().getResourceAsStream(packageName);
+		try {
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+				line = null;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("");
+		System.out
+				.println("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+		System.out.println("");
+
 	}
 
 	private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback)
