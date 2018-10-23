@@ -341,13 +341,13 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		method.addJavaDocLine("/**");
 		StringBuilder sb = new StringBuilder();
 		sb.append(" * ");
-		sb.append(introspectedColumn.getRemarks());
+		sb.append(method.getName() + ": 获取" + introspectedColumn.getRemarks());
 		method.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * @return ");
 		sb.append(introspectedColumn.getActualColumnName());
 		sb.append(" ");
-		sb.append(introspectedColumn.getRemarks());
+		// sb.append(introspectedColumn.getRemarks());
 		method.addJavaDocLine(sb.toString().replace("\n", " "));
 		method.addJavaDocLine(" */");
 	}
@@ -363,14 +363,14 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		method.addJavaDocLine("/**");
 		StringBuilder sb = new StringBuilder();
 		sb.append(" * ");
-		sb.append(introspectedColumn.getRemarks());
+		sb.append(method.getName() + ": 设置" + introspectedColumn.getRemarks());
 		method.addJavaDocLine(sb.toString().replace("\n", " "));
 		Parameter parm = method.getParameters().get(0);
 		sb.setLength(0);
 		sb.append(" * @param ");
 		sb.append(parm.getName());
 		sb.append(" ");
-		sb.append(introspectedColumn.getRemarks());
+		// sb.append(introspectedColumn.getRemarks());
 		method.addJavaDocLine(sb.toString().replace("\n", " "));
 		method.addJavaDocLine(" */");
 	}
@@ -414,18 +414,18 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		}
 		StringBuilder sb = new StringBuilder();
 		innerClass.addJavaDocLine("/**");
-		sb.append(" * 描述:");
+		sb.append(" * 类描述: ");
 		sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * @version");
+		sb.append(" * 创建者: MBG(mybatis generator ex)");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * @author:  MBG(mybatis generator)");
-		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
-		sb.setLength(0);
-		sb.append(" * @创建时间: ");
+		sb.append(" * 创建时间: ");
 		sb.append(currentDateStr);
+		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
+		sb.setLength(0);
+		sb.append(" * @version ");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		innerClass.addJavaDocLine(" */");
 	}
