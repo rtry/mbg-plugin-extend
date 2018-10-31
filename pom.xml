@@ -25,6 +25,14 @@
 			<version>3.5.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mybatis.generator</groupId>
 			<artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -45,6 +53,7 @@
 				<version>2.5.1</version>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 	<!-- 发布项目到私有仓库，供团体其他人使用 -->
