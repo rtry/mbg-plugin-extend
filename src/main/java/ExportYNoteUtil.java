@@ -191,6 +191,10 @@ public class ExportYNoteUtil {
 
 	public static void download(String url, String saveDir, String fileName) {
 
+		if(!url.startsWith("http")){
+			return;
+		}
+		
 		BufferedOutputStream bos = null;
 		InputStream is = null;
 		try {
