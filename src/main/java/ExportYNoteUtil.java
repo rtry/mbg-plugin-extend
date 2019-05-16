@@ -207,6 +207,8 @@ public class ExportYNoteUtil {
 
 			byte[] buff = new byte[2048];
 			URLConnection conn = new URL(url).openConnection();
+			//设置Agent,反防
+			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 			conn.connect();
 			is = conn.getInputStream();
 			bos = new BufferedOutputStream(new FileOutputStream(file));
