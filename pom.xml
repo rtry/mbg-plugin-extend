@@ -53,6 +53,7 @@
 				<version>2.5.1</version>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 	<!-- 发布项目到私有仓库，供团体其他人使用 -->
