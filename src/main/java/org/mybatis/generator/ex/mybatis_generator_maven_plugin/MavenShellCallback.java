@@ -28,9 +28,9 @@ import org.mybatis.generator.internal.util.messages.Messages;
  * @author Jeff Butler
  */
 public class MavenShellCallback extends DefaultShellCallback {
-    private MyMojo mybatisGeneratorMojo;
+    private MyBatisGeneratorMojo mybatisGeneratorMojo;
 
-    public MavenShellCallback(MyMojo mybatisGeneratorMojo, boolean overwrite) {
+    public MavenShellCallback(MyBatisGeneratorMojo mybatisGeneratorMojo, boolean overwrite) {
         super(overwrite);
         this.mybatisGeneratorMojo = mybatisGeneratorMojo;
     }

@@ -61,7 +61,7 @@ import org.mybatis.generator.logging.LogFactory;
  * @see
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.TEST)
-public class MyMojo extends AbstractMojo {
+public class MyBatisGeneratorMojo extends AbstractMojo {
 
 	private ThreadLocal<ClassLoader> savedClassloader = new ThreadLocal<ClassLoader>();
 

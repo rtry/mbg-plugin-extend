@@ -18,7 +18,6 @@ public interface BaseMapper<T, PK extends Serializable, E> {
 	/**
 	 * 插入数据
 	 */
-
 	int insert(T record);
 
 	/**
@@ -29,7 +28,6 @@ public interface BaseMapper<T, PK extends Serializable, E> {
 	/**
 	 * 通过Example查询条件集合
 	 */
-
 	List<T> selectByExample(E example);
 
 	/**
