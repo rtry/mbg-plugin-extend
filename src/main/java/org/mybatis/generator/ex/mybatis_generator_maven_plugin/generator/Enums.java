@@ -7,7 +7,6 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 
-
 /**
  * 类名称：Enums <br>
  * 类描述: 枚举集合(属性或方法上的注解)<br>
@@ -21,6 +20,15 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
  */
 public interface Enums {
 
+	/**
+	 * 类名称：ExampleProperty <br>
+	 * 类描述: Example属性注解 <br>
+	 * 创建人：felicity <br>
+	 * 创建时间：2019年7月26日 上午10:27:45 <br>
+	 * 备注:
+	 * @version
+	 * @see
+	 */
 	public enum ExampleProperty {
 
 		orderByClause("orderByClause", "排序方式"),
@@ -66,6 +74,15 @@ public interface Enums {
 
 	}
 
+	/**
+	 * 类名称：MapperMethod <br>
+	 * 类描述: Mapper方法注解 <br>
+	 * 创建人：felicity <br>
+	 * 创建时间：2019年7月26日 上午10:28:14 <br>
+	 * 备注:
+	 * @version
+	 * @see
+	 */
 	public enum MapperMethod {
 
 		countByExample("countByExample", "通过Example计算总数"),
