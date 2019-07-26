@@ -12,6 +12,7 @@ import java.sql.Types;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
+import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl.JdbcTypeInformation;
 
 /**
  * 类名称：MyJavaTypeResolverDefaultImpl <br>
@@ -29,16 +30,20 @@ public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 	@Override
 	public FullyQualifiedJavaType calculateJavaType(IntrospectedColumn introspectedColumn) {
 		FullyQualifiedJavaType answer = null;
-		JdbcTypeInformation jdbcTypeInformation = typeMap.get(introspectedColumn.getJdbcType());
 
 		// ======================自定义实现开始======================
-		String columnName = introspectedColumn.getActualColumnName();
+
+		// 功能1 tinyint( >2 )数据（Byte）调整为（Integer）类型
+		typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", new FullyQualifiedJavaType(
+				Integer.class.getName())));
+
+		// 功能2 int ( >10 ) 数据（Integer）调整为（Long）类型
+		JdbcTypeInformation jdbcTypeInformation = typeMap.get(introspectedColumn.getJdbcType());
+
 		int columnType = introspectedColumn.getJdbcType();
 		int length = introspectedColumn.getLength();
-		if (columnType == 4
-				&& length >= 10
-				&& (columnName.indexOf("id") != -1 || columnName.indexOf("Id") != -1 || columnName
-						.indexOf("ID") != -1)) {
+		System.out.println(introspectedColumn);
+		if (columnType == Types.INTEGER && length >= 10) {
 			jdbcTypeInformation = typeMap.get(Types.BIGINT);
 		}
 		// ======================自定义实现结束======================

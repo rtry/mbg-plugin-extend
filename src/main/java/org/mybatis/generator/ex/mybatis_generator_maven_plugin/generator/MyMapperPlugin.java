@@ -34,7 +34,6 @@ import org.mybatis.generator.internal.DefaultShellCallback;
  * @since JDK 1.8
  */
 public class MyMapperPlugin extends PluginAdapter {
-	// https://blog.csdn.net/zsy3313422/article/details/53190613/
 
 	private static final String DEFAULT_DAO_SUPER_CLASS = "xyz.rtry.felicity.mapper.base.BaseMapper";
 	private static final String DEFAULT_EXPAND_DAO_SUPER_CLASS = "xyz.rtry.felicity.mapper.base.BaseExpandMapper";

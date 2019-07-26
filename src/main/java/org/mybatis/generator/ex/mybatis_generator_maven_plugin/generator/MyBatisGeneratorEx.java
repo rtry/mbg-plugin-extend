@@ -37,6 +37,8 @@ import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.MergeConstants;
+import org.mybatis.generator.config.PluginConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.plugins.JavaTypePlugin;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.DefaultShellCallback;
@@ -288,15 +290,22 @@ public class MyBatisGeneratorEx {
 		}
 		callback.generationStarted(totalSteps);
 
-		// 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
-		// PluginConfiguration pluginExtend = new PluginConfiguration();
-		// pluginExtend.setConfigurationType(pluginExtendClass);
 
+		// 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
+		 PluginConfiguration pluginExtend = new PluginConfiguration();
+		 pluginExtend.setConfigurationType(JavaTypePlugin.class.getName());
+		 
+		 
+		 
 		List<GeneratedJavaFile> adds = new ArrayList<GeneratedJavaFile>();
 		List<GeneratedJavaFile> removes = new ArrayList<GeneratedJavaFile>();
 
 		for (Context context : contextsToRun) {
-			// context.addPluginConfiguration(pluginExtend);
+			
+			//添加自定义的 插件
+			context.addPluginConfiguration(pluginExtend);
+			
+			
 			context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
 
 			// ==============================================================================
