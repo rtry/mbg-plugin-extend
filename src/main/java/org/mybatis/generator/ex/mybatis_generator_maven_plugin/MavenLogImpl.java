@@ -21,6 +21,7 @@ public class MavenLogImpl implements org.mybatis.generator.logging.Log {
 	private final Log mavenLog;
 
 	MavenLogImpl(Log log) {
+		
 		mavenLog = log;
 	}
 
