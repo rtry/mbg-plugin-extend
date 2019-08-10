@@ -248,7 +248,9 @@ public class MyBatisGeneratorEx {
 			callback = new NullProgressCallback();
 		}
 
+		// 清理JAVA文件（存放待生成的数据）
 		generatedJavaFiles.clear();
+		// 清理XML文件（存放待生成的数据）
 		generatedXmlFiles.clear();
 		ObjectFactory.reset();
 		RootClassInfo.reset();
@@ -291,7 +293,7 @@ public class MyBatisGeneratorEx {
 		callback.generationStarted(totalSteps);
 
 
-		// 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
+		 // 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
 		 PluginConfiguration pluginExtend = new PluginConfiguration();
 		 pluginExtend.setConfigurationType(JavaTypePlugin.class.getName());
 		 
@@ -303,9 +305,10 @@ public class MyBatisGeneratorEx {
 		for (Context context : contextsToRun) {
 			
 			//添加自定义的 插件
-			context.addPluginConfiguration(pluginExtend);
+//			context.addPluginConfiguration(pluginExtend);
 			
 			
+			// 生成待生成的文件
 			context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
 
 			// ==============================================================================

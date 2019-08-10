@@ -94,7 +94,9 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	 * Specifies whether the mojo overwrites existing Java files. Default is
 	 * false. <br>
 	 * Note that XML files are always merged.
-	 * 强制修改为TRUE
+	 * ========================================
+	 * 强制修改为TRUE，JAVA Model 文件会自动覆盖
+	 * ========================================
 	 */
 	@Parameter(property = "mybatis.generator.overwrite", defaultValue = "true")
 	// @Parameter(property = "mybatis.generator.overwrite", defaultValue =
@@ -191,8 +193,10 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			return;
 		}
 
+		//保存类加载器到 线程中
 		saveClassLoader();
 
+		//设置日志
 		LogFactory.setLogFactory(new MavenLogFactory(this));
 
 		calculateClassPath();
@@ -352,6 +356,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 				entries.remove(project.getBuild().getOutputDirectory());
 				entries.remove(project.getBuild().getTestOutputDirectory());
 
+				// 设置自定义的类加载器
 				ClassLoader contextClassLoader = ClassloaderUtility.getCustomClassloader(entries);
 				Thread.currentThread().setContextClassLoader(contextClassLoader);
 			} catch (DependencyResolutionRequiredException e) {
