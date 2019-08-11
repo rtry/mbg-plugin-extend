@@ -50,6 +50,12 @@ import org.mybatis.generator.internal.util.StringUtility;
  */
 public class MyDefaultCommentGenerator implements CommentGenerator {
 
+	// ======================================================
+	// 注解生成器，实现 接口：CommentGenerator 
+	// 来替换默认的实现 DefaultCommentGenerator
+	// ======================================================
+
+	
 	private Properties properties;
 
 	private boolean suppressDate;
