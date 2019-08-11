@@ -1,4 +1,4 @@
-package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.mapper;
+package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,28 +12,32 @@ import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.IntrospectedTableMyBatis3SimpleImpl;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMapperMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.CountByExampleMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.DeleteByExampleMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.DeleteByPrimaryKeyMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.InsertMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.InsertSelectiveMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectByExampleWithBLOBsMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectByExampleWithoutBLOBsMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectByPrimaryKeyMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByExampleSelectiveMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByExampleWithBLOBsMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByExampleWithoutBLOBsMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByPrimaryKeySelectiveMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByPrimaryKeyWithBLOBsMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByPrimaryKeyWithoutBLOBsMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BICountByExampleMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIDeleteByExampleMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIDeleteByPrimaryKeyMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIInsertSelectiveMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BISelectByExampleMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BISelectByPrimaryKeyMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIUpdateByExampleSelectiveMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIUpdateByPrimaryKeySelectiveMethodGenerator;
 
 public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
+
+	private String baseInterfaceName;
 
 	public BaseInterfaceGenerator(boolean requiresXMLGenerator, Context context) {
 		super(false);
 		super.context = context;
+		baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty("supportCustomInterface");
+		baseInterfaceName = baseInterfaceName.concat("<T, PK extends Serializable, E>");
 	}
 
 	@Override
@@ -47,38 +51,34 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		CommentGenerator commentGenerator = context.getCommentGenerator();
 
 		// 类名
-		String baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
-				"supportCustomInterface");
-		baseInterfaceName.concat("<T, PK extends Serializable, E>");
 		FullyQualifiedJavaType type = new FullyQualifiedJavaType(baseInterfaceName);
 		Interface interfaze = new Interface(type);
 		interfaze.setVisibility(JavaVisibility.PUBLIC);
 		commentGenerator.addJavaFileComment(interfaze);
 
 		// ===========================================
-		// 标准接口方法
+		// 标准接口方法 8个（默认 单 主键 存在）
 		// ===========================================
-
 		// 计算总数
 		addCountByExampleMethod(interfaze);
 
-		// 按条件物理删除
+		// 删除，按需求
 		addDeleteByExampleMethod(interfaze);
-		// 按主键物理删除
+		// 删除，按主键
 		addDeleteByPrimaryKeyMethod(interfaze);
 
-		// 非空插入
+		// 插入，按需求
 		addInsertSelectiveMethod(interfaze);
 
 		// 查询，按需求
-		addSelectByExampleWithoutBLOBsMethod(interfaze);
+		addSelectByExampleMethod(interfaze);
 		// 查询，按主键
 		addSelectByPrimaryKeyMethod(interfaze);
 
+		// 更新，按需求
 		addUpdateByExampleSelectiveMethod(interfaze);
-		addUpdateByExampleWithoutBLOBsMethod(interfaze);
+		// 更新，按主键
 		addUpdateByPrimaryKeySelectiveMethod(interfaze);
-		addUpdateByPrimaryKeyWithoutBLOBsMethod(interfaze);
 
 		// ===========================================
 
@@ -89,18 +89,17 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	}
 
 	protected void addCountByExampleMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new CountByExampleMethodGenerator();
+		AbstractJavaMapperMethodGenerator methodGenerator = new BICountByExampleMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
 	protected void addDeleteByExampleMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new DeleteByExampleMethodGenerator();
+		AbstractJavaMapperMethodGenerator methodGenerator = new BIDeleteByExampleMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
 	protected void addDeleteByPrimaryKeyMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new DeleteByPrimaryKeyMethodGenerator(
-				false);
+		AbstractJavaMapperMethodGenerator methodGenerator = new BIDeleteByPrimaryKeyMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
@@ -110,7 +109,7 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	}
 
 	protected void addInsertSelectiveMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new InsertSelectiveMethodGenerator();
+		AbstractJavaMapperMethodGenerator methodGenerator = new BIInsertSelectiveMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
@@ -119,19 +118,18 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
-	protected void addSelectByExampleWithoutBLOBsMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new SelectByExampleWithoutBLOBsMethodGenerator();
+	protected void addSelectByExampleMethod(Interface interfaze) {
+		AbstractJavaMapperMethodGenerator methodGenerator = new BISelectByExampleMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
 	protected void addSelectByPrimaryKeyMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new SelectByPrimaryKeyMethodGenerator(
-				false);
+		AbstractJavaMapperMethodGenerator methodGenerator = new BISelectByPrimaryKeyMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
 	protected void addUpdateByExampleSelectiveMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new UpdateByExampleSelectiveMethodGenerator();
+		AbstractJavaMapperMethodGenerator methodGenerator = new BIUpdateByExampleSelectiveMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
@@ -146,7 +144,7 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	}
 
 	protected void addUpdateByPrimaryKeySelectiveMethod(Interface interfaze) {
-		AbstractJavaMapperMethodGenerator methodGenerator = new UpdateByPrimaryKeySelectiveMethodGenerator();
+		AbstractJavaMapperMethodGenerator methodGenerator = new BIUpdateByPrimaryKeySelectiveMethodGenerator();
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
@@ -160,13 +158,11 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
-	protected void initializeAndExecuteGenerator(AbstractJavaMapperMethodGenerator methodGenerator,
-			Interface interfaze) {
+	protected void initializeAndExecuteGenerator(AbstractJavaMapperMethodGenerator methodGenerator, Interface interfaze) {
 		methodGenerator.setContext(context);
 		IntrospectedTableMyBatis3SimpleImpl it = new IntrospectedTableMyBatis3SimpleImpl();
+		it.setExampleType(baseInterfaceName);
 		methodGenerator.setIntrospectedTable(it);
-//		methodGenerator.setProgressCallback(progressCallback);
-//		methodGenerator.setWarnings(warnings);
 		methodGenerator.addInterfaceElements(interfaze);
 	}
 }

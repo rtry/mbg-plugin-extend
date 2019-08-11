@@ -38,7 +38,7 @@ import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.XmlFormatter;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.mapper.BaseInterfaceUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.BaseInterfaceUtil;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.PluginAggregator;

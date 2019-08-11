@@ -1,6 +1,6 @@
 public interface BaseMapper<T, PK extends Serializable, E> {
 
-		/**
+	/**
 	 * countByExample:通过Example计算总数
 	 * @param example 查询条件
 	 * @return 总条数

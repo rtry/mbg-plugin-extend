@@ -34,7 +34,6 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.Enums.ExampleProperty;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.Enums.MapperMethod;
 import org.mybatis.generator.internal.util.StringUtility;
 
 /**
@@ -45,17 +44,17 @@ import org.mybatis.generator.internal.util.StringUtility;
  * 修改人：felicity <br>
  * 修改时间：2018年4月24日 下午6:04:23 <br>
  * 修改备注:
+ * 
  * @version
  * @see
  */
 public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	// ======================================================
-	// 注解生成器，实现 接口：CommentGenerator 
+	// 注解生成器，实现 接口：CommentGenerator
 	// 来替换默认的实现 DefaultCommentGenerator
 	// ======================================================
 
-	
 	private Properties properties;
 
 	private boolean suppressDate;
@@ -93,7 +92,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * when it was generated.
 	 *
 	 * @param xmlElement
-	 *        the xml element
+	 *            the xml element
 	 */
 	@Override
 	public void addComment(XmlElement xmlElement) {
@@ -133,17 +132,13 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	public void addConfigurationProperties(Properties properties) {
 		this.properties.putAll(properties);
 
-		suppressDate = isTrue(properties
-				.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
+		suppressDate = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
 
-		suppressAllComments = isTrue(properties
-				.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
+		suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
 
-		addRemarkComments = isTrue(properties
-				.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
+		addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
 
-		String dateFormatString = properties
-				.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
+		String dateFormatString = properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
 		if (StringUtility.stringHasValue(dateFormatString)) {
 			dateFormat = new SimpleDateFormat(dateFormatString);
 		}
@@ -151,14 +146,14 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	/**
 	 * This method adds the custom javadoc tag for. You may do nothing if you do
-	 * not wish to include the Javadoc tag -
-	 * however, if you do not include the Javadoc tag then the Java merge
-	 * capability of the eclipse plugin will break.
+	 * not wish to include the Javadoc tag - however, if you do not include the
+	 * Javadoc tag then the Java merge capability of the eclipse plugin will
+	 * break.
 	 *
 	 * @param javaElement
-	 *        the java element
+	 *            the java element
 	 * @param markAsDoNotDelete
-	 *        the mark as do not delete
+	 *            the mark as do not delete
 	 */
 	protected void addJavadocTag(JavaElement javaElement, boolean markAsDoNotDelete) {
 		//		javaElement.addJavaDocLine(" *"); //$NON-NLS-1$
@@ -177,9 +172,9 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	}
 
 	/**
-	 * Returns a formated date string to include in the Javadoc tag
-	 * and XML comments. You may return null if you do not want the date in
-	 * these documentation elements.
+	 * Returns a formated date string to include in the Javadoc tag and XML
+	 * comments. You may return null if you do not want the date in these
+	 * documentation elements.
 	 * 
 	 * @return a string representing the current timestamp, or null
 	 */
@@ -212,8 +207,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	}
 
 	@Override
-	public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable,
-			Set<FullyQualifiedJavaType> imports) {
+	public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
 		imports.add(new FullyQualifiedJavaType("javax.annotation.Generated")); //$NON-NLS-1$
 		String comment = "Source Table: " + introspectedTable.getFullyQualifiedTable().toString(); //$NON-NLS-1$
 		field.addAnnotation(getGeneratedAnnotation(comment));
@@ -282,8 +276,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	/**
 	 * 实体类，变量注解
 	 * */
-	public void addFieldComment(Field field, IntrospectedTable introspectedTable,
-			IntrospectedColumn introspectedColumn) {
+	public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
 		// log.info("生成:" + field.getName() + "的注解");
 		if (suppressAllComments) {
 			return;
@@ -319,21 +312,23 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	/**
 	 * 生成Mapper对象方法的注解
 	 * */
+	private static final String xh = " * ";
+
 	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
 		String name = method.getName();
 		// log.info("生成Mapper对象方法:" + name + "的注解");
 		if (suppressAllComments) {
 			return;
 		}
-		MapperMethod p = MapperMethod.get(name);
-		if (p != null) {
-			StringBuilder sb = new StringBuilder();
-			method.addJavaDocLine("/**");
-			sb.append(" * ");
-			sb.append(p.getDes());
-			method.addJavaDocLine(sb.toString().replace("\n", " "));
-			method.addJavaDocLine(" */");
+		String[] descs = BICommentConstant.getComments(name);
+		StringBuilder sb = new StringBuilder();
+		method.addJavaDocLine("/**");
+		sb.append(" * ");
+		for (String des : descs) {
+			method.addJavaDocLine(xh.concat(des.toString().replace("\n", " ")));
 		}
+		method.addJavaDocLine(sb.toString().replace("\n", " "));
+		method.addJavaDocLine(" */");
 	}
 
 	/**
@@ -395,8 +390,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		// innerClass.addJavaDocLine(" */");
 	}
 
-	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable,
-			boolean markAsDoNotDelete) {
+	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable, boolean markAsDoNotDelete) {
 		//
 		// if (suppressAllComments) {
 		// return;

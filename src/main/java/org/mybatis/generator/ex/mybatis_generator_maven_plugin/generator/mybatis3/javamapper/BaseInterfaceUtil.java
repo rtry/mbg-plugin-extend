@@ -5,7 +5,7 @@
  * 日期：2019年8月10日    
  * Copyright Felicity Corporation 2019 版权所有   
  */
-package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.mapper;
+package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
