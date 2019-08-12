@@ -17,14 +17,18 @@ import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
 
 public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 
+	private ExtendUtil util;
+
 	public EveryMapperGenerator(Context context, IntrospectedTable introspectedTable,
-			boolean requiresXMLGenerator) {
+			ExtendUtil util, boolean requiresXMLGenerator) {
 		super(requiresXMLGenerator);
 		this.introspectedTable = introspectedTable;
 		this.context = context;
+		this.util = util;
 	}
 
 	@Override
@@ -68,6 +72,16 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 		FullyQualifiedJavaType siType = new FullyQualifiedJavaType(temp);
 		interfaze.addSuperInterface(siType);
 		interfaze.addImportedType(si);
+
+		// 判断是否有扩展父类
+		boolean flag = true;
+		if (flag) {
+			FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(util
+					.getInsertBatchClassName().concat(
+							"<" + introspectedTable.getBaseRecordType() + ">"));
+			interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
+			interfaze.addSuperInterface(extend1);
+		}
 
 		if (stringHasValue(rootInterface)) {
 			FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(rootInterface);

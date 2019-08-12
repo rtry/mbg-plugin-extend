@@ -9,6 +9,9 @@ public class BICommentConstant {
 
 	static {
 
+		//=======================
+		// 8个基本方法
+		//=======================
 		String[] countByExample = { "countByExample:通过Example计算总数", "@param example 查询条件", "@return 总条数" };
 		String[] deleteByExample = { "deleteByExample:通过Example删除", "@param example 刪除条件", "@return 受影响条数" };
 		String[] deleteByPrimaryKey = { "deleteByPrimaryKey:通过主键删除", "@param id 表的主键", "@return 受影响条数" };
@@ -28,6 +31,13 @@ public class BICommentConstant {
 		coms.put("selectByPrimaryKey", selectByPrimaryKey);
 		coms.put("updateByExampleSelective", updateByExampleSelective);
 		coms.put("updateByPrimaryKeySelective", updateByPrimaryKeySelective);
+		
+		//=======================
+		// 扩展方法
+		//=======================
+		String[] insertBatch = { "insertBatch 批量插入数据","@param records 数据集合", "@return 受影响条数" };
+		coms.put("insertBatch", insertBatch);
+		
 	}
 
 	public static String[] getComments(String key) {

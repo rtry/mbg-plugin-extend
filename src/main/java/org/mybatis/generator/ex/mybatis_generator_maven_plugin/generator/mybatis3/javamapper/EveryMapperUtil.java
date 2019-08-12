@@ -16,6 +16,7 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
 
 /**
  * 类名称：BaseInterfaceUtil <br>
@@ -37,12 +38,12 @@ public class EveryMapperUtil {
 		this.introspectedTable = introspectedTable;
 	}
 
-	public Collection<? extends GeneratedJavaFile> getMapperGenerated() {
+	public Collection<? extends GeneratedJavaFile> getMapperGenerated(ExtendUtil util) {
 		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
 		// A.生成 BaseInterface Mapper
 		EveryMapperGenerator javaGenerator = new EveryMapperGenerator(context, introspectedTable,
-				false);
+				util, false);
 		List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
 		for (CompilationUnit compilationUnit : compilationUnits) {
 			GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
