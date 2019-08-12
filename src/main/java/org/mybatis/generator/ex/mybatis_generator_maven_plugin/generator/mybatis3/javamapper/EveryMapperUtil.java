@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
@@ -25,19 +26,23 @@ import org.mybatis.generator.config.PropertyRegistry;
  * @version
  * @see
  */
-public class BaseInterfaceUtil {
+public class EveryMapperUtil {
 
 	private Context context;
 
-	public BaseInterfaceUtil(Context context) {
+	private IntrospectedTable introspectedTable;
+
+	public EveryMapperUtil(Context context, IntrospectedTable introspectedTable) {
 		this.context = context;
+		this.introspectedTable = introspectedTable;
 	}
 
-	public Collection<? extends GeneratedJavaFile> getBaseInterfaceGenerated() {
+	public Collection<? extends GeneratedJavaFile> getMapperGenerated() {
 		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
 		// A.生成 BaseInterface Mapper
-		BaseInterfaceGenerator javaGenerator = new BaseInterfaceGenerator(false,context);
+		EveryMapperGenerator javaGenerator = new EveryMapperGenerator(context, introspectedTable,
+				false);
 		List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
 		for (CompilationUnit compilationUnit : compilationUnits) {
 			GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context

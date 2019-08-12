@@ -39,6 +39,7 @@ import org.mybatis.generator.api.XmlFormatter;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.BaseInterfaceUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.EveryMapperUtil;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.PluginAggregator;
@@ -509,10 +510,8 @@ public class Context extends PropertyHolder {
 		// 基础接口位置(供子接口继承)
 		// ============================
 		BaseInterfaceUtil util = new BaseInterfaceUtil(this);
-		generatedJavaFiles.addAll(util.getGenerated());
+		generatedJavaFiles.addAll(util.getBaseInterfaceGenerated());
 		// ============================
-		
-		
 
 		if (introspectedTables != null) {
 			for (IntrospectedTable introspectedTable : introspectedTables) {
@@ -521,10 +520,17 @@ public class Context extends PropertyHolder {
 				introspectedTable.initialize();
 				introspectedTable.calculateGenerators(warnings, callback);
 
-				// 生成JAVA 文件 Model Example Mapper
+				// 生成JAVA 文件 Model Example
 				generatedJavaFiles.addAll(introspectedTable.getGeneratedJavaFiles());
 				// 生成XML 文件
 				generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
+
+				// ============================
+				// 生成自定义的Mapper
+				// ============================
+				EveryMapperUtil everyUtil = new EveryMapperUtil(this, introspectedTable);
+				generatedJavaFiles.addAll(everyUtil.getMapperGenerated());
+				// ============================
 
 				generatedJavaFiles.addAll(pluginAggregator
 						.contextGenerateAdditionalJavaFiles(introspectedTable));

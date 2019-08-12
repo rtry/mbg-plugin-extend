@@ -92,7 +92,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * when it was generated.
 	 *
 	 * @param xmlElement
-	 *            the xml element
+	 *        the xml element
 	 */
 	@Override
 	public void addComment(XmlElement xmlElement) {
@@ -132,13 +132,17 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	public void addConfigurationProperties(Properties properties) {
 		this.properties.putAll(properties);
 
-		suppressDate = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
+		suppressDate = isTrue(properties
+				.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
 
-		suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
+		suppressAllComments = isTrue(properties
+				.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
 
-		addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
+		addRemarkComments = isTrue(properties
+				.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
 
-		String dateFormatString = properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
+		String dateFormatString = properties
+				.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
 		if (StringUtility.stringHasValue(dateFormatString)) {
 			dateFormat = new SimpleDateFormat(dateFormatString);
 		}
@@ -151,9 +155,9 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	 * break.
 	 *
 	 * @param javaElement
-	 *            the java element
+	 *        the java element
 	 * @param markAsDoNotDelete
-	 *            the mark as do not delete
+	 *        the mark as do not delete
 	 */
 	protected void addJavadocTag(JavaElement javaElement, boolean markAsDoNotDelete) {
 		//		javaElement.addJavaDocLine(" *"); //$NON-NLS-1$
@@ -207,7 +211,8 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	}
 
 	@Override
-	public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
+	public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable,
+			Set<FullyQualifiedJavaType> imports) {
 		imports.add(new FullyQualifiedJavaType("javax.annotation.Generated")); //$NON-NLS-1$
 		String comment = "Source Table: " + introspectedTable.getFullyQualifiedTable().toString(); //$NON-NLS-1$
 		field.addAnnotation(getGeneratedAnnotation(comment));
@@ -276,7 +281,8 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 	/**
 	 * 实体类，变量注解
 	 * */
-	public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
+	public void addFieldComment(Field field, IntrospectedTable introspectedTable,
+			IntrospectedColumn introspectedColumn) {
 		// log.info("生成:" + field.getName() + "的注解");
 		if (suppressAllComments) {
 			return;
@@ -321,13 +327,10 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 			return;
 		}
 		String[] descs = BICommentConstant.getComments(name);
-		StringBuilder sb = new StringBuilder();
 		method.addJavaDocLine("/**");
-		sb.append(" * ");
 		for (String des : descs) {
 			method.addJavaDocLine(xh.concat(des.toString().replace("\n", " ")));
 		}
-		method.addJavaDocLine(sb.toString().replace("\n", " "));
 		method.addJavaDocLine(" */");
 	}
 
@@ -390,7 +393,8 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		// innerClass.addJavaDocLine(" */");
 	}
 
-	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable, boolean markAsDoNotDelete) {
+	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable,
+			boolean markAsDoNotDelete) {
 		//
 		// if (suppressAllComments) {
 		// return;

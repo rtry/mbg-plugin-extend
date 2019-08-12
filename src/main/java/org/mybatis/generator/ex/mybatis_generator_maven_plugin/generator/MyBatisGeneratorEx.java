@@ -333,7 +333,7 @@ public class MyBatisGeneratorEx {
 					JavaFormatter javaFormatter = context.getJavaFormatter();
 
 					// 更改结构
-					if (shortName.endsWith("Mapper")) {
+					if (shortName.endsWith("Mapper1")) {
 
 						String exampleClassPackage = context.getJavaModelGeneratorConfiguration()
 								.getTargetPackage();

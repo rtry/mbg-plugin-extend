@@ -36,7 +36,8 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	public BaseInterfaceGenerator(boolean requiresXMLGenerator, Context context) {
 		super(false);
 		super.context = context;
-		baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty("supportCustomInterface");
+		baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
+				"supportCustomInterface");
 		baseInterfaceName = baseInterfaceName.concat("<T, PK extends Serializable, E>");
 	}
 
@@ -79,7 +80,6 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		addUpdateByExampleSelectiveMethod(interfaze);
 		// 更新，按主键
 		addUpdateByPrimaryKeySelectiveMethod(interfaze);
-
 		// ===========================================
 
 		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
@@ -158,7 +158,8 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
-	protected void initializeAndExecuteGenerator(AbstractJavaMapperMethodGenerator methodGenerator, Interface interfaze) {
+	protected void initializeAndExecuteGenerator(AbstractJavaMapperMethodGenerator methodGenerator,
+			Interface interfaze) {
 		methodGenerator.setContext(context);
 		IntrospectedTableMyBatis3SimpleImpl it = new IntrospectedTableMyBatis3SimpleImpl();
 		it.setExampleType(baseInterfaceName);

@@ -16,6 +16,7 @@
 package org.mybatis.generator.codegen.mybatis3;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -162,7 +163,7 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 	public List<GeneratedJavaFile> getGeneratedJavaFiles() {
 		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
-		//A.生成 Model 与 Model Example
+		// A.生成 Model 与 ModelExample
 		for (AbstractJavaGenerator javaGenerator : javaModelGenerators) {
 			List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
 			for (CompilationUnit compilationUnit : compilationUnits) {
@@ -173,19 +174,6 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 				answer.add(gjf);
 			}
 		}
-
-		//A.生成 Mapper
-		for (AbstractJavaGenerator javaGenerator : clientGenerators) {
-			List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
-			for (CompilationUnit compilationUnit : compilationUnits) {
-				GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
-						.getJavaClientGeneratorConfiguration().getTargetProject(),
-						context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
-						context.getJavaFormatter());
-				answer.add(gjf);
-			}
-		}
-
 		return answer;
 	}
 
@@ -226,5 +214,41 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 		} else {
 			return javaClientGenerator.requiresXMLGenerator();
 		}
+	}
+
+	@Override
+	public Collection<? extends GeneratedJavaFile> getJavaMapperGenerated() {
+		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
+
+		String baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
+				"supportCustomInterface");
+
+		if (baseInterfaceName != null) {
+			// B.生成 自定义
+			for (AbstractJavaGenerator javaGenerator : clientGenerators) {
+				List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
+				for (CompilationUnit compilationUnit : compilationUnits) {
+					GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
+							.getJavaClientGeneratorConfiguration().getTargetProject(),
+							context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+							context.getJavaFormatter());
+					answer.add(gjf);
+				}
+			}
+		} else {
+			// B. 按原来逻辑走
+			for (AbstractJavaGenerator javaGenerator : clientGenerators) {
+				List<CompilationUnit> compilationUnits = javaGenerator.getCompilationUnits();
+				for (CompilationUnit compilationUnit : compilationUnits) {
+					GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
+							.getJavaClientGeneratorConfiguration().getTargetProject(),
+							context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+							context.getJavaFormatter());
+					answer.add(gjf);
+				}
+			}
+		}
+
+		return answer;
 	}
 }

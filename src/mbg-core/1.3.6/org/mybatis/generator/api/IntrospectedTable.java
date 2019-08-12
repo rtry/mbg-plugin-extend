@@ -19,12 +19,15 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.mybatis.generator.api.dom.java.CompilationUnit;
+import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
@@ -1163,4 +1166,6 @@ public abstract class IntrospectedTable {
 	public void setTableType(String tableType) {
 		this.tableType = tableType;
 	}
+
+	public abstract Collection<? extends GeneratedJavaFile> getJavaMapperGenerated();
 }
