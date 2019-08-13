@@ -537,16 +537,16 @@ public class Context extends PropertyHolder {
 				// ============================
 				EveryMapperUtil everyUtil = new EveryMapperUtil(this, introspectedTable);
 				generatedJavaFiles.addAll(everyUtil.getMapperGenerated(eUtil));
-				// ============================
 
 				// ============================
 				// 生成扩展的方法
 				// ============================
 				generatedJavaFiles.addAll(ej.getExtendMapper());
 				generatedJavaFiles.addAll(ej.getInsertBatchMapper());
-				// ============================
 
+				// ============================
 				// 生成XML 文件
+				// ============================
 				generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
 
 				generatedJavaFiles.addAll(pluginAggregator

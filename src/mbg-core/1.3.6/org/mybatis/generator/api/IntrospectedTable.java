@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.mybatis.generator.api.dom.java.CompilationUnit;
-import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
@@ -501,7 +499,6 @@ public abstract class IntrospectedTable {
 		calculateJavaClientAttributes();
 		calculateModelAttributes();
 		calculateXmlAttributes();
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		if (tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
 			rules = new HierarchicalModelRules(this);
 		} else if (tableConfiguration.getModelType() == ModelType.FLAT) {

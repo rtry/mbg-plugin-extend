@@ -19,6 +19,7 @@ import org.mybatis.generator.config.Context;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 public class InsertBatchGenerator extends AbstractJavaClientGenerator {
+
 	private ExtendUtil util;
 
 	public InsertBatchGenerator(Context context, ExtendUtil util) {
