@@ -34,7 +34,6 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.InsertElementGe
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.InsertSelectiveElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.ResultMapWithBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.ResultMapWithoutBLOBsElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SelectAllElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SelectByExampleWithBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SelectByExampleWithoutBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SelectByPrimaryKeyElementGenerator;
@@ -45,6 +44,7 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimary
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithoutBLOBsElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertBatchElementGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.SelectOptionElementGenerator;
 
 /**
  * 
@@ -91,8 +91,12 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 		// =========================
 		// 扩展的方法（Extend ）
 		// =========================
+		// 1. 批量插入
 		AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
 		initializeAndExecuteGenerator(elementGenerator, answer);
+		// 2. 按需查询
+		AbstractXmlElementGenerator selectOptionGenerator = new SelectOptionElementGenerator();
+		initializeAndExecuteGenerator(selectOptionGenerator, answer);
 		// =========================
 
 		return answer;

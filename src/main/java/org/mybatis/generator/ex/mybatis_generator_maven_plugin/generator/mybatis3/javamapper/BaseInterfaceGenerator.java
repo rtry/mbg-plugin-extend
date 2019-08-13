@@ -20,6 +20,7 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByPrimar
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.UpdateByPrimaryKeyWithoutBLOBsMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BICountByExampleMethodGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIDeleteByExampleMethodGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIDeleteByPrimaryKeyMethodGenerator;
@@ -38,7 +39,13 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		super.context = context;
 		baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
 				"supportCustomInterface");
-		baseInterfaceName = baseInterfaceName.concat("<T, PK extends Serializable, E>");
+		StringBuffer sb = new StringBuffer();
+		sb.append("<");
+		sb.append(BIConstant.MODEL).append(",");
+		sb.append(BIConstant.PK).append(" extends Serializable,");
+		sb.append(BIConstant.EXAMPLE).append(",");
+		sb.append(">");
+		baseInterfaceName = baseInterfaceName.concat(sb.toString());
 	}
 
 	@Override

@@ -7,27 +7,37 @@ public class ExtendUtil {
 	private String pkgName;
 	private String brk = ".";
 
-	private String extendClassName = BIConstant.ExtendSuperClass;
-
-	private String insertBatchClassName = BIConstant.ExtendInsertBatchClass;
-
-	private String insertBatchMethodName = BIConstant.ExtendInsertMethodName;
-
 	public ExtendUtil(String pkgName) {
 		super();
 		this.pkgName = pkgName;
 	}
 
 	public String getExtendClassName() {
-		return pkgName.concat(brk).concat(extendClassName);
+		return pkgName.concat(brk).concat(BIConstant.ExtendSuperClass);
+	}
+
+	public String getSelectOptionClassName() {
+		return pkgName.concat(brk).concat(BIConstant.ExtendSelectOptionClass);
 	}
 
 	public String getInsertBatchClassName() {
-		return pkgName.concat(brk).concat(insertBatchClassName);
+		return pkgName.concat(brk).concat(BIConstant.ExtendInsertBatchClass);
 	}
 
 	public String getInsertBatchMethodName() {
-		return insertBatchMethodName;
+		return BIConstant.ExtendInsertMethodName;
+	}
+
+	public String getSelectOptionToListMethodName() {
+		return BIConstant.ExtendSelectOptionToListName;
+	}
+
+	public String getSelectOptionToMapMethodName() {
+		return BIConstant.ExtendSelectOptionToMapName;
+	}
+
+	public String getSelectOptionToOneMethodName() {
+		return BIConstant.ExtendSelectOptionToOneName;
 	}
 
 }

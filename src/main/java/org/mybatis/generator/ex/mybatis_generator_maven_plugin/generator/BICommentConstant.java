@@ -33,10 +33,21 @@ public class BICommentConstant {
 		coms.put("updateByPrimaryKeySelective", updateByPrimaryKeySelective);
 		
 		//=======================
-		// 扩展方法
+		// 扩展方法-批量插入
 		//=======================
-		String[] insertBatch = { "insertBatch 批量插入数据","@param records 数据集合", "@return 受影响条数" };
+		String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)","@param records 数据集合", "@return 受影响条数" };
 		coms.put("insertBatch", insertBatch);
+
+		//=======================
+		// 扩展方法-指定列查询
+		//=======================
+		String[] selectOptionToList = { "selectOptionToList 指定列查询到List集合","@param options 查询字段数组(表数据库字段)","@param example 查询条件", "@return 表对象List集合" };
+		String[] selectOptionToMap = { "selectOptionToMap 指定列查询到Map集合","@param options 查询字段数组(表数据库字段)","@param example 查询条件", "@return 表对象Map集合 (key为主键，value为表对象)" };
+		String[] selectOptionToOne = { "selectOptionToOne 指定列查询一个表对象","@param options 查询字段数组(表数据库字段)","@param example 查询条件", "@return 表对象" };
+		
+		coms.put("selectOptionToList", selectOptionToList);
+		coms.put("selectOptionToMap", selectOptionToMap);
+		coms.put("selectOptionToOne", selectOptionToOne);
 		
 	}
 

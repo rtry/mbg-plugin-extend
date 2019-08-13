@@ -42,7 +42,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.EveryMapperUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.InsertBatchGenerator;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.PluginAggregator;
@@ -510,7 +509,7 @@ public class Context extends PropertyHolder {
 		}
 
 		// ============================
-		// 基础接口位置(供子接口继承)
+		// M1.基础接口位置(供子接口继承)
 		// ============================
 		String baseInterfaceName = getJavaClientGeneratorConfiguration().getProperty(
 				"supportCustomInterface");
@@ -533,19 +532,20 @@ public class Context extends PropertyHolder {
 				generatedJavaFiles.addAll(introspectedTable.getGeneratedJavaFiles());
 
 				// ============================
-				// 生成自定义的Mapper
+				// M2.生成自定义的Mapper
 				// ============================
 				EveryMapperUtil everyUtil = new EveryMapperUtil(this, introspectedTable);
 				generatedJavaFiles.addAll(everyUtil.getMapperGenerated(eUtil));
 
 				// ============================
-				// 生成扩展的方法
+				// M3.生成扩展的方法
 				// ============================
 				generatedJavaFiles.addAll(ej.getExtendMapper());
 				generatedJavaFiles.addAll(ej.getInsertBatchMapper());
+				generatedJavaFiles.addAll(ej.getSelectOptionMappser());
 
 				// ============================
-				// 生成XML 文件
+				// M4.生成XML 文件
 				// ============================
 				generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
 

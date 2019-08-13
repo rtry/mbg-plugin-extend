@@ -73,4 +73,24 @@ public class ExtendGenerator {
 		}
 		return answer;
 	}
+
+	/**
+	 * getInsertBatchMapper 获取 按列查询Mapper
+	 * @return
+	 * @Exception 异常描述
+	 */
+	public Collection<? extends GeneratedJavaFile> getSelectOptionMappser() {
+		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
+
+		SelectOptionGenerator ibj = new SelectOptionGenerator(context, util);
+		List<CompilationUnit> compilationUnits = ibj.getCompilationUnits();
+		for (CompilationUnit compilationUnit : compilationUnits) {
+			GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
+					.getJavaClientGeneratorConfiguration().getTargetProject(),
+					context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+					context.getJavaFormatter());
+			answer.add(gjf);
+		}
+		return answer;
+	}
 }

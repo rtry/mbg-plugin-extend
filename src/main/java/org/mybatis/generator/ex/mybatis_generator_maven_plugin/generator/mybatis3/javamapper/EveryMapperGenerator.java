@@ -73,7 +73,9 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 		interfaze.addSuperInterface(siType);
 		interfaze.addImportedType(si);
 
-		// 判断是否有扩展父类
+		//===================================
+		// FIXME 判断是否有扩展父类
+		//===================================
 		boolean flag = true;
 		if (flag) {
 			FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(util
@@ -81,6 +83,13 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 							"<" + introspectedTable.getBaseRecordType() + ">"));
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
 			interfaze.addSuperInterface(extend1);
+			
+			FullyQualifiedJavaType extend2 = new FullyQualifiedJavaType(util
+					.getSelectOptionClassName().concat("<" + introspectedTable.getBaseRecordType() + ", "
+							+ pkType.getFullyQualifiedName() + ", " + introspectedTable.getExampleType() + ">"));
+			interfaze.addSuperInterface(extend2);
+			interfaze.addImportedType(new FullyQualifiedJavaType(util.getSelectOptionClassName()));
+			
 		}
 
 		if (stringHasValue(rootInterface)) {
