@@ -44,6 +44,7 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimary
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithoutBLOBsElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertBatchElementGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertIfAbsentElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.SelectOptionElementGenerator;
 
 /**
@@ -97,6 +98,9 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 		// 2. 按需查询
 		AbstractXmlElementGenerator selectOptionGenerator = new SelectOptionElementGenerator();
 		initializeAndExecuteGenerator(selectOptionGenerator, answer);
+		// 3. 不存在插入
+		AbstractXmlElementGenerator insertIfAbsentGenerator = new InsertIfAbsentElementGenerator();
+		initializeAndExecuteGenerator(insertIfAbsentGenerator, answer);
 		// =========================
 
 		return answer;

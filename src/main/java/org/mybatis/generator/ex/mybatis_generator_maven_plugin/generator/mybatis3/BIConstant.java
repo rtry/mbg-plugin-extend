@@ -26,5 +26,9 @@ public class BIConstant {
 	public static final String ExtendSelectOptionToMapName = "selectOptionToMap";
 	// 查询指定列 -> One
 	public static final String ExtendSelectOptionToOneName = "selectOptionToOne";
+	
+	// 不存在则插入
+	public static final String ExtendInsertIfAbsentClass = "InsertIfAbsentMapper";
+	public static final String ExtendInsertIfAbsentName = "insertIfAbsent";
 
 }

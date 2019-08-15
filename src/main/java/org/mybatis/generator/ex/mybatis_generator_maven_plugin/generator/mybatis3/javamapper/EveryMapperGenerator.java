@@ -78,17 +78,26 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 		//===================================
 		boolean flag = true;
 		if (flag) {
+			//扩展1
 			FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(util
 					.getInsertBatchClassName().concat(
 							"<" + introspectedTable.getBaseRecordType() + ">"));
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
 			interfaze.addSuperInterface(extend1);
 			
+			//扩展2
 			FullyQualifiedJavaType extend2 = new FullyQualifiedJavaType(util
 					.getSelectOptionClassName().concat("<" + introspectedTable.getBaseRecordType() + ", "
 							+ pkType.getFullyQualifiedName() + ", " + introspectedTable.getExampleType() + ">"));
 			interfaze.addSuperInterface(extend2);
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getSelectOptionClassName()));
+
+			//扩展3
+			FullyQualifiedJavaType extend3 = new FullyQualifiedJavaType(util
+					.getIfAbsentClassName().concat(
+							"<" + introspectedTable.getBaseRecordType() + ">"));
+			interfaze.addSuperInterface(extend3);
+			interfaze.addImportedType(new FullyQualifiedJavaType(util.getIfAbsentClassName()));
 			
 		}
 

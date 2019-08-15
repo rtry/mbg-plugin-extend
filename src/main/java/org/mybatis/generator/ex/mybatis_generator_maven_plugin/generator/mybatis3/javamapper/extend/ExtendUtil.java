@@ -40,4 +40,12 @@ public class ExtendUtil {
 		return BIConstant.ExtendSelectOptionToOneName;
 	}
 
+	public String getIfAbsentClassName() {
+		return pkgName.concat(brk).concat(BIConstant.ExtendInsertIfAbsentClass);
+	}
+
+	public String getInsertIfAbsentMethodName() {
+		return BIConstant.ExtendInsertIfAbsentName;
+	}
+
 }
