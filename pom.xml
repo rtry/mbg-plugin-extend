@@ -83,6 +83,19 @@
 			<version>2.4.0</version>
 		</dependency>
 		<!-- mbg core need end -->
+		<dependency>
+			<groupId>sicau.edu.cn</groupId>
+			<artifactId>jfx-mge</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- mysql driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.37</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

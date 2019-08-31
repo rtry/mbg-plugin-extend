@@ -11,12 +11,21 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Before;
 import org.junit.Test;
 import org.mybatis.generator.api.ShellCallback;
+import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.GeneratedKey;
+import org.mybatis.generator.config.JDBCConnectionConfiguration;
+import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
+import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
+import org.mybatis.generator.config.JavaTypeResolverConfiguration;
+import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
+import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 /**    
@@ -33,6 +42,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
  * 创建人：felicity <br>
  * 创建时间：2018年10月23日 上午10:42:03 <br>
  * 备注:
+ * 
  * @version
  * @see
  */
@@ -67,7 +77,10 @@ public class TestGenerator {
 		boolean overwrite = true;
 		ConfigurationParser cp = new ConfigurationParser(warnings);
 		try {
+			ConfigConvertUtil util = new ConfigConvertUtil();
 			Configuration config = cp.parseConfiguration(configFile);
+			util.writeJSONToFile(util.cz(config));
+			// Configuration config = util.intiFormJSON();
 			for (Context t : config.getContexts()) {
 				getLog().info(bLine);
 				getLog().info("欢迎切换 mybatis.generator 扩展插件.");

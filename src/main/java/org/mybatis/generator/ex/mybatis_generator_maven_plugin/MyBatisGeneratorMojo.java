@@ -84,6 +84,9 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	@Parameter(property = "mybatis.generator.configurationFile", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.xml", required = true)
 	private File configurationFile;
 
+	@Parameter(property = "mybatis.generator.cfg.json", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.json")
+	private File cfgJsonFile;
+
 	/**
 	 * Specifies whether the mojo writes progress messages to the log.
 	 */

@@ -320,7 +320,7 @@ public class MyBatisGeneratorEx {
 					.getProperty("supportCustomInterface");
 			if (mapperInterfaceClass != null && !mapperInterfaceClass.trim().equals("")
 					&& mapperInterfaceClass.lastIndexOf(".") != -1) {
-				logger();
+//				logger();
 
 				// Java Class File
 				for (GeneratedJavaFile javaFile : generatedJavaFiles) {
