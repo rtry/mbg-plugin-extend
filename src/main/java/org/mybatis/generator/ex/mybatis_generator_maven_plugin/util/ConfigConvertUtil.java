@@ -9,7 +9,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Configuration;
@@ -26,17 +30,25 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.DataBase;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.DataTable;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Extend;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.SourceFolder;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertTestImpl;
 
 import com.alibaba.fastjson.JSON;
 
 public class ConfigConvertUtil {
 
 	String path = "F:\\Git\\mbg-plugin-extend\\src\\test\\java\\generatorTestConfig.json";
+	String	baseFile = "";
+	
+	
+public ConfigConvertUtil(String baseFile) {
+		super();
+		this.baseFile = baseFile;
+	}
+
+//	String baseInterfaceUrl = "xyz.rtry.felicity.common.web.dao.BaseMapper";
 
 	/**
-	 * cz:将MG配置对象转换为自定义配置对象. <br>
+	 * me2self:将MG配置对象转换为自定义配置对象. <br>
+	 * 
 	 * @author Felicity
 	 * @param xml
 	 * @return
@@ -45,7 +57,7 @@ public class ConfigConvertUtil {
 	public Config me2self(Configuration xml) {
 		String id = "mge";
 		Context context = xml.getContext(id);
-		
+
 		Config conf = new Config();
 		DataBase db = new DataBase();
 		db.setPw(context.getJdbcConnectionConfiguration().getPassword());
@@ -55,8 +67,6 @@ public class ConfigConvertUtil {
 		List<DataTable> datas = new ArrayList<>();
 		DataTable table = new DataTable();
 		datas.add(table);
-
-
 
 		Extend extend = new Extend();
 		extend.setInsertBatch(false);
@@ -84,71 +94,154 @@ public class ConfigConvertUtil {
 
 	/**
 	 * self2me:將自定义配置对象转换为ME配置对象
+	 * 
 	 * @author Felicity
 	 * @return
 	 * @since JDK 1.8
 	 */
-	public Configuration self2me(Config config) {
+	public Configuration self2me(Config config, String baseFile) {
 
-		// 从文档中读取JSON
+		// 基本校验
+		if (config == null || config.getDb() == null || config.getCurrently() == null
+				|| config.getCurrently().size() == 0)
+			return null;
 
-		// 将JSON转换为Configuration
+		// 待返回对象
 		Configuration cfg = new Configuration();
-		Context context = new Context(null);
-		cfg.addContext(context);
 
-		context.setId("mge");
-		context.setTargetRuntime("MyBatis3");
+		StringBuffer sb = new StringBuffer();
+		// 进行分组
+		Map<String, List<DataTable>> rt = config
+				.getCurrently()
+				.stream()
+				.collect(
+						Collectors.groupingBy(e -> {
+							sb.setLength(0);
+							sb.append(e.getMapperPkg()).append(e.getModelPkg()).append(e.getXmlPkg())
+									.append(e.getExtend().isInsertBatch()).append(e.getExtend().isInsertIfAbsent())
+									.append(e.getExtend().isSelectOption()).append(e.getFolder().getMapperTarget())
+									.append(e.getFolder().getModelTarget()).append(e.getFolder().getXmlTarget());
+							String md5 = MD5Util.MD5Encode(sb.toString());
+							System.out.println(md5);
+							return md5;
+						}));
 
+		// 基本-CommentGeneratorConfiguration
 		CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
 		commentGeneratorConfiguration.addProperty("suppressDate", "true");
 		commentGeneratorConfiguration.addProperty("suppressAllComments", "true");
-		context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
 
+		// 基本-JDBCConnectionConfiguration
 		JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
-		jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://localhost:3306/ace");
-		jdbcConnectionConfiguration.setUserId("root");
-		jdbcConnectionConfiguration.setPassword("123456");
-		jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
-		context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
+		jdbcConnectionConfiguration.setConnectionURL(config.getDb().getUrl());
+		jdbcConnectionConfiguration.setUserId(config.getDb().getUser());
+		jdbcConnectionConfiguration.setPassword(config.getDb().getPw());
+		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
+		//jdbc 中增加自定义数据
+		jdbcConnectionConfiguration.addProperty("supportCustomInterface", config.getDb().getMapperClass());
 
+		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
 		javaTypeResolverConfiguration.addProperty("forceBigDecimals", "true");
-		context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
 
-		JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
-		javaModelGeneratorConfiguration.setTargetPackage("xyz.rtry.felicity.business.showcase.model");
-		javaModelGeneratorConfiguration.setTargetProject("F:\\git\\felicity\\src\\main\\java");
-		javaModelGeneratorConfiguration.addProperty("enableSubPackages", "false");
-		javaModelGeneratorConfiguration.addProperty("trimStrings", "false");
-		context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
+		// 遍历组
+		Set<String> keys = rt.keySet();
+		for (String key : keys) {
+			List<DataTable> values = rt.get(key);
+			System.out.println(JSON.toJSONString(values));
+			// 一个key 对应一个context
+			Context context = new Context(null);
+			cfg.addContext(context);
+			context.setId(key);
+			context.setTargetRuntime("MyBatis3");
 
-		SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
-		sqlMapGeneratorConfiguration.setTargetPackage("mybatis\\mapper\\business\\showcase");
-		sqlMapGeneratorConfiguration.setTargetProject("F:\\git\\felicity\\src\\main\\resources");
-		sqlMapGeneratorConfiguration.addProperty("enableSubPackages", "false");
-		context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
+			context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
+			context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
+			context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
 
-		JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
-		javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
-		javaClientGeneratorConfiguration.setTargetPackage("xyz.rtry.felicity.business.showcase.mapper");
-		javaClientGeneratorConfiguration.setTargetProject("F:\\git\\felicity\\src\\main\\java");
-		javaClientGeneratorConfiguration.addProperty("enableSubPackages", "false");
-		javaClientGeneratorConfiguration.addProperty("supportCustomInterface",
-				"xyz.rtry.felicity.common.web.daosss.BaseInterfaceMapper");
-		context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+			JavaModelGeneratorConfiguration jmgc = this.getjavaModelGeneratorConfiguration(key, values, baseFile);
+			context.setJavaModelGeneratorConfiguration(jmgc);
 
-		TableConfiguration tc = new TableConfiguration(context);
-		tc.setTableName("goooogle_paly");
-		tc.setDomainObjectName("GooooglePaly");
-		tc.addProperty("useActualColumnNames", "false");
-		tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
-		context.addTableConfiguration(tc);
+			SqlMapGeneratorConfiguration cgc = this.getsqlMapGeneratorConfiguration(key, values, baseFile);
+			context.setSqlMapGeneratorConfiguration(cgc);
+
+			JavaClientGeneratorConfiguration jcgc = this.getJavaClientGeneratorConfiguration(key, values, baseFile);
+			context.setJavaClientGeneratorConfiguration(jcgc);
+
+			// 所包含的相同的表配置文件
+			for (DataTable dt : values) {
+				TableConfiguration tc = new TableConfiguration(context);
+				tc.setTableName(dt.getTableName());
+				tc.setDomainObjectName(dt.getClassName());
+				tc.addProperty("useActualColumnNames", "false");
+				tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
+				tc.addProperty("insertBatch", dt.getExtend().isInsertBatch() + "");
+				tc.addProperty("insertIfAbsent", dt.getExtend().isInsertIfAbsent() + "");
+				tc.addProperty("selectOption", dt.getExtend().isSelectOption() + "");
+				context.addTableConfiguration(tc);
+			}
+		}
+
 		return cfg;
+	}
+
+	Map<String, JavaClientGeneratorConfiguration> javaClientGeneratorConfigurations = new HashMap<String, JavaClientGeneratorConfiguration>();
+
+	private JavaClientGeneratorConfiguration getJavaClientGeneratorConfiguration(String key, List<DataTable> values,
+			String baseFile) {
+		if (javaClientGeneratorConfigurations.containsKey(key))
+			return javaClientGeneratorConfigurations.get(key);
+		else {
+			DataTable dt = values.get(0);
+			JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
+			javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
+			javaClientGeneratorConfiguration.setTargetPackage(dt.getMapperPkg());
+			javaClientGeneratorConfiguration.setTargetProject(baseFile + dt.getFolder().getMapperTarget());
+			javaClientGeneratorConfiguration.addProperty("enableSubPackages", "false");
+			// javaClientGeneratorConfiguration.addProperty("supportCustomInterface",
+			// "xyz.rtry.felicity.common.web.daosss.BaseInterfaceMapper");
+			return javaClientGeneratorConfiguration;
+		}
+	}
+
+	Map<String, SqlMapGeneratorConfiguration> sqlMapGeneratorConfigurations = new HashMap<String, SqlMapGeneratorConfiguration>();
+
+	private SqlMapGeneratorConfiguration getsqlMapGeneratorConfiguration(String key, List<DataTable> values,
+			String baseFile) {
+		if (sqlMapGeneratorConfigurations.containsKey(key))
+			return sqlMapGeneratorConfigurations.get(key);
+		else {
+			DataTable dt = values.get(0);
+			SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
+			sqlMapGeneratorConfiguration.setTargetPackage(dt.getXmlPkg());
+			sqlMapGeneratorConfiguration.setTargetProject(baseFile + dt.getFolder().getXmlTarget());
+			sqlMapGeneratorConfiguration.addProperty("enableSubPackages", "false");
+			sqlMapGeneratorConfigurations.put(key, sqlMapGeneratorConfiguration);
+			return sqlMapGeneratorConfiguration;
+		}
+	}
+
+	Map<String, JavaModelGeneratorConfiguration> javaModelGeneratorConfigurations = new HashMap<String, JavaModelGeneratorConfiguration>();
+
+	private JavaModelGeneratorConfiguration getjavaModelGeneratorConfiguration(String key, List<DataTable> values,
+			String baseFile) {
+		if (javaModelGeneratorConfigurations.containsKey(key))
+			return javaModelGeneratorConfigurations.get(key);
+		else {
+			DataTable dt = values.get(0);
+			JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
+			javaModelGeneratorConfiguration.setTargetPackage(dt.getModelPkg());
+			javaModelGeneratorConfiguration.setTargetProject(baseFile + dt.getFolder().getModelTarget());
+			javaModelGeneratorConfiguration.addProperty("enableSubPackages", "false");
+			javaModelGeneratorConfiguration.addProperty("trimStrings", "false");
+			javaModelGeneratorConfigurations.put(key, javaModelGeneratorConfiguration);
+			return javaModelGeneratorConfiguration;
+		}
 	}
 
 	/**
 	 * writeJSONToFile:将JSON写到文档. <br>
+	 * 
 	 * @author Felicity
 	 * @param cfg
 	 * @since JDK 1.8
@@ -180,6 +273,7 @@ public class ConfigConvertUtil {
 
 	/**
 	 * readJSONFromFile:从文档中读取JSON. <br>
+	 * 
 	 * @author Felicity
 	 * @return
 	 * @since JDK 1.8
@@ -214,14 +308,5 @@ public class ConfigConvertUtil {
 			}
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		DataConvertSuper dcs = new DataConvertTestImpl();
-		Config cfg = dcs.initConf();
-		ConfigConvertUtil u = new ConfigConvertUtil();
-		// u.writeJSONToFile(cfg);
-		Config cfg2 = u.readJSONFromFile();
-		System.out.println(cfg2);
 	}
 }

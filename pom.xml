@@ -101,6 +101,7 @@
 	<build>
 		<defaultGoal>compile</defaultGoal>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -110,6 +111,12 @@
 				</configuration>
 				<version>2.5.1</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.4</version>
+			</plugin>
+
 		</plugins>
 
 	</build>

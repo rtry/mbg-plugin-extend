@@ -5,27 +5,23 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Before;
 import org.junit.Test;
 import org.mybatis.generator.api.ShellCallback;
-import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.JavaTypeResolverConfiguration;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
-import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 /**    
@@ -60,7 +56,7 @@ public class TestGenerator {
 		URL is = TestGenerator.class.getClassLoader().getResource("generatorTestConfig.xml");
 		String file = is.getFile();
 		configFile = new File(file);
-
+		System.out.println(configFile);
 	}
 
 	public Log getLog() {
@@ -75,16 +71,50 @@ public class TestGenerator {
 	public void test() throws Exception {
 		List<String> warnings = new ArrayList<String>();
 		boolean overwrite = true;
-		ConfigurationParser cp = new ConfigurationParser(warnings);
 		try {
-			ConfigConvertUtil util = new ConfigConvertUtil();
-			Configuration config = cp.parseConfiguration(configFile);
-			util.writeJSONToFile(util.me2self(config));
+
+			// ConfigurationParser cp = new ConfigurationParser(warnings);
+			// ConfigConvertUtil util = new ConfigConvertUtil();
+			// Configuration config = cp.parseConfiguration(configFile);
+			// util.writeJSONToFile(util.me2self(config));
+
+			getLog().info(bLine);
+			getLog().info("欢迎切换 mybatis.generator 扩展插件.");
+			getLog().info(bLine);
+			getLog().info("加载自定义扩展：可视化配置");
+
+			ConfigConvertUtil ccutil = new ConfigConvertUtil("F:\\git\\felicity\\");
+
+			Configuration config = null;
+			// 启动配置
+			DataConvertSuper dcs = new DataConvertImpl(ccutil);
+
+			CountDownLatch cdl = new CountDownLatch(1);
+			MainUI.begin(dcs, cdl);
+			try {
+				cdl.await();
+				// 用户是否自动退出
+				if (MainUI.getStartState() == -1) {
+					getLog().info("不想继续了? 下次我还在这里, Bye!!!!");
+					return;
+				}
+				// 自定义配置操作已经完成，转换数据
+				Config selfConfig = dcs.tearViewDate();
+				config = ccutil.self2me(selfConfig, null);
+				// 自定义的配置需要保持数据文件中.
+				ccutil.writeJSONToFile(selfConfig);
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (config == null) {
+				getLog().info("实例化自定义配置失败....请联系管理员");
+			}
+
 			// Configuration config = util.intiFormJSON();
 			for (Context t : config.getContexts()) {
-				getLog().info(bLine);
-				getLog().info("欢迎切换 mybatis.generator 扩展插件.");
-				getLog().info(bLine);
+				getLog().info(sLine);
 
 				try {
 					Field f = t.getClass().getDeclaredField("commentGenerator");

@@ -89,9 +89,6 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	@Parameter(property = "mybatis.generator.configurationFile", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.xml", required = true)
 	private File configurationFile;
 
-	@Parameter(property = "mybatis.generator.cfg.json", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.json")
-	private File cfgJsonFile;
-
 	/**
 	 * Specifies whether the mojo writes progress messages to the log.
 	 */
@@ -219,20 +216,20 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 		ObjectFactory.addExternalClassLoader(cl);
 
 		if (configurationFile == null) {
-			throw new MojoExecutionException(Messages.getString("RuntimeError.0")); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.getString("RuntimeError.0"));
 		}
 
 		List<String> warnings = new ArrayList<String>();
 
 		if (!configurationFile.exists()) {
-			throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString())); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString()));
 		}
 
 		runScriptIfNecessary();
 
 		Set<String> fullyqualifiedTables = new HashSet<String>();
 		if (StringUtility.stringHasValue(tableNames)) {
-			StringTokenizer st = new StringTokenizer(tableNames, ","); //$NON-NLS-1$
+			StringTokenizer st = new StringTokenizer(tableNames, ",");
 			while (st.hasMoreTokens()) {
 				String s = st.nextToken().trim();
 				if (s.length() > 0) {
@@ -243,7 +240,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 		Set<String> contextsToRun = new HashSet<String>();
 		if (StringUtility.stringHasValue(contexts)) {
-			StringTokenizer st = new StringTokenizer(contexts, ","); //$NON-NLS-1$
+			StringTokenizer st = new StringTokenizer(contexts, ",");
 			while (st.hasMoreTokens()) {
 				String s = st.nextToken().trim();
 				if (s.length() > 0) {
@@ -259,8 +256,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			getLog().info(bLine);
 			getLog().info("加载自定义扩展：可视化配置");
 
-			ConfigConvertUtil ccutil = new ConfigConvertUtil();
-			Config selfConfig = null;
+			ConfigConvertUtil ccutil = new ConfigConvertUtil(project.getBasedir().getPath());
+
 			Configuration config = null;
 			// 启动配置
 			DataConvertSuper dcs = new DataConvertImpl(ccutil);
@@ -269,17 +266,24 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			MainUI.begin(dcs, cdl);
 			try {
 				cdl.await();
+				// 用户是否自动退出
+				if (MainUI.getStartState() == -1) {
+					getLog().info("不想继续了? 下次我还在这里, Bye!!!!");
+					return;
+				}
 				// 自定义配置操作已经完成，转换数据
-				selfConfig = dcs.tearViewDate();
+				Config selfConfig = dcs.tearViewDate();
+				config = ccutil.self2me(selfConfig, null);
+				// 自定义的配置需要保持数据文件中.
+				ccutil.writeJSONToFile(selfConfig);
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			config = ccutil.self2me(selfConfig);
-			// ConfigurationParser cp = new
-			// ConfigurationParser(project.getProperties(), warnings);
-			// Configuration config = cp.parseConfiguration(configurationFile);
-			//
+			if (config == null) {
+				getLog().info("实例化自定义配置失败....请联系管理员");
+			}
 			for (Context t : config.getContexts()) {
 
 				try {

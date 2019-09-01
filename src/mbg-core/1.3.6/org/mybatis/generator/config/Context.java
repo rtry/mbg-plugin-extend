@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.mybatis.generator.api.CommentGenerator;
@@ -94,6 +95,15 @@ public class Context extends PropertyHolder {
 
 	private XmlFormatter xmlFormatter;
 
+	public TableConfiguration getByTableName(String tableName) {
+		Optional<TableConfiguration> op = this.getTableConfigurations().stream()
+				.filter(e -> e.getTableName().equals(tableName)).findFirst();
+		if (op.isPresent())
+			return op.get();
+		else
+			return null;
+	}
+
 	public Context(ModelType defaultModelType) {
 		super();
 
@@ -137,12 +147,12 @@ public class Context extends PropertyHolder {
 
 	/**
 	 * This method does a simple validate, it makes sure that all required
-	 * fields have been filled in. It does not do
-	 * any more complex operations such as validating that database tables exist
-	 * or validating that named columns exist
+	 * fields have been filled in. It does not do any more complex operations
+	 * such as validating that database tables exist or validating that named
+	 * columns exist
 	 *
 	 * @param errors
-	 *        the errors
+	 *            the errors
 	 */
 	public void validate(List<String> errors) {
 		if (!stringHasValue(id)) {
@@ -209,28 +219,23 @@ public class Context extends PropertyHolder {
 		this.id = id;
 	}
 
-	public void setJavaClientGeneratorConfiguration(
-			JavaClientGeneratorConfiguration javaClientGeneratorConfiguration) {
+	public void setJavaClientGeneratorConfiguration(JavaClientGeneratorConfiguration javaClientGeneratorConfiguration) {
 		this.javaClientGeneratorConfiguration = javaClientGeneratorConfiguration;
 	}
 
-	public void setJavaModelGeneratorConfiguration(
-			JavaModelGeneratorConfiguration javaModelGeneratorConfiguration) {
+	public void setJavaModelGeneratorConfiguration(JavaModelGeneratorConfiguration javaModelGeneratorConfiguration) {
 		this.javaModelGeneratorConfiguration = javaModelGeneratorConfiguration;
 	}
 
-	public void setJavaTypeResolverConfiguration(
-			JavaTypeResolverConfiguration javaTypeResolverConfiguration) {
+	public void setJavaTypeResolverConfiguration(JavaTypeResolverConfiguration javaTypeResolverConfiguration) {
 		this.javaTypeResolverConfiguration = javaTypeResolverConfiguration;
 	}
 
-	public void setJdbcConnectionConfiguration(
-			JDBCConnectionConfiguration jdbcConnectionConfiguration) {
+	public void setJdbcConnectionConfiguration(JDBCConnectionConfiguration jdbcConnectionConfiguration) {
 		this.jdbcConnectionConfiguration = jdbcConnectionConfiguration;
 	}
 
-	public void setSqlMapGeneratorConfiguration(
-			SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration) {
+	public void setSqlMapGeneratorConfiguration(SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration) {
 		this.sqlMapGeneratorConfiguration = sqlMapGeneratorConfiguration;
 	}
 
@@ -251,13 +256,11 @@ public class Context extends PropertyHolder {
 		xmlElement.addAttribute(new Attribute("id", id)); //$NON-NLS-1$
 
 		if (defaultModelType != ModelType.CONDITIONAL) {
-			xmlElement.addAttribute(new Attribute(
-					"defaultModelType", defaultModelType.getModelType())); //$NON-NLS-1$
+			xmlElement.addAttribute(new Attribute("defaultModelType", defaultModelType.getModelType())); //$NON-NLS-1$
 		}
 
 		if (stringHasValue(introspectedColumnImpl)) {
-			xmlElement
-					.addAttribute(new Attribute("introspectedColumnImpl", introspectedColumnImpl)); //$NON-NLS-1$
+			xmlElement.addAttribute(new Attribute("introspectedColumnImpl", introspectedColumnImpl)); //$NON-NLS-1$
 		}
 
 		if (stringHasValue(targetRuntime)) {
@@ -325,8 +328,7 @@ public class Context extends PropertyHolder {
 			beginningDelimiter = value;
 		} else if (PropertyRegistry.CONTEXT_ENDING_DELIMITER.equals(name)) {
 			endingDelimiter = value;
-		} else if (PropertyRegistry.CONTEXT_AUTO_DELIMIT_KEYWORDS.equals(name)
-				&& stringHasValue(value)) {
+		} else if (PropertyRegistry.CONTEXT_AUTO_DELIMIT_KEYWORDS.equals(name) && stringHasValue(value)) {
 			autoDelimitKeywords = isTrue(value);
 		}
 	}
@@ -359,8 +361,7 @@ public class Context extends PropertyHolder {
 		return commentGeneratorConfiguration;
 	}
 
-	public void setCommentGeneratorConfiguration(
-			CommentGeneratorConfiguration commentGeneratorConfiguration) {
+	public void setCommentGeneratorConfiguration(CommentGeneratorConfiguration commentGeneratorConfiguration) {
 		this.commentGeneratorConfiguration = commentGeneratorConfiguration;
 	}
 
@@ -415,27 +416,27 @@ public class Context extends PropertyHolder {
 	 * constructor. This method is long running.
 	 * 
 	 * @param callback
-	 *        a progress callback if progress information is desired, or
-	 *        <code>null</code>
+	 *            a progress callback if progress information is desired, or
+	 *            <code>null</code>
 	 * @param warnings
-	 *        any warning generated from this method will be added to the
-	 *        List. Warnings are always Strings.
+	 *            any warning generated from this method will be added to the
+	 *            List. Warnings are always Strings.
 	 * @param fullyQualifiedTableNames
-	 *        a set of table names to generate. The elements of the set must
-	 *        be Strings that exactly match what's specified in the
-	 *        configuration. For example, if table name = "foo" and schema =
-	 *        "bar", then the fully qualified table name is "foo.bar". If
-	 *        the Set is null or empty, then all tables in the configuration
-	 *        will be used for code generation.
+	 *            a set of table names to generate. The elements of the set must
+	 *            be Strings that exactly match what's specified in the
+	 *            configuration. For example, if table name = "foo" and schema =
+	 *            "bar", then the fully qualified table name is "foo.bar". If
+	 *            the Set is null or empty, then all tables in the configuration
+	 *            will be used for code generation.
 	 * 
 	 * @throws SQLException
-	 *         if some error arises while introspecting the specified
-	 *         database tables.
+	 *             if some error arises while introspecting the specified
+	 *             database tables.
 	 * @throws InterruptedException
-	 *         if the progress callback reports a cancel
+	 *             if the progress callback reports a cancel
 	 */
-	public void introspectTables(ProgressCallback callback, List<String> warnings,
-			Set<String> fullyQualifiedTableNames) throws SQLException, InterruptedException {
+	public void introspectTables(ProgressCallback callback, List<String> warnings, Set<String> fullyQualifiedTableNames)
+			throws SQLException, InterruptedException {
 
 		introspectedTables = new ArrayList<IntrospectedTable>();
 		JavaTypeResolver javaTypeResolver = ObjectFactory.createJavaTypeResolver(this, warnings);
@@ -446,12 +447,12 @@ public class Context extends PropertyHolder {
 			callback.startTask(getString("Progress.0")); //$NON-NLS-1$
 			connection = getConnection();
 
-			DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(this,
-					connection.getMetaData(), javaTypeResolver, warnings);
+			DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(this, connection.getMetaData(),
+					javaTypeResolver, warnings);
 
 			for (TableConfiguration tc : tableConfigurations) {
-				String tableName = composeFullyQualifiedTableName(tc.getCatalog(), tc.getSchema(),
-						tc.getTableName(), '.');
+				String tableName = composeFullyQualifiedTableName(tc.getCatalog(), tc.getSchema(), tc.getTableName(),
+						'.');
 
 				if (fullyQualifiedTableNames != null && fullyQualifiedTableNames.size() > 0
 						&& !fullyQualifiedTableNames.contains(tableName)) {
@@ -493,9 +494,8 @@ public class Context extends PropertyHolder {
 		return steps;
 	}
 
-	public void generateFiles(ProgressCallback callback,
-			List<GeneratedJavaFile> generatedJavaFiles, List<GeneratedXmlFile> generatedXmlFiles,
-			List<String> warnings) throws InterruptedException {
+	public void generateFiles(ProgressCallback callback, List<GeneratedJavaFile> generatedJavaFiles,
+			List<GeneratedXmlFile> generatedXmlFiles, List<String> warnings) throws InterruptedException {
 
 		pluginAggregator = new PluginAggregator();
 		for (PluginConfiguration pluginConfiguration : pluginConfigurations) {
@@ -511,10 +511,8 @@ public class Context extends PropertyHolder {
 		// ============================
 		// M1.基础接口位置(供子接口继承)
 		// ============================
-		String baseInterfaceName = getJavaClientGeneratorConfiguration().getProperty(
-				"supportCustomInterface");
-		ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0,
-				baseInterfaceName.lastIndexOf(".")));
+		String baseInterfaceName = getJdbcConnectionConfiguration().getProperty("supportCustomInterface");
+		ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0, baseInterfaceName.lastIndexOf(".")));
 		ExtendGenerator ej = new ExtendGenerator(eUtil, this);
 
 		BaseInterfaceUtil util = new BaseInterfaceUtil(this);
@@ -550,10 +548,8 @@ public class Context extends PropertyHolder {
 				// ============================
 				generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
 
-				generatedJavaFiles.addAll(pluginAggregator
-						.contextGenerateAdditionalJavaFiles(introspectedTable));
-				generatedXmlFiles.addAll(pluginAggregator
-						.contextGenerateAdditionalXmlFiles(introspectedTable));
+				generatedJavaFiles.addAll(pluginAggregator.contextGenerateAdditionalJavaFiles(introspectedTable));
+				generatedXmlFiles.addAll(pluginAggregator.contextGenerateAdditionalXmlFiles(introspectedTable));
 			}
 		}
 
@@ -590,8 +586,7 @@ public class Context extends PropertyHolder {
 		return connectionFactoryConfiguration;
 	}
 
-	public void setConnectionFactoryConfiguration(
-			ConnectionFactoryConfiguration connectionFactoryConfiguration) {
+	public void setConnectionFactoryConfiguration(ConnectionFactoryConfiguration connectionFactoryConfiguration) {
 		this.connectionFactoryConfiguration = connectionFactoryConfiguration;
 	}
 }

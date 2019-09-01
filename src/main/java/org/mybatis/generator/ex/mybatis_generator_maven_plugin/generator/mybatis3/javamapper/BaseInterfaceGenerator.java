@@ -37,7 +37,7 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	public BaseInterfaceGenerator(boolean requiresXMLGenerator, Context context) {
 		super(false);
 		super.context = context;
-		baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
+		baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(
 				"supportCustomInterface");
 		StringBuffer sb = new StringBuffer();
 		sb.append("<");

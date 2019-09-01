@@ -8,11 +8,12 @@ public class DataConvertImpl extends DataConvertSuper {
 	private ConfigConvertUtil ccutil;
 
 	public DataConvertImpl(ConfigConvertUtil ccutil) {
+		this.ccutil= ccutil;
 	}
 
 	@Override
 	public Config initConf() {
-		return null;
+		return ccutil.readJSONFromFile();
 	}
 
 }

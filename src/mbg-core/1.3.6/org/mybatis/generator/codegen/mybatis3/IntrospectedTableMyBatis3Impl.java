@@ -220,7 +220,7 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 	public Collection<? extends GeneratedJavaFile> getJavaMapperGenerated() {
 		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
-		String baseInterfaceName = context.getJavaClientGeneratorConfiguration().getProperty(
+		String baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(
 				"supportCustomInterface");
 
 		if (baseInterfaceName != null) {
