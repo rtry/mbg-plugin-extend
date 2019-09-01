@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
@@ -37,12 +38,15 @@ import org.apache.maven.project.MavenProject;
 import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.exception.InvalidConfigurationException;
-import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.util.ClassloaderUtility;
 import org.mybatis.generator.internal.util.StringUtility;
@@ -57,6 +61,7 @@ import org.mybatis.generator.logging.LogFactory;
  * 修改人：felicity <br>
  * 修改时间：2018年4月24日 下午5:37:54 <br>
  * 修改备注:
+ * 
  * @version
  * @see
  */
@@ -97,8 +102,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	 * Specifies whether the mojo overwrites existing Java files. Default is
 	 * false. <br>
 	 * Note that XML files are always merged.
-	 * ========================================
-	 * 强制修改为TRUE，JAVA Model 文件会自动覆盖
+	 * ======================================== 强制修改为TRUE，JAVA Model 文件会自动覆盖
 	 * ========================================
 	 */
 	@Parameter(property = "mybatis.generator.overwrite", defaultValue = "true")
@@ -158,19 +162,17 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 	/**
 	 * If true, then dependencies in scope compile, provided, and system scopes
-	 * will be
-	 * added to the classpath of the generator. These dependencies will be
-	 * searched for
-	 * JDBC drivers, root classes, root interfaces, generator plugins, etc.
+	 * will be added to the classpath of the generator. These dependencies will
+	 * be searched for JDBC drivers, root classes, root interfaces, generator
+	 * plugins, etc.
 	 */
 	@Parameter(property = "mybatis.generator.includeCompileDependencies", defaultValue = "false")
 	private boolean includeCompileDependencies;
 
 	/**
-	 * If true, then dependencies in all scopes will be
-	 * added to the classpath of the generator. These dependencies will be
-	 * searched for
-	 * JDBC drivers, root classes, root interfaces, generator plugins, etc.
+	 * If true, then dependencies in all scopes will be added to the classpath
+	 * of the generator. These dependencies will be searched for JDBC drivers,
+	 * root classes, root interfaces, generator plugins, etc.
 	 */
 	@Parameter(property = "mybatis.generator.includeAllDependencies", defaultValue = "false")
 	private boolean includeAllDependencies;
@@ -180,14 +182,12 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 	@Override
 	public String toString() {
-		return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project
-				+ ", outputDirectory=" + outputDirectory + ", configurationFile="
-				+ configurationFile + ", verbose=" + verbose + ", overwrite=" + overwrite
-				+ ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL="
-				+ jdbcURL + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword
-				+ ", tableNames=" + tableNames + ", contexts=" + contexts + ", skip=" + skip
-				+ ", includeCompileDependencies=" + includeCompileDependencies
-				+ ", includeAllDependencies=" + includeAllDependencies + "]";
+		return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project + ", outputDirectory="
+				+ outputDirectory + ", configurationFile=" + configurationFile + ", verbose=" + verbose
+				+ ", overwrite=" + overwrite + ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL="
+				+ jdbcURL + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword + ", tableNames="
+				+ tableNames + ", contexts=" + contexts + ", skip=" + skip + ", includeCompileDependencies="
+				+ includeCompileDependencies + ", includeAllDependencies=" + includeAllDependencies + "]";
 	}
 
 	public void execute() throws MojoExecutionException {
@@ -196,10 +196,10 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			return;
 		}
 
-		//保存类加载器到 线程中
+		// 保存类加载器到 线程中
 		saveClassLoader();
 
-		//设置日志
+		// 设置日志
 		LogFactory.setLogFactory(new MavenLogFactory(this));
 
 		calculateClassPath();
@@ -225,8 +225,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 		List<String> warnings = new ArrayList<String>();
 
 		if (!configurationFile.exists()) {
-			throw new MojoExecutionException(Messages.getString(
-					"RuntimeError.1", configurationFile.toString())); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString())); //$NON-NLS-1$
 		}
 
 		runScriptIfNecessary();
@@ -254,12 +253,34 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 		}
 
 		try {
-			ConfigurationParser cp = new ConfigurationParser(project.getProperties(), warnings);
-			Configuration config = cp.parseConfiguration(configurationFile);
+
+			getLog().info(bLine);
+			getLog().info("欢迎切换 mybatis.generator 扩展插件.");
+			getLog().info(bLine);
+			getLog().info("加载自定义扩展：可视化配置");
+
+			ConfigConvertUtil ccutil = new ConfigConvertUtil();
+			Config selfConfig = null;
+			Configuration config = null;
+			// 启动配置
+			DataConvertSuper dcs = new DataConvertImpl(ccutil);
+
+			CountDownLatch cdl = new CountDownLatch(1);
+			MainUI.begin(dcs, cdl);
+			try {
+				cdl.await();
+				// 自定义配置操作已经完成，转换数据
+				selfConfig = dcs.tearViewDate();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			config = ccutil.self2me(selfConfig);
+			// ConfigurationParser cp = new
+			// ConfigurationParser(project.getProperties(), warnings);
+			// Configuration config = cp.parseConfiguration(configurationFile);
+			//
 			for (Context t : config.getContexts()) {
-				getLog().info(bLine);
-				getLog().info("欢迎切换 mybatis.generator 扩展插件.");
-				getLog().info(bLine);
 
 				try {
 					Field f = t.getClass().getDeclaredField("commentGenerator");
@@ -293,15 +314,9 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			// 自定义的生成器
 			MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
 
-			myBatisGenerator.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun,
-					fullyqualifiedTables);
+			myBatisGenerator
+					.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun, fullyqualifiedTables);
 
-		} catch (XMLParserException e) {
-			for (String error : e.getErrors()) {
-				getLog().error(error);
-			}
-
-			throw new MojoExecutionException(e.getMessage());
 		} catch (SQLException e) {
 			throw new MojoExecutionException(e.getMessage());
 		} catch (IOException e) {
@@ -373,8 +388,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			return;
 		}
 
-		SqlScriptRunner scriptRunner = new SqlScriptRunner(sqlScript, jdbcDriver, jdbcURL,
-				jdbcUserId, jdbcPassword);
+		SqlScriptRunner scriptRunner = new SqlScriptRunner(sqlScript, jdbcDriver, jdbcURL, jdbcUserId, jdbcPassword);
 		scriptRunner.setLog(getLog());
 		scriptRunner.executeScript();
 	}

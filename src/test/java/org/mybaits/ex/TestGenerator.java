@@ -79,7 +79,7 @@ public class TestGenerator {
 		try {
 			ConfigConvertUtil util = new ConfigConvertUtil();
 			Configuration config = cp.parseConfiguration(configFile);
-			util.writeJSONToFile(util.cz(config));
+			util.writeJSONToFile(util.me2self(config));
 			// Configuration config = util.intiFormJSON();
 			for (Context t : config.getContexts()) {
 				getLog().info(bLine);

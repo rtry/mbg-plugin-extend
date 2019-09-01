@@ -35,19 +35,28 @@ public class ConfigConvertUtil {
 
 	String path = "F:\\Git\\mbg-plugin-extend\\src\\test\\java\\generatorTestConfig.json";
 
-	public Config cz(Configuration xml) {
+	/**
+	 * cz:将MG配置对象转换为自定义配置对象. <br>
+	 * @author Felicity
+	 * @param xml
+	 * @return
+	 * @since JDK 1.8
+	 */
+	public Config me2self(Configuration xml) {
+		String id = "mge";
+		Context context = xml.getContext(id);
+		
 		Config conf = new Config();
 		DataBase db = new DataBase();
-		db.setPw("123456");
-		db.setUser("root");
-		db.setUrl("jdbc:mysql://localhost:3306/ace");
+		db.setPw(context.getJdbcConnectionConfiguration().getPassword());
+		db.setUser(context.getJdbcConnectionConfiguration().getUserId());
+		db.setUrl(context.getJdbcConnectionConfiguration().getConnectionURL());
 		conf.setDb(db);
 		List<DataTable> datas = new ArrayList<>();
 		DataTable table = new DataTable();
 		datas.add(table);
 
-		String id = "mge";
-		Context context = xml.getContext(id);
+
 
 		Extend extend = new Extend();
 		extend.setInsertBatch(false);
@@ -74,13 +83,12 @@ public class ConfigConvertUtil {
 	}
 
 	/**
-	 * intiFormJSON:转换JSON格式
-	 * 
+	 * self2me:將自定义配置对象转换为ME配置对象
 	 * @author Felicity
 	 * @return
 	 * @since JDK 1.8
 	 */
-	public Configuration intiFormJSON() {
+	public Configuration self2me(Config config) {
 
 		// 从文档中读取JSON
 
@@ -139,6 +147,12 @@ public class ConfigConvertUtil {
 		return cfg;
 	}
 
+	/**
+	 * writeJSONToFile:将JSON写到文档. <br>
+	 * @author Felicity
+	 * @param cfg
+	 * @since JDK 1.8
+	 */
 	public void writeJSONToFile(Config cfg) {
 		String json = JSON.toJSONString(cfg);
 		FileWriter fw = null;
@@ -164,6 +178,12 @@ public class ConfigConvertUtil {
 		}
 	}
 
+	/**
+	 * readJSONFromFile:从文档中读取JSON. <br>
+	 * @author Felicity
+	 * @return
+	 * @since JDK 1.8
+	 */
 	public Config readJSONFromFile() {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader reader = null;
