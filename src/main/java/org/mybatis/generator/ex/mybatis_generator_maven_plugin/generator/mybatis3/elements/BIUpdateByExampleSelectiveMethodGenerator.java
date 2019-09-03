@@ -1,18 +1,3 @@
-/**
- *    Copyright 2006-2017 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements;
 
 import java.util.HashSet;
@@ -27,9 +12,13 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMa
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 /**
- * 
- * @author Jeff Butler
- * 
+ * 类名称：BIUpdateByExampleSelectiveMethodGenerator <br>
+ * 类描述: 复写【超类BaseMapper-8大基本方法】更新不为空的数据 <br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:51:42 <br>
+ * 备注:
+ * @version
+ * @see
  */
 public class BIUpdateByExampleSelectiveMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -53,7 +42,8 @@ public class BIUpdateByExampleSelectiveMethodGenerator extends AbstractJavaMappe
 
 		addMapperAnnotations(method);
 
-		if (context.getPlugins().clientUpdateByExampleSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
+		if (context.getPlugins().clientUpdateByExampleSelectiveMethodGenerated(method, interfaze,
+				introspectedTable)) {
 			addExtraImports(interfaze);
 			interfaze.addImportedTypes(importedTypes);
 			interfaze.addMethod(method);

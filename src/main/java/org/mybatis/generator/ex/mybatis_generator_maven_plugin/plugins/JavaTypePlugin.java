@@ -32,21 +32,20 @@ public class JavaTypePlugin extends PluginAdapter {
 		return true;
 	}
 
-	// 调整字段的生成逻辑
 	@Override
 	public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass,
 			IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable,
 			ModelClassType modelClassType) {
 
-		System.out.println(introspectedColumn);
-		
-		// 功能1 tinyint( >2 )数据（Byte）调整为（Integer）类型
+		// =================================================
+		// 功能: tinyint( >2 )数据（Byte）调整为（Integer）类型
+		// =================================================
 		String typeShortName = field.getType().getShortName();
 		String byteSimpleName = Byte.class.getSimpleName();
 		if (typeShortName.equals(byteSimpleName)) {
 			field.setType(new FullyQualifiedJavaType(Integer.class.getName()));
 		}
-		
+
 		return super.modelFieldGenerated(field, topLevelClass, introspectedColumn,
 				introspectedTable, modelClassType);
 	}

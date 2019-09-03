@@ -87,7 +87,6 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		addUpdateByExampleSelectiveMethod(interfaze);
 		// 更新，按主键
 		addUpdateByPrimaryKeySelectiveMethod(interfaze);
-		// ===========================================
 
 		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
 		answer.add(interfaze);

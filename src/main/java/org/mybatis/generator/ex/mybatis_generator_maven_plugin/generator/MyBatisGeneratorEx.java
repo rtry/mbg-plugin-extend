@@ -13,32 +13,33 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.GeneratedXmlFile;
-import org.mybatis.generator.api.JavaFormatter;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.MergeConstants;
-import org.mybatis.generator.config.PluginConfiguration;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.plugins.JavaTypePlugin;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.RegexUtil;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.DefaultShellCallback;
@@ -48,7 +49,7 @@ import org.mybatis.generator.internal.XmlFileMergerJaxp;
 
 /**
  * 类名称：MyBatisGeneratorExImpl <br>
- * 类描述: <br>
+ * 类描述: 重写生成逻辑<br>
  * 创建人：felicity <br>
  * 创建时间：2018年9月21日 下午2:51:03 <br>
  * 修改人：felicity <br>
@@ -82,23 +83,23 @@ public class MyBatisGeneratorEx {
 	 * Constructs a MyBatisGenerator object.
 	 * 
 	 * @param configuration
-	 *            The configuration for this invocation
+	 *        The configuration for this invocation
 	 * @param shellCallback
-	 *            an instance of a ShellCallback interface. You may specify
-	 *            <code>null</code> in which case the DefaultShellCallback will
-	 *            be used.
+	 *        an instance of a ShellCallback interface. You may specify
+	 *        <code>null</code> in which case the DefaultShellCallback will
+	 *        be used.
 	 * @param warnings
-	 *            Any warnings generated during execution will be added to this
-	 *            list. Warnings do not affect the running of the tool, but they
-	 *            may affect the results. A typical warning is an unsupported
-	 *            data type. In that case, the column will be ignored and
-	 *            generation will continue. You may specify <code>null</code> if
-	 *            you do not want warnings returned.
+	 *        Any warnings generated during execution will be added to this
+	 *        list. Warnings do not affect the running of the tool, but they
+	 *        may affect the results. A typical warning is an unsupported
+	 *        data type. In that case, the column will be ignored and
+	 *        generation will continue. You may specify <code>null</code> if
+	 *        you do not want warnings returned.
 	 * @throws InvalidConfigurationException
-	 *             if the specified configuration is invalid
+	 *         if the specified configuration is invalid
 	 */
-	public MyBatisGeneratorEx(Configuration configuration, ShellCallback shellCallback, List<String> warnings)
-			throws InvalidConfigurationException {
+	public MyBatisGeneratorEx(Configuration configuration, ShellCallback shellCallback,
+			List<String> warnings) throws InvalidConfigurationException {
 		super();
 		if (configuration == null) {
 			throw new IllegalArgumentException(getString("RuntimeError.2"));
@@ -131,16 +132,17 @@ public class MyBatisGeneratorEx {
 	 * configured contexts.
 	 *
 	 * @param callback
-	 *            an instance of the ProgressCallback interface, or
-	 *            <code>null</code> if you do not require progress information
+	 *        an instance of the ProgressCallback interface, or
+	 *        <code>null</code> if you do not require progress information
 	 * @throws SQLException
-	 *             the SQL exception
+	 *         the SQL exception
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *         Signals that an I/O exception has occurred.
 	 * @throws InterruptedException
-	 *             if the method is canceled through the ProgressCallback
+	 *         if the method is canceled through the ProgressCallback
 	 */
-	public void generate(ProgressCallback callback) throws SQLException, IOException, InterruptedException {
+	public void generate(ProgressCallback callback) throws SQLException, IOException,
+			InterruptedException {
 		generate(callback, null, null, true);
 	}
 
@@ -150,21 +152,21 @@ public class MyBatisGeneratorEx {
 	 * ProgressCallback interface.
 	 *
 	 * @param callback
-	 *            an instance of the ProgressCallback interface, or
-	 *            <code>null</code> if you do not require progress information
+	 *        an instance of the ProgressCallback interface, or
+	 *        <code>null</code> if you do not require progress information
 	 * @param contextIds
-	 *            a set of Strings containing context ids to run. Only the
-	 *            contexts with an id specified in this list will be run. If the
-	 *            list is null or empty, than all contexts are run.
+	 *        a set of Strings containing context ids to run. Only the
+	 *        contexts with an id specified in this list will be run. If the
+	 *        list is null or empty, than all contexts are run.
 	 * @throws SQLException
-	 *             the SQL exception
+	 *         the SQL exception
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *         Signals that an I/O exception has occurred.
 	 * @throws InterruptedException
-	 *             if the method is canceled through the ProgressCallback
+	 *         if the method is canceled through the ProgressCallback
 	 */
-	public void generate(ProgressCallback callback, Set<String> contextIds) throws SQLException, IOException,
-			InterruptedException {
+	public void generate(ProgressCallback callback, Set<String> contextIds) throws SQLException,
+			IOException, InterruptedException {
 		generate(callback, contextIds, null, true);
 	}
 
@@ -174,28 +176,29 @@ public class MyBatisGeneratorEx {
 	 * ProgressCallback interface.
 	 *
 	 * @param callback
-	 *            an instance of the ProgressCallback interface, or
-	 *            <code>null</code> if you do not require progress information
+	 *        an instance of the ProgressCallback interface, or
+	 *        <code>null</code> if you do not require progress information
 	 * @param contextIds
-	 *            a set of Strings containing context ids to run. Only the
-	 *            contexts with an id specified in this list will be run. If the
-	 *            list is null or empty, than all contexts are run.
+	 *        a set of Strings containing context ids to run. Only the
+	 *        contexts with an id specified in this list will be run. If the
+	 *        list is null or empty, than all contexts are run.
 	 * @param fullyQualifiedTableNames
-	 *            a set of table names to generate. The elements of the set must
-	 *            be Strings that exactly match what's specified in the
-	 *            configuration. For example, if table name = "foo" and schema =
-	 *            "bar", then the fully qualified table name is "foo.bar". If
-	 *            the Set is null or empty, then all tables in the configuration
-	 *            will be used for code generation.
+	 *        a set of table names to generate. The elements of the set must
+	 *        be Strings that exactly match what's specified in the
+	 *        configuration. For example, if table name = "foo" and schema =
+	 *        "bar", then the fully qualified table name is "foo.bar". If
+	 *        the Set is null or empty, then all tables in the configuration
+	 *        will be used for code generation.
 	 * @throws SQLException
-	 *             the SQL exception
+	 *         the SQL exception
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *         Signals that an I/O exception has occurred.
 	 * @throws InterruptedException
-	 *             if the method is canceled through the ProgressCallback
+	 *         if the method is canceled through the ProgressCallback
 	 */
-	public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames)
-			throws SQLException, IOException, InterruptedException {
+	public void generate(ProgressCallback callback, Set<String> contextIds,
+			Set<String> fullyQualifiedTableNames) throws SQLException, IOException,
+			InterruptedException {
 		generate(callback, contextIds, fullyQualifiedTableNames, true);
 	}
 
@@ -205,31 +208,32 @@ public class MyBatisGeneratorEx {
 	 * ProgressCallback interface.
 	 *
 	 * @param callback
-	 *            an instance of the ProgressCallback interface, or
-	 *            <code>null</code> if you do not require progress information
+	 *        an instance of the ProgressCallback interface, or
+	 *        <code>null</code> if you do not require progress information
 	 * @param contextIds
-	 *            a set of Strings containing context ids to run. Only the
-	 *            contexts with an id specified in this list will be run. If the
-	 *            list is null or empty, than all contexts are run.
+	 *        a set of Strings containing context ids to run. Only the
+	 *        contexts with an id specified in this list will be run. If the
+	 *        list is null or empty, than all contexts are run.
 	 * @param fullyQualifiedTableNames
-	 *            a set of table names to generate. The elements of the set must
-	 *            be Strings that exactly match what's specified in the
-	 *            configuration. For example, if table name = "foo" and schema =
-	 *            "bar", then the fully qualified table name is "foo.bar". If
-	 *            the Set is null or empty, then all tables in the configuration
-	 *            will be used for code generation.
+	 *        a set of table names to generate. The elements of the set must
+	 *        be Strings that exactly match what's specified in the
+	 *        configuration. For example, if table name = "foo" and schema =
+	 *        "bar", then the fully qualified table name is "foo.bar". If
+	 *        the Set is null or empty, then all tables in the configuration
+	 *        will be used for code generation.
 	 * @param writeFiles
-	 *            if true, then the generated files will be written to disk. If
-	 *            false, then the generator runs but nothing is written
+	 *        if true, then the generated files will be written to disk. If
+	 *        false, then the generator runs but nothing is written
 	 * @throws SQLException
-	 *             the SQL exception
+	 *         the SQL exception
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *         Signals that an I/O exception has occurred.
 	 * @throws InterruptedException
-	 *             if the method is canceled through the ProgressCallback
+	 *         if the method is canceled through the ProgressCallback
 	 */
-	public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames,
-			boolean writeFiles) throws SQLException, IOException, InterruptedException {
+	public void generate(ProgressCallback callback, Set<String> contextIds,
+			Set<String> fullyQualifiedTableNames, boolean writeFiles) throws SQLException,
+			IOException, InterruptedException {
 
 		if (callback == null) {
 			callback = new NullProgressCallback();
@@ -242,7 +246,7 @@ public class MyBatisGeneratorEx {
 		ObjectFactory.reset();
 		RootClassInfo.reset();
 
-		// calculate the contexts to run
+		// 计算要运行的上下文
 		List<Context> contextsToRun;
 		if (contextIds == null || contextIds.size() == 0) {
 			contextsToRun = configuration.getContexts();
@@ -255,13 +259,13 @@ public class MyBatisGeneratorEx {
 			}
 		}
 
-		// setup custom classloader if required
+		// 如果需要，设置自定义类加载器
 		if (configuration.getClassPathEntries().size() > 0) {
 			ClassLoader classLoader = getCustomClassloader(configuration.getClassPathEntries());
 			ObjectFactory.addExternalClassLoader(classLoader);
 		}
 
-		// now run the introspections...
+		// 开始执行Introspection
 		int totalSteps = 0;
 		for (Context context : contextsToRun) {
 			totalSteps += context.getIntrospectionSteps();
@@ -272,7 +276,7 @@ public class MyBatisGeneratorEx {
 			context.introspectTables(callback, warnings, fullyQualifiedTableNames);
 		}
 
-		// now run the generates
+		// 开始执行生成器
 		totalSteps = 0;
 		for (Context context : contextsToRun) {
 			totalSteps += context.getGenerationSteps();
@@ -280,8 +284,8 @@ public class MyBatisGeneratorEx {
 		callback.generationStarted(totalSteps);
 
 		// 默认添加自己定义的插件（不用显示的在xml中配置插件，自动默认加载）
-		PluginConfiguration pluginExtend = new PluginConfiguration();
-		pluginExtend.setConfigurationType(JavaTypePlugin.class.getName());
+		// PluginConfiguration pluginExtend = new PluginConfiguration();
+		// pluginExtend.setConfigurationType(JavaTypePlugin.class.getName());
 
 		List<GeneratedJavaFile> adds = new ArrayList<GeneratedJavaFile>();
 		List<GeneratedJavaFile> removes = new ArrayList<GeneratedJavaFile>();
@@ -295,74 +299,115 @@ public class MyBatisGeneratorEx {
 			context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
 
 			// ==============================================================================
-			// 针对: JavaClientGenerator 如果配置了supportCustomInterface 做特殊处理
-			// 条件： supportCustomInterface=x.y.BaseMapper
+			// 针对: 根据最新配置生成新的Mapper文件，判断原Mapper是否存在
 			// 方式：如果路径中没有文档，生成新的文档（继承指定接口），存在则跳过
 			// ==============================================================================
-			String mapperInterfaceClass = context.getJdbcConnectionConfiguration().getProperty(
-					"supportCustomInterface");
-			if (mapperInterfaceClass != null && !mapperInterfaceClass.trim().equals("")
-					&& mapperInterfaceClass.lastIndexOf(".") != -1) {
-				// logger();
 
-				// Java Class File
-				for (GeneratedJavaFile javaFile : generatedJavaFiles) {
+			Set<String> domainMapperClassNames = context.getTableConfigurations().stream()
+					.map(e -> {
+						return e.getDomainObjectName() + BIConstant.MAPPER;
+					}).collect(Collectors.toSet());
 
-					CompilationUnit unit = javaFile.getCompilationUnit();
-					String daoTargetDir = javaFile.getTargetProject();
+			for (GeneratedJavaFile javaFile : generatedJavaFiles) {
 
-					FullyQualifiedJavaType baseModelJavaType = unit.getType();
-					String shortName = baseModelJavaType.getShortName();
-					JavaFormatter javaFormatter = context.getJavaFormatter();
+				CompilationUnit unit = javaFile.getCompilationUnit();
+				FullyQualifiedJavaType baseModelJavaType = unit.getType();
+				String shortName = baseModelJavaType.getShortName();
 
-					// 更改结构
-					if (shortName.endsWith("Mapper1")) {
+				// 只针对于单表产生的Mapper文件进行处理
+				if (domainMapperClassNames.contains(shortName)) {
+					try {
 
-						String exampleClassPackage = context.getJavaModelGeneratorConfiguration().getTargetPackage();
-
-						// mapperInterfaceClass 的类名
-						int lastIndex = mapperInterfaceClass.lastIndexOf(".");
-						String mapperInterfaceClassName = mapperInterfaceClass.substring(lastIndex + 1,
-								mapperInterfaceClass.length());
-
-						String newMapperTargetDir = javaFile.getTargetProject();
-
-						// 删除程序生成的，生成新的
 						String newMapperTargetPackage = baseModelJavaType.getPackageName();
-						String fullName = baseModelJavaType.getFullyQualifiedName();
+						String daoTargetDir = javaFile.getTargetProject();
 
-						Interface mapperInterface = new Interface(fullName);
-						mapperInterface.setVisibility(JavaVisibility.PUBLIC);
-						mapperInterface.addJavaDocLine("/**");
-						mapperInterface.addJavaDocLine(" * " + shortName + "继承标准接口" + mapperInterfaceClassName);
-						mapperInterface.addJavaDocLine(" */");
+						// --------------------------------------------------------------------------
+						// 单表Mapper.java文件 如果存在，会根据最新配置需要生成的文件，和原来存在的合并
 
-						FullyQualifiedJavaType daoSuperType = new FullyQualifiedJavaType(mapperInterfaceClass);
-						// 添加泛型支持
+						// 单表Mapper.java文件对象
+						File file = new File(shellCallback.getDirectory(daoTargetDir,
+								newMapperTargetPackage), javaFile.getFileName());
 
-						daoSuperType.addTypeArgument(new FullyQualifiedJavaType(exampleClassPackage + "."
-								+ shortName.replace("Mapper", "")));
-						FullyQualifiedJavaType longType = new FullyQualifiedJavaType("java.lang.Long");
-						daoSuperType.addTypeArgument(longType);
-						String exampleClass = exampleClassPackage + "." + shortName.replace("Mapper", "Example");
-						daoSuperType.addTypeArgument(new FullyQualifiedJavaType(exampleClass));
+						if (file.exists()) {
+							// 存在
+							// 读文件，进行合并操作 [通过正则 进行合并文件]
+							String filcode = readFile(file);
+							//
 
-						// mapperInterface.addImportedType(daoSuperType);
-						mapperInterface.addSuperInterface(daoSuperType);
+							// System.out.println("====================================原来=============");
+							// System.out.println(filcode);
 
-						GeneratedJavaFile mapperJavafile = new GeneratedJavaFile(mapperInterface, newMapperTargetDir,
-								javaFormatter);
-						try {
-							File mapperDir = shellCallback.getDirectory(daoTargetDir, newMapperTargetPackage);
-							File mapperFile = new File(mapperDir, mapperJavafile.getFileName());
-							removes.add(javaFile);
-							// 文件不存在
-							if (!mapperFile.exists()) {
-								adds.add(mapperJavafile);
+							// 在支持的3个接口中进行比较
+							Set<String> all = new HashSet<String>();
+							all.add(BIConstant.ExtendInsertBatchClass);
+							all.add(BIConstant.ExtendInsertIfAbsentClass);
+							all.add(BIConstant.ExtendSelectOptionClass);
+
+							// 旧有接口
+							Set<String> temp1 = new HashSet<String>();
+							Set<String> olds = RegexUtil.getOldExtends(filcode);
+							for (String old : olds) {
+								if (all.contains(old)) {
+									temp1.add(old);
+								}
 							}
-						} catch (Exception e) {
-							e.printStackTrace();
+							olds = null;
+							olds = temp1;
+
+							// 新的接口
+							Set<String> temp2 = new HashSet<String>();
+							Set<String> news = unit.getSuperInterfaceTypes().stream()
+									.map(e -> e.getShortName().replaceAll(RegexUtil.regxFx, ""))
+									.collect(Collectors.toSet());
+							for (String n : news) {
+								if (all.contains(n)) {
+									temp2.add(n);
+								}
+							}
+							news = null;
+							news = temp2;
+
+							// old 需要移除的结果result
+							Set<String> result = new HashSet<String>();
+							result.clear();
+							result.addAll(olds);
+							result.removeAll(news);
+							// System.out.println("old 需要移除：" + result);
+							filcode = RegexUtil.remove(filcode, result);
+
+							// System.out.println("====================================移除后=============");
+							// System.out.println(filcode);
+
+							// 需要新增的结果result
+							result.clear();
+							result.addAll(news);
+							result.removeAll(olds);
+							// System.out.println("old 需要新增：" + result);
+
+							Set<String> gex = unit.getSuperInterfaceTypes().stream()
+									.map(e -> e.getShortName()).collect(Collectors.toSet());
+							String baseInterfaceName = context.getJdbcConnectionConfiguration()
+									.getProperty("supportCustomInterface");
+							ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0,
+									baseInterfaceName.lastIndexOf(".")));
+							filcode = RegexUtil.add(filcode, result, gex, eUtil);
+
+							// System.out.println("====================================新增后=============");
+							// System.out.println(filcode);
+
+							// 添加 移除标记，该Mapper.java文件不会自动生成
+							removes.add(javaFile);
+							// 手动替代写入
+							writeFile(file, filcode, "UTF-8");
+						} else {
+							// 文件不存在，表示要新生成，跳过逻辑
+							break;
 						}
+
+						// --------------------------------------------------------------------------
+
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -373,14 +418,16 @@ public class MyBatisGeneratorEx {
 		for (GeneratedJavaFile f : adds) {
 			generatedJavaFiles.add(f);
 		}
-		// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-		// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
-		// 强制覆盖文件
+		// ========================
+		// 功能点：XML 强制覆盖原文件
+		// ========================
 		for (GeneratedXmlFile f : generatedXmlFiles)
 			f.setMergeable(false);
 
-		// now save the files
+		// ========================
+		// 功能点：JAVA 文件覆盖
+		// ========================
 		if (writeFiles) {
 			callback.saveStarted(generatedXmlFiles.size() + generatedJavaFiles.size());
 
@@ -402,36 +449,44 @@ public class MyBatisGeneratorEx {
 		callback.done();
 	}
 
-	@SuppressWarnings("unused")
-	private void logger() {
-		System.out.println("");
-		System.out.println("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓继承BaseMapper.java的类文件↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
-		System.out.println("");
-		String packageName = "BaseMapper.tpl";
-		InputStream is = MyBatisGeneratorEx.class.getClassLoader().getResourceAsStream(packageName);
+	public String readFile(File file) {
+		StringBuffer sb = new StringBuffer();
+		BufferedReader reader = null;
 		try {
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				System.out.println(line);
-				line = null;
+			FileInputStream fileInputStream = new FileInputStream(file);
+			InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+			reader = new BufferedReader(inputStreamReader);
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				sb.append(tempString).append("\n");
 			}
+			reader.close();
+			return sb.toString();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		System.out.println("");
-		System.out.println("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
-		System.out.println("");
-
+		return null;
 	}
 
-	private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback) throws InterruptedException,
-			IOException {
+	private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback)
+			throws InterruptedException, IOException {
 		File targetFile;
 		String source;
 		try {
-			File directory = shellCallback.getDirectory(gjf.getTargetProject(), gjf.getTargetPackage());
+			File directory = shellCallback.getDirectory(gjf.getTargetProject(),
+					gjf.getTargetPackage());
 			targetFile = new File(directory, gjf.getFileName());
 			if (targetFile.exists()) {
 				if (shellCallback.isMergeSupported()) {
@@ -457,12 +512,13 @@ public class MyBatisGeneratorEx {
 		}
 	}
 
-	private void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallback callback) throws InterruptedException,
-			IOException {
+	private void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallback callback)
+			throws InterruptedException, IOException {
 		File targetFile;
 		String source;
 		try {
-			File directory = shellCallback.getDirectory(gxf.getTargetProject(), gxf.getTargetPackage());
+			File directory = shellCallback.getDirectory(gxf.getTargetProject(),
+					gxf.getTargetPackage());
 			targetFile = new File(directory, gxf.getFileName());
 			if (targetFile.exists()) {
 				if (gxf.isMergeable()) {
@@ -491,13 +547,13 @@ public class MyBatisGeneratorEx {
 	 * Writes, or overwrites, the contents of the specified file.
 	 *
 	 * @param file
-	 *            the file
+	 *        the file
 	 * @param content
-	 *            the content
+	 *        the content
 	 * @param fileEncoding
-	 *            the file encoding
+	 *        the file encoding
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *         Signals that an I/O exception has occurred.
 	 */
 	private void writeFile(File file, String content, String fileEncoding) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file, false);
@@ -517,9 +573,9 @@ public class MyBatisGeneratorEx {
 	 * Gets the unique file name.
 	 *
 	 * @param directory
-	 *            the directory
+	 *        the directory
 	 * @param fileName
-	 *            the file name
+	 *        the file name
 	 * @return the unique file name
 	 */
 	private File getUniqueFileName(File directory, String fileName) {

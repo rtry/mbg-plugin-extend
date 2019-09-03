@@ -9,10 +9,15 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
-//=========================
-// 按需查询，指定列
-//=========================
-
+/**
+ * 类名称：SelectOptionElementGenerator <br>
+ * 类描述: XML节点操作【按需查询，指定列 】 <br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:43:30 <br>
+ * 备注:
+ * @version
+ * @see
+ */
 public class SelectOptionElementGenerator extends AbstractXmlElementGenerator {
 
 	public SelectOptionElementGenerator() {
@@ -103,13 +108,13 @@ public class SelectOptionElementGenerator extends AbstractXmlElementGenerator {
 	public static String getParameterClause(IntrospectedColumn introspectedColumn, String prefix) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("#{item."); //$NON-NLS-1$
+		sb.append("#{item.");
 		sb.append(introspectedColumn.getJavaProperty(prefix));
-		sb.append(",jdbcType="); //$NON-NLS-1$
+		sb.append(",jdbcType=");
 		sb.append(introspectedColumn.getJdbcTypeName());
 
 		if (stringHasValue(introspectedColumn.getTypeHandler())) {
-			sb.append(",typeHandler="); //$NON-NLS-1$
+			sb.append(",typeHandler=");
 			sb.append(introspectedColumn.getTypeHandler());
 		}
 

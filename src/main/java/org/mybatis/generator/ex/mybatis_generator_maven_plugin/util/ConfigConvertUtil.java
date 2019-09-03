@@ -36,15 +36,12 @@ import com.alibaba.fastjson.JSON;
 public class ConfigConvertUtil {
 
 	String path = "F:\\Git\\mbg-plugin-extend\\src\\test\\java\\generatorTestConfig.json";
-	String	baseFile = "";
-	
-	
-public ConfigConvertUtil(String baseFile) {
+	String baseFile = "";
+
+	public ConfigConvertUtil(String baseFile) {
 		super();
 		this.baseFile = baseFile;
 	}
-
-//	String baseInterfaceUrl = "xyz.rtry.felicity.common.web.dao.BaseMapper";
 
 	/**
 	 * me2self:将MG配置对象转换为自定义配置对象. <br>
@@ -103,7 +100,7 @@ public ConfigConvertUtil(String baseFile) {
 
 		// 基本校验
 		if (config == null || config.getDb() == null || config.getCurrently() == null
-				|| config.getCurrently().size() == 0)
+				|| config.getCurrently().size() == 0 || baseFile == null || baseFile.trim() == "")
 			return null;
 
 		// 待返回对象
@@ -117,12 +114,14 @@ public ConfigConvertUtil(String baseFile) {
 				.collect(
 						Collectors.groupingBy(e -> {
 							sb.setLength(0);
-							sb.append(e.getMapperPkg()).append(e.getModelPkg()).append(e.getXmlPkg())
-									.append(e.getExtend().isInsertBatch()).append(e.getExtend().isInsertIfAbsent())
-									.append(e.getExtend().isSelectOption()).append(e.getFolder().getMapperTarget())
-									.append(e.getFolder().getModelTarget()).append(e.getFolder().getXmlTarget());
+							sb.append(e.getMapperPkg()).append(e.getModelPkg())
+									.append(e.getXmlPkg()).append(e.getExtend().isInsertBatch())
+									.append(e.getExtend().isInsertIfAbsent())
+									.append(e.getExtend().isSelectOption())
+									.append(e.getFolder().getMapperTarget())
+									.append(e.getFolder().getModelTarget())
+									.append(e.getFolder().getXmlTarget());
 							String md5 = MD5Util.MD5Encode(sb.toString());
-							System.out.println(md5);
 							return md5;
 						}));
 
@@ -137,8 +136,9 @@ public ConfigConvertUtil(String baseFile) {
 		jdbcConnectionConfiguration.setUserId(config.getDb().getUser());
 		jdbcConnectionConfiguration.setPassword(config.getDb().getPw());
 		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
-		//jdbc 中增加自定义数据
-		jdbcConnectionConfiguration.addProperty("supportCustomInterface", config.getDb().getMapperClass());
+		// 基本-JDBCConnectionConfiguration 中增加自定义数据
+		jdbcConnectionConfiguration.addProperty("supportCustomInterface", config.getDb()
+				.getMapperClass());
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
@@ -148,7 +148,6 @@ public ConfigConvertUtil(String baseFile) {
 		Set<String> keys = rt.keySet();
 		for (String key : keys) {
 			List<DataTable> values = rt.get(key);
-			System.out.println(JSON.toJSONString(values));
 			// 一个key 对应一个context
 			Context context = new Context(null);
 			cfg.addContext(context);
@@ -159,13 +158,16 @@ public ConfigConvertUtil(String baseFile) {
 			context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
 			context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
 
-			JavaModelGeneratorConfiguration jmgc = this.getjavaModelGeneratorConfiguration(key, values, baseFile);
+			JavaModelGeneratorConfiguration jmgc = this.getjavaModelGeneratorConfiguration(key,
+					values, baseFile);
 			context.setJavaModelGeneratorConfiguration(jmgc);
 
-			SqlMapGeneratorConfiguration cgc = this.getsqlMapGeneratorConfiguration(key, values, baseFile);
+			SqlMapGeneratorConfiguration cgc = this.getsqlMapGeneratorConfiguration(key, values,
+					baseFile);
 			context.setSqlMapGeneratorConfiguration(cgc);
 
-			JavaClientGeneratorConfiguration jcgc = this.getJavaClientGeneratorConfiguration(key, values, baseFile);
+			JavaClientGeneratorConfiguration jcgc = this.getJavaClientGeneratorConfiguration(key,
+					values, baseFile);
 			context.setJavaClientGeneratorConfiguration(jcgc);
 
 			// 所包含的相同的表配置文件
@@ -186,9 +188,11 @@ public ConfigConvertUtil(String baseFile) {
 	}
 
 	Map<String, JavaClientGeneratorConfiguration> javaClientGeneratorConfigurations = new HashMap<String, JavaClientGeneratorConfiguration>();
+	Map<String, SqlMapGeneratorConfiguration> sqlMapGeneratorConfigurations = new HashMap<String, SqlMapGeneratorConfiguration>();
+	Map<String, JavaModelGeneratorConfiguration> javaModelGeneratorConfigurations = new HashMap<String, JavaModelGeneratorConfiguration>();
 
-	private JavaClientGeneratorConfiguration getJavaClientGeneratorConfiguration(String key, List<DataTable> values,
-			String baseFile) {
+	private JavaClientGeneratorConfiguration getJavaClientGeneratorConfiguration(String key,
+			List<DataTable> values, String baseFile) {
 		if (javaClientGeneratorConfigurations.containsKey(key))
 			return javaClientGeneratorConfigurations.get(key);
 		else {
@@ -196,18 +200,15 @@ public ConfigConvertUtil(String baseFile) {
 			JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
 			javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
 			javaClientGeneratorConfiguration.setTargetPackage(dt.getMapperPkg());
-			javaClientGeneratorConfiguration.setTargetProject(baseFile + dt.getFolder().getMapperTarget());
+			javaClientGeneratorConfiguration.setTargetProject(baseFile
+					+ dt.getFolder().getMapperTarget());
 			javaClientGeneratorConfiguration.addProperty("enableSubPackages", "false");
-			// javaClientGeneratorConfiguration.addProperty("supportCustomInterface",
-			// "xyz.rtry.felicity.common.web.daosss.BaseInterfaceMapper");
 			return javaClientGeneratorConfiguration;
 		}
 	}
 
-	Map<String, SqlMapGeneratorConfiguration> sqlMapGeneratorConfigurations = new HashMap<String, SqlMapGeneratorConfiguration>();
-
-	private SqlMapGeneratorConfiguration getsqlMapGeneratorConfiguration(String key, List<DataTable> values,
-			String baseFile) {
+	private SqlMapGeneratorConfiguration getsqlMapGeneratorConfiguration(String key,
+			List<DataTable> values, String baseFile) {
 		if (sqlMapGeneratorConfigurations.containsKey(key))
 			return sqlMapGeneratorConfigurations.get(key);
 		else {
@@ -221,17 +222,16 @@ public ConfigConvertUtil(String baseFile) {
 		}
 	}
 
-	Map<String, JavaModelGeneratorConfiguration> javaModelGeneratorConfigurations = new HashMap<String, JavaModelGeneratorConfiguration>();
-
-	private JavaModelGeneratorConfiguration getjavaModelGeneratorConfiguration(String key, List<DataTable> values,
-			String baseFile) {
+	private JavaModelGeneratorConfiguration getjavaModelGeneratorConfiguration(String key,
+			List<DataTable> values, String baseFile) {
 		if (javaModelGeneratorConfigurations.containsKey(key))
 			return javaModelGeneratorConfigurations.get(key);
 		else {
 			DataTable dt = values.get(0);
 			JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
 			javaModelGeneratorConfiguration.setTargetPackage(dt.getModelPkg());
-			javaModelGeneratorConfiguration.setTargetProject(baseFile + dt.getFolder().getModelTarget());
+			javaModelGeneratorConfiguration.setTargetProject(baseFile
+					+ dt.getFolder().getModelTarget());
 			javaModelGeneratorConfiguration.addProperty("enableSubPackages", "false");
 			javaModelGeneratorConfiguration.addProperty("trimStrings", "false");
 			javaModelGeneratorConfigurations.put(key, javaModelGeneratorConfiguration);

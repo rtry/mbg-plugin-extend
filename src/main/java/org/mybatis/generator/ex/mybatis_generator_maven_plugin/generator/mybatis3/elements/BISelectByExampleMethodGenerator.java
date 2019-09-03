@@ -1,18 +1,3 @@
-/**
- *    Copyright 2006-2016 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements;
 
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -24,9 +9,13 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMa
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 /**
- * 
- * @author Jeff Butler
- * 
+ * 类名称：BISelectByExampleMethodGenerator <br>
+ * 类描述:复写【超类BaseMapper-8大基本方法】 按条件查询 <br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:51:07 <br>
+ * 备注:
+ * @version
+ * @see
  */
 public class BISelectByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -48,7 +37,8 @@ public class BISelectByExampleMethodGenerator extends AbstractJavaMapperMethodGe
 		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
 		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
-		if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
+		if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze,
+				introspectedTable)) {
 			addExtraImports(interfaze);
 			interfaze.addMethod(method);
 		}

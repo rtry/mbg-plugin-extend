@@ -1,18 +1,3 @@
-/**
- *    Copyright 2006-2017 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements;
 
 import java.util.Set;
@@ -27,47 +12,49 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMa
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 /**
- * 
- * @author Jeff Butler
- * 
+ * 类名称：BIInsertSelectiveMethodGenerator <br>
+ * 类描述: 复写【超类BaseMapper-8大基本方法】插入不为空的数据 <br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:50:35 <br>
+ * 备注:
+ * @version
+ * @see
  */
-public class BIInsertSelectiveMethodGenerator extends
-        AbstractJavaMapperMethodGenerator {
+public class BIInsertSelectiveMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public BIInsertSelectiveMethodGenerator() {
-        super();
-    }
+	public BIInsertSelectiveMethodGenerator() {
+		super();
+	}
 
-    @Override
-    public void addInterfaceElements(Interface interfaze) {
-        Method method = new Method();
+	@Override
+	public void addInterfaceElements(Interface interfaze) {
+		Method method = new Method();
 
-        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-        method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("insertSelective");
+		method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setName("insertSelective");
 
-        FullyQualifiedJavaType parameterType =new FullyQualifiedJavaType(BIConstant.MODEL);
+		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
 
-        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-        importedTypes.add(parameterType);
-        method.addParameter(new Parameter(parameterType, "record")); 
+		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+		importedTypes.add(parameterType);
+		method.addParameter(new Parameter(parameterType, "record"));
 
-        context.getCommentGenerator().addGeneralMethodComment(method,
-                introspectedTable);
+		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-        addMapperAnnotations(method);
-        
-        if (context.getPlugins().clientInsertSelectiveMethodGenerated(
-                method, interfaze, introspectedTable)) {
-            addExtraImports(interfaze);
-            interfaze.addImportedTypes(importedTypes);
-            interfaze.addMethod(method);
-        }
-    }
+		addMapperAnnotations(method);
 
-    public void addMapperAnnotations(Method method) {
-    }
+		if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze,
+				introspectedTable)) {
+			addExtraImports(interfaze);
+			interfaze.addImportedTypes(importedTypes);
+			interfaze.addMethod(method);
+		}
+	}
 
-    public void addExtraImports(Interface interfaze) {
-    }
+	public void addMapperAnnotations(Method method) {
+	}
+
+	public void addExtraImports(Interface interfaze) {
+	}
 }

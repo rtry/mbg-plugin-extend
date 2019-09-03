@@ -3,10 +3,21 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 import java.util.HashMap;
 import java.util.Map;
 
+/**   
+ * 类名称：BICommentConstant     <br>
+ * 类描述: 方法注解控制				   <br>
+ * 创建人：felicity		   <br>
+ * 创建时间：2019年9月3日 下午3:32:29    <br>
+ * 备注:
+ * @version
+ * @see
+ */
 public class BICommentConstant {
 
 	private static final Map<String, String[]> coms = new HashMap<>();
 
+	
+	//初始化注释对象
 	static {
 
 		//=======================
@@ -54,9 +65,14 @@ public class BICommentConstant {
 		//=======================
 		String[] insertIfAbsent = { "insertIfAbsent 如果不存在，则插入","@param record 表对象 -【对象数据中，必须包含判断存在的标准(唯一性约束)】","@return 受影响条数" };
 		coms.put("insertIfAbsent", insertIfAbsent);
-		
-	}
 
+	}
+	/**
+	 * getComments 通过方法名，获取方法注解
+	 * @param key Mapper 方法名
+	 * @return
+	 * @Exception 异常描述
+	*/
 	public static String[] getComments(String key) {
 		if (coms.containsKey(key)) {
 			return coms.get(key);

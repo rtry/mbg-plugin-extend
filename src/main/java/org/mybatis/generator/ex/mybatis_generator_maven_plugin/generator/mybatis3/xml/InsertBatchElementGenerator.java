@@ -11,16 +11,20 @@ import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
-//=========================
-// 批量添加对象，空字段不插入
-//=========================
-
+/**
+ * 类名称：InsertBatchElementGenerator <br>
+ * 类描述: XML节点操作【批量添加对象，空字段不插入 】<br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:37:30 <br>
+ * 备注:
+ * @version
+ * @see
+ */
 public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 
-	public InsertBatchElementGenerator() {
-		super();
-	}
-
+	/**
+	 * 批量插入方法生成对应的XML 节点逻辑
+	 */
 	@Override
 	public void addElements(XmlElement parentElement) {
 		XmlElement answer = new XmlElement("insert");
@@ -37,7 +41,6 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 		sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
 		answer.addElement(new TextElement(sb.toString()));
 
-		// --------------
 		XmlElement forElement = new XmlElement("foreach");
 		forElement.addAttribute(new Attribute("collection", "list"));
 		forElement.addAttribute(new Attribute("item", "item"));
@@ -54,10 +57,8 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 		forElement.addElement(ifElement);
 		answer.addElement(forElement);
 
-		// --------------
 		answer.addElement(new TextElement("values"));
 
-		// --------------
 		XmlElement forElement2 = new XmlElement("foreach");
 		forElement2.addAttribute(new Attribute("collection", "list"));
 		forElement2.addAttribute(new Attribute("item", "item"));
@@ -108,8 +109,8 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 			valuesNotNullElement.addAttribute(new Attribute("test", sb.toString()));
 
 			sb.setLength(0);
-			//调整自己的方法
-			sb.append(getParameterClause(introspectedColumn,null));
+			// 调整自己的方法
+			sb.append(getParameterClause(introspectedColumn, null));
 			sb.append(',');
 			valuesNotNullElement.addElement(new TextElement(sb.toString()));
 			valuesTrimElement.addElement(valuesNotNullElement);
@@ -119,24 +120,29 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 			parentElement.addElement(answer);
 		}
 	}
-	
-	//自定义
-    public static String getParameterClause(
-            IntrospectedColumn introspectedColumn, String prefix) {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append("#{item."); //$NON-NLS-1$
-        sb.append(introspectedColumn.getJavaProperty(prefix));
-        sb.append(",jdbcType="); //$NON-NLS-1$
-        sb.append(introspectedColumn.getJdbcTypeName());
+	/**
+	 * getParameterClause 自定义 获取不为空的字段
+	 * @param introspectedColumn
+	 * @param prefix
+	 * @return
+	 * @Exception 异常描述
+	 */
+	public static String getParameterClause(IntrospectedColumn introspectedColumn, String prefix) {
+		StringBuilder sb = new StringBuilder();
 
-        if (stringHasValue(introspectedColumn.getTypeHandler())) {
-            sb.append(",typeHandler="); //$NON-NLS-1$
-            sb.append(introspectedColumn.getTypeHandler());
-        }
+		sb.append("#{item.");
+		sb.append(introspectedColumn.getJavaProperty(prefix));
+		sb.append(",jdbcType=");
+		sb.append(introspectedColumn.getJdbcTypeName());
 
-        sb.append('}');
+		if (stringHasValue(introspectedColumn.getTypeHandler())) {
+			sb.append(",typeHandler=");
+			sb.append(introspectedColumn.getTypeHandler());
+		}
 
-        return sb.toString();
-    }
+		sb.append('}');
+
+		return sb.toString();
+	}
 }

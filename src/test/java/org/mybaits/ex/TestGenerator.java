@@ -100,7 +100,8 @@ public class TestGenerator {
 				}
 				// 自定义配置操作已经完成，转换数据
 				Config selfConfig = dcs.tearViewDate();
-				config = ccutil.self2me(selfConfig, null);
+				String baseFile = "F:\\git\\felicity\\";
+				config = ccutil.self2me(selfConfig, baseFile);
 				// 自定义的配置需要保持数据文件中.
 				ccutil.writeJSONToFile(selfConfig);
 

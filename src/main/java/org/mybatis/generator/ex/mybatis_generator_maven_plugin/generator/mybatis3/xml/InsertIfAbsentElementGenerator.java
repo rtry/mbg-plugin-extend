@@ -11,16 +11,18 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElem
 import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
-//=========================
-// 不存在则插入
-//=========================
-
+/**
+ * 类名称：InsertIfAbsentElementGenerator <br>
+ * 类描述:XML节点操作【不存在则插入，必须确定唯一性】 <br>
+ * 创建人：felicity <br>
+ * 创建时间：2019年9月3日 下午3:40:52 <br>
+ * 备注:
+ * @version
+ * @see
+ */
 public class InsertIfAbsentElementGenerator extends AbstractXmlElementGenerator {
 
-	public InsertIfAbsentElementGenerator() {
-		super();
-	}
-
+	// 不存在则插入，XML节点操作
 	@Override
 	public void addElements(XmlElement parentElement) {
 		XmlElement answer = new XmlElement("insert");
