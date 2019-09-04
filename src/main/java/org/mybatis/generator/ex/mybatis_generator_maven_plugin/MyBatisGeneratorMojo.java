@@ -89,6 +89,9 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	@Parameter(property = "mybatis.generator.configurationFile", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.xml", required = true)
 	private File configurationFile;
 
+	@Parameter(property = "mybatis.generator.cff", defaultValue = "${project.basedir}/src/main/resources/generatorConfig.json")
+	private File cff;
+
 	/**
 	 * Specifies whether the mojo writes progress messages to the log.
 	 */
@@ -99,7 +102,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 	 * Specifies whether the mojo overwrites existing Java files. Default is
 	 * false. <br>
 	 * Note that XML files are always merged.
-	 * ======================================== 
+	 * ========================================
 	 * 强制修改为TRUE，JAVA Model 文件会自动覆盖
 	 * ========================================
 	 */
@@ -180,12 +183,14 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 	@Override
 	public String toString() {
-		return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project + ", outputDirectory="
-				+ outputDirectory + ", configurationFile=" + configurationFile + ", verbose=" + verbose
-				+ ", overwrite=" + overwrite + ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL="
-				+ jdbcURL + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword + ", tableNames="
-				+ tableNames + ", contexts=" + contexts + ", skip=" + skip + ", includeCompileDependencies="
-				+ includeCompileDependencies + ", includeAllDependencies=" + includeAllDependencies + "]";
+		return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project
+				+ ", outputDirectory=" + outputDirectory + ", configurationFile="
+				+ configurationFile + ", verbose=" + verbose + ", overwrite=" + overwrite
+				+ ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL="
+				+ jdbcURL + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword
+				+ ", tableNames=" + tableNames + ", contexts=" + contexts + ", skip=" + skip
+				+ ", includeCompileDependencies=" + includeCompileDependencies
+				+ ", includeAllDependencies=" + includeAllDependencies + "]";
 	}
 
 	public void execute() throws MojoExecutionException {
@@ -202,6 +207,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 		calculateClassPath();
 
+		Set<String> rss = new HashSet<String>();
+
 		// add resource directories to the classpath. This is required to
 		// support
 		// use of a properties file in the build. Typically, the properties file
@@ -209,12 +216,19 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 		// include the project classpath.
 		List<Resource> resources = project.getResources();
 		List<String> resourceDirectories = new ArrayList<String>();
+		// 1资源
 		for (Resource resource : resources) {
 			resourceDirectories.add(resource.getDirectory());
-			System.out.println("resource:" + resource.toString());
+			rss.add(resource.getDirectory());
 		}
+
 		ClassLoader cl = ClassloaderUtility.getCustomClassloader(resourceDirectories);
 		ObjectFactory.addExternalClassLoader(cl);
+
+		// 2资源
+		for (String resource : project.getCompileSourceRoots()) {
+			rss.add(resource);
+		}
 
 		if (configurationFile == null) {
 			throw new MojoExecutionException(Messages.getString("RuntimeError.0"));
@@ -223,7 +237,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 		List<String> warnings = new ArrayList<String>();
 
 		if (!configurationFile.exists()) {
-			throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString()));
+			throw new MojoExecutionException(Messages.getString("RuntimeError.1",
+					configurationFile.toString()));
 		}
 
 		runScriptIfNecessary();
@@ -256,25 +271,47 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			getLog().info("欢迎切换 mybatis.generator 扩展插件.");
 			getLog().info(bLine);
 			getLog().info("加载自定义扩展：可视化配置");
+			getLog().info(sLine);
 
-			ConfigConvertUtil ccutil = new ConfigConvertUtil(project.getBasedir().getPath());
+			String baseDir = project.getBasedir().getPath() + "\\";
+			Set<String> set = new HashSet<String>();
+			if (baseDir == null || baseDir.equals("")) {
+				getLog().info("无法获取当前运行的项目路径o(>﹏<)o");
+				return;
+			} else {
+				for (String e : rss) {
+					int j = e.indexOf(baseDir);
+					if (j != -1) {
+						set.add(e.substring(j + baseDir.length(), e.length()));
+					}
+				}
+				if (set == null || set.isEmpty()) {
+					getLog().info("无法获取当前运行的源文件夹o(>﹏<)o");
+					return;
+				}
+				getLog().info("成功加载运行环境：" + baseDir);
+				getLog().info(sLine);
+			}
+
+			// 配置文件路径
+			ConfigConvertUtil ccutil = new ConfigConvertUtil(cff, baseDir);
 
 			Configuration config = null;
 			// 启动配置
 			DataConvertSuper dcs = new DataConvertImpl(ccutil);
 
 			CountDownLatch cdl = new CountDownLatch(1);
-			MainUI.begin(dcs, cdl);
+			MainUI.begin(dcs, cdl, set);
 			try {
 				cdl.await();
 				// 用户是否自动退出
 				if (MainUI.getStartState() == -1) {
-					getLog().info("不想继续了? 下次我还在这里, Bye!!!!");
+					getLog().info("不想继续了? 下次我还在这里,Bye..");
 					return;
 				}
 				// 自定义配置操作已经完成，转换数据
 				Config selfConfig = dcs.tearViewDate();
-				config = ccutil.self2me(selfConfig, null);
+				config = ccutil.self2me(selfConfig, baseDir);
 				// 自定义的配置需要保持数据文件中.
 				ccutil.writeJSONToFile(selfConfig);
 
@@ -284,6 +321,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
 			if (config == null) {
 				getLog().info("实例化自定义配置失败....请联系管理员");
+				return;
 			}
 			for (Context t : config.getContexts()) {
 
@@ -313,14 +351,13 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			}
 			ShellCallback callback = new MavenShellCallback(this, overwrite);
 
-			getLog().info("加载自定义扩展：mapper.xml 文件强制覆盖");
-			getLog().info(sLine);
+			getLog().info("加载自定义扩展：文档合并覆盖");
 
 			// 自定义的生成器
 			MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
 
-			myBatisGenerator
-					.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun, fullyqualifiedTables);
+			myBatisGenerator.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun,
+					fullyqualifiedTables);
 
 		} catch (SQLException e) {
 			throw new MojoExecutionException(e.getMessage());
@@ -336,8 +373,10 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			// ignore (will never happen with the DefaultShellCallback)
 		}
 
+		// 去除警告打印
 		for (String error : warnings) {
-			getLog().warn(error);
+			if (getLog().isDebugEnabled())
+				getLog().warn(error);
 		}
 
 		if (project != null && outputDirectory != null && outputDirectory.exists()) {
@@ -393,7 +432,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 			return;
 		}
 
-		SqlScriptRunner scriptRunner = new SqlScriptRunner(sqlScript, jdbcDriver, jdbcURL, jdbcUserId, jdbcPassword);
+		SqlScriptRunner scriptRunner = new SqlScriptRunner(sqlScript, jdbcDriver, jdbcURL,
+				jdbcUserId, jdbcPassword);
 		scriptRunner.setLog(getLog());
 		scriptRunner.executeScript();
 	}

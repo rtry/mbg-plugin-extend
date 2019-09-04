@@ -39,6 +39,7 @@ import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.XmlFormatter;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.BaseInterfaceUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.EveryMapperUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendGenerator;
@@ -511,7 +512,7 @@ public class Context extends PropertyHolder {
 		// ============================
 		// M1.基础接口位置(供子接口继承)
 		// ============================
-		String baseInterfaceName = getJdbcConnectionConfiguration().getProperty("supportCustomInterface");
+		String baseInterfaceName = getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
 		ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0, baseInterfaceName.lastIndexOf(".")));
 		ExtendGenerator ej = new ExtendGenerator(eUtil, this);
 

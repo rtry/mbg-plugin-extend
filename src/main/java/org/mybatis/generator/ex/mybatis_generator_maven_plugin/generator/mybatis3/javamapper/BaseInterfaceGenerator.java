@@ -37,9 +37,8 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 	public BaseInterfaceGenerator(boolean requiresXMLGenerator, Context context) {
 		super(false);
 		super.context = context;
-		baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(
-				"supportCustomInterface");
-		StringBuffer sb = new StringBuffer();
+		baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
+		StringBuilder sb = new StringBuilder();
 		sb.append("<");
 		sb.append(BIConstant.MODEL).append(",");
 		sb.append(BIConstant.PK).append(" extends Serializable,");

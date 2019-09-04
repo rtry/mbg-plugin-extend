@@ -1,6 +1,7 @@
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -30,16 +31,18 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.DataBase;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.DataTable;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Extend;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.SourceFolder;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 import com.alibaba.fastjson.JSON;
 
 public class ConfigConvertUtil {
 
-	String path = "F:\\Git\\mbg-plugin-extend\\src\\test\\java\\generatorTestConfig.json";
+	private File cff;
 	String baseFile = "";
 
-	public ConfigConvertUtil(String baseFile) {
+	public ConfigConvertUtil(File cff, String baseFile) {
 		super();
+		this.cff = cff;
 		this.baseFile = baseFile;
 	}
 
@@ -137,8 +140,7 @@ public class ConfigConvertUtil {
 		jdbcConnectionConfiguration.setPassword(config.getDb().getPw());
 		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
 		// 基本-JDBCConnectionConfiguration 中增加自定义数据
-		jdbcConnectionConfiguration.addProperty("supportCustomInterface", config.getDb()
-				.getMapperClass());
+		jdbcConnectionConfiguration.addProperty(BIConstant.SCI, config.getDb().getMapperClass());
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
@@ -251,7 +253,7 @@ public class ConfigConvertUtil {
 		FileWriter fw = null;
 		PrintWriter out = null;
 		try {
-			fw = new FileWriter(path);
+			fw = new FileWriter(cff);
 			out = new PrintWriter(fw);
 			out.write(json);
 			out.println();
@@ -279,10 +281,14 @@ public class ConfigConvertUtil {
 	 * @since JDK 1.8
 	 */
 	public Config readJSONFromFile() {
+		if (!cff.exists()) {
+			System.out.println("项目第一次创建：新建文件");
+			return new Config();
+		}
 		StringBuffer sb = new StringBuffer();
 		BufferedReader reader = null;
 		try {
-			FileInputStream fileInputStream = new FileInputStream(path);
+			FileInputStream fileInputStream = new FileInputStream(cff);
 			InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
 			reader = new BufferedReader(inputStreamReader);
 			String tempString = null;

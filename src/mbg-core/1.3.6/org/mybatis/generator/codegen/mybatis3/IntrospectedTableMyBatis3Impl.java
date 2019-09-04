@@ -38,6 +38,7 @@ import org.mybatis.generator.codegen.mybatis3.model.PrimaryKeyGenerator;
 import org.mybatis.generator.codegen.mybatis3.model.RecordWithBLOBsGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.internal.ObjectFactory;
 
 /**
@@ -220,8 +221,7 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 	public Collection<? extends GeneratedJavaFile> getJavaMapperGenerated() {
 		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
-		String baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(
-				"supportCustomInterface");
+		String baseInterfaceName = context.getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
 
 		if (baseInterfaceName != null) {
 			// B.生成 自定义

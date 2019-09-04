@@ -387,7 +387,7 @@ public class MyBatisGeneratorEx {
 							Set<String> gex = unit.getSuperInterfaceTypes().stream()
 									.map(e -> e.getShortName()).collect(Collectors.toSet());
 							String baseInterfaceName = context.getJdbcConnectionConfiguration()
-									.getProperty("supportCustomInterface");
+									.getProperty(BIConstant.SCI);
 							ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0,
 									baseInterfaceName.lastIndexOf(".")));
 							filcode = RegexUtil.add(filcode, result, gex, eUtil);

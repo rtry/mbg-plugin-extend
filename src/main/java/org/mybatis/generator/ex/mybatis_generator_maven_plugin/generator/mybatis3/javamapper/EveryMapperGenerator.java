@@ -17,6 +17,7 @@ import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
 
 public class EveryMapperGenerator extends AbstractJavaClientGenerator {
@@ -46,7 +47,7 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 					PropertyRegistry.ANY_ROOT_INTERFACE);
 		}
 
-		String mapperInterfaceClass = context.getJdbcConnectionConfiguration().getProperty("supportCustomInterface");
+		String mapperInterfaceClass = context.getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
 		FullyQualifiedJavaType si = new FullyQualifiedJavaType(mapperInterfaceClass);
 		String sampleClass = mapperInterfaceClass.substring(mapperInterfaceClass.lastIndexOf(".") + 1,
 				mapperInterfaceClass.length());

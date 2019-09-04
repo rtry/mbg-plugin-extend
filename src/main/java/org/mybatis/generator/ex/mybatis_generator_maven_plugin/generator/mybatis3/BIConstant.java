@@ -51,4 +51,11 @@ public class BIConstant {
 	// 方法：不存在则插入
 	public static final String ExtendInsertIfAbsentName = "insertIfAbsent";
 
+	// =======================================
+	// 特殊配置
+	// =======================================
+	public static final String SCI = "supportCustomInterface";
+	
+	
+	
 }

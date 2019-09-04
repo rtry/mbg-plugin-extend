@@ -4,7 +4,9 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.maven.plugin.logging.Log;
@@ -83,14 +85,19 @@ public class TestGenerator {
 			getLog().info(bLine);
 			getLog().info("加载自定义扩展：可视化配置");
 
-			ConfigConvertUtil ccutil = new ConfigConvertUtil("F:\\git\\felicity\\");
-
+			String path = "F:\\Git\\mbg-plugin-extend\\src\\test\\java\\generatorTestConfig.json";
+			File cff = new File(path);
+			ConfigConvertUtil ccutil = new ConfigConvertUtil(cff,"F:\\git\\felicity\\");
+			// 源文件夹
+			Set<String> sources = new HashSet<>();
+			sources.add("src\\main\\java");
+			sources.add("src\\main\\resources");
 			Configuration config = null;
 			// 启动配置
 			DataConvertSuper dcs = new DataConvertImpl(ccutil);
-
+			
 			CountDownLatch cdl = new CountDownLatch(1);
-			MainUI.begin(dcs, cdl);
+			MainUI.begin(dcs, cdl,sources);
 			try {
 				cdl.await();
 				// 用户是否自动退出
