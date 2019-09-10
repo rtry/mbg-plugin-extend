@@ -173,7 +173,7 @@ public class ConfigConvertUtil {
 					values, baseFile);
 			context.setJavaClientGeneratorConfiguration(jcgc);
 
-			boolean flag = config.getDb().isAutoFile();
+			boolean flag = !config.getDb().isAutoFile();
 			// 所包含的相同的表配置文件
 			for (DataTable dt : values) {
 				TableConfiguration tc = new TableConfiguration(context);

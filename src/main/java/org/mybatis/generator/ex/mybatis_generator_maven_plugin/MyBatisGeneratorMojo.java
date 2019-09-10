@@ -38,6 +38,7 @@ import org.apache.maven.project.MavenProject;
 import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
@@ -343,6 +344,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 					if(t.getJdbcConnectionConfiguration().getProperty(BIConstant.FILE_TINY2INT).equals("true")){
 						MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
 						t.setJavaTypeResolverConfiguration(myType);
+					}else{
+						t.setJavaTypeResolverConfiguration(new JavaTypeResolverConfiguration());
 					}
 
 				} catch (NoSuchFieldException | SecurityException e) {

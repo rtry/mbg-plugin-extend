@@ -16,12 +16,14 @@ import org.junit.Test;
 import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.internal.DefaultShellCallback;
@@ -136,9 +138,14 @@ public class TestGenerator {
 
 					getLog().info("加载自定义扩展：类型转换");
 					getLog().info(sLine);
-
-					MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
-					t.setJavaTypeResolverConfiguration(myType);
+					
+					//根据配置显示是否需要转换
+					if(t.getJdbcConnectionConfiguration().getProperty(BIConstant.FILE_TINY2INT).equals("true")){
+						MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
+						t.setJavaTypeResolverConfiguration(myType);
+					}else{
+						t.setJavaTypeResolverConfiguration(new JavaTypeResolverConfiguration());
+					}
 
 				} catch (NoSuchFieldException | SecurityException e) {
 					e.printStackTrace();
