@@ -55,6 +55,8 @@ public class BIConstant {
 	// 特殊配置
 	// =======================================
 	public static final String SCI = "supportCustomInterface";
+
+	public static final String FILE_TINY2INT = "filetiny2int";
 	
 	
 	

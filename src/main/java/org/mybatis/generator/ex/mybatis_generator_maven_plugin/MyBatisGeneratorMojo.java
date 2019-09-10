@@ -44,6 +44,7 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.exception.InvalidConfigurationException;
@@ -338,8 +339,11 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 					getLog().info("加载自定义扩展：类型转换");
 					getLog().info(sLine);
 
-					MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
-					t.setJavaTypeResolverConfiguration(myType);
+					//根据配置显示是否需要转换
+					if(t.getJdbcConnectionConfiguration().getProperty(BIConstant.FILE_TINY2INT).equals("true")){
+						MyJavaTypeResolverConfiguration myType = new MyJavaTypeResolverConfiguration();
+						t.setJavaTypeResolverConfiguration(myType);
+					}
 
 				} catch (NoSuchFieldException | SecurityException e) {
 					e.printStackTrace();
