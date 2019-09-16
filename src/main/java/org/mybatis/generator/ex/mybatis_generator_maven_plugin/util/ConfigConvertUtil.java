@@ -34,6 +34,8 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.SourceFolder
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class ConfigConvertUtil {
 
@@ -141,7 +143,8 @@ public class ConfigConvertUtil {
 		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
 		// 基本-JDBCConnectionConfiguration 中增加自定义数据
 		jdbcConnectionConfiguration.addProperty(BIConstant.SCI, config.getDb().getMapperClass());
-		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb().isTiny2int()+"");
+		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb()
+				.isTiny2int() + "");
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
@@ -179,7 +182,7 @@ public class ConfigConvertUtil {
 				TableConfiguration tc = new TableConfiguration(context);
 				tc.setTableName(dt.getTableName());
 				tc.setDomainObjectName(dt.getClassName());
-				tc.addProperty("useActualColumnNames", flag+"");
+				tc.addProperty("useActualColumnNames", flag + "");
 				tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
 				tc.addProperty("insertBatch", dt.getExtend().isInsertBatch() + "");
 				tc.addProperty("insertIfAbsent", dt.getExtend().isInsertIfAbsent() + "");
@@ -252,12 +255,19 @@ public class ConfigConvertUtil {
 	 */
 	public void writeJSONToFile(Config cfg) {
 		String json = JSON.toJSONString(cfg);
+
+		// 美化配置
+		JSONObject object = JSONObject.parseObject(json);
+		String pretty = JSON.toJSONString(object, SerializerFeature.PrettyFormat,
+				SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+		
 		FileWriter fw = null;
 		PrintWriter out = null;
 		try {
 			fw = new FileWriter(cff);
 			out = new PrintWriter(fw);
-			out.write(json);
+//			out.write(json);
+			out.write(pretty);
 			out.println();
 			fw.close();
 			out.close();
