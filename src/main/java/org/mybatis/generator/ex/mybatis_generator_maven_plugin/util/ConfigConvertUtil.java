@@ -141,6 +141,7 @@ public class ConfigConvertUtil {
 		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
 		// 基本-JDBCConnectionConfiguration 中增加自定义数据
 		jdbcConnectionConfiguration.addProperty(BIConstant.SCI, config.getDb().getMapperClass());
+		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb().isTiny2int()+"");
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
@@ -172,12 +173,13 @@ public class ConfigConvertUtil {
 					values, baseFile);
 			context.setJavaClientGeneratorConfiguration(jcgc);
 
+			boolean flag = !config.getDb().isAutoFile();
 			// 所包含的相同的表配置文件
 			for (DataTable dt : values) {
 				TableConfiguration tc = new TableConfiguration(context);
 				tc.setTableName(dt.getTableName());
 				tc.setDomainObjectName(dt.getClassName());
-				tc.addProperty("useActualColumnNames", "false");
+				tc.addProperty("useActualColumnNames", flag+"");
 				tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
 				tc.addProperty("insertBatch", dt.getExtend().isInsertBatch() + "");
 				tc.addProperty("insertIfAbsent", dt.getExtend().isInsertIfAbsent() + "");

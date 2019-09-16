@@ -13,7 +13,6 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 /**
@@ -40,11 +39,13 @@ public class JavaTypePlugin extends PluginAdapter {
 		// =================================================
 		// 功能: tinyint( >2 )数据（Byte）调整为（Integer）类型
 		// =================================================
-		String typeShortName = field.getType().getShortName();
-		String byteSimpleName = Byte.class.getSimpleName();
-		if (typeShortName.equals(byteSimpleName)) {
-			field.setType(new FullyQualifiedJavaType(Integer.class.getName()));
-		}
+
+        // 暂时注销吧
+        //	    String typeShortName = field.getType().getShortName();
+        //		String byteSimpleName = Byte.class.getSimpleName();
+        //		if (typeShortName.equals(byteSimpleName)) {
+        //			field.setType(new FullyQualifiedJavaType(Integer.class.getName()));
+        //		}
 
 		return super.modelFieldGenerated(field, topLevelClass, introspectedColumn,
 				introspectedTable, modelClassType);

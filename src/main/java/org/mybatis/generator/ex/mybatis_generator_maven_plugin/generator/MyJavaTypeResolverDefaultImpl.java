@@ -32,6 +32,7 @@ public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 	// ======================================================
 	public MyJavaTypeResolverDefaultImpl() {
 		// 功能1 tinyint( >2 )数据（Byte）调整为（Integer）类型
+		
 		typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", new FullyQualifiedJavaType(
 				Integer.class.getName())));
 	}
