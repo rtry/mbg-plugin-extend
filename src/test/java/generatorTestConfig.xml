@@ -5,60 +5,41 @@
 
 <generatorConfiguration>
 	<classPathEntry
-		location="D:\develop\maven\repository\mysql\mysql-connector-java\5.1.37\mysql-connector-java-5.1.37.jar" />
+		location="D:\apache-maven-3.3.3\repository\mysql\mysql-connector-java\5.1.37\mysql-connector-java-5.1.37.jar" />
 
-	<context id="mgb-test" targetRuntime="MyBatis3">
-
-		<property name="javaFileEncoding" value="UTF-8" />
+	<context id="mge" targetRuntime="MyBatis3">
 
 		<commentGenerator>
 			<property name="suppressDate" value="true" />
-			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
 			<property name="suppressAllComments" value="true" />
-			<property name="addRemarkComments" value="true" />
 		</commentGenerator>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.253.100:3306/ace" userId="root"
+			connectionURL="jdbc:mysql://localhost:3306/ace" userId="root"
 			password="123456">
 		</jdbcConnection>
 
-		<!-- false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer 默认 -->
-		<!-- true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal -->
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="true" />
 		</javaTypeResolver>
-		<!-- <javaTypeResolver type="pt.sicau.edu.cn.over.MyJavaTypeResolver"> 
-			<property name="forceBigDecimals" value="true" /> </javaTypeResolver> -->
 
-		<!-- targetProject:自动生成代码的位置 -->
-		<javaModelGenerator targetPackage="pt.sicau.edu.cn.mybaits.entry"
-			targetProject="E:\mybatis">
-			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+		<javaModelGenerator targetPackage="xyz.rtry.felicity.business.showcase.model"
+			targetProject="F:\git\felicity\src\main\java">
 			<property name="enableSubPackages" value="true" />
-			<!-- 从数据库返回的值被清理前后的空格 -->
 			<property name="trimStrings" value="false" />
 		</javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="src/main/resources/mapper"
-			targetProject="E:\mybatis">
+		<sqlMapGenerator targetPackage="mybatis\mapper\business\showcase"
+			targetProject="F:\git\felicity\src\main\resources">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="pt.sicau.edu.cn.mybaits.mapper" targetProject="E:\mybatis">
-			<property name="enableSubPackages" value="true" />
-			<!-- 插件自定义属性，不影响原来的逻辑，supportCustomInterface，才会启动 -->
-			<!-- 1:mapper class 继承超类模板，超类需自定义 -->
-			<!-- 2:mapper class 会对文档进行 merge -->
-			<property name="supportCustomInterface" value="pt.sicau.edu.cn.mybaits.BaseMapper" />
+			targetPackage="xyz.rtry.felicity.business.showcase.mapper" targetProject="F:\git\felicity\src\main\java">
+			<property name="enableSubPackages" value="false" />
+			<property name="supportCustomInterface" value="xyz.rtry.felicity.common.web.dao.BaseInterfaceMapper" />
 		</javaClientGenerator>
-
-		<table tableName="cms_menu" domainObjectName="CmsMenu">
-			<property name="useActualColumnNames" value="false" />
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
-		<table tableName="sys_organization" domainObjectName="SysOrganization">
+		<table tableName="goooogle_paly" domainObjectName="GooooglePaly">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
