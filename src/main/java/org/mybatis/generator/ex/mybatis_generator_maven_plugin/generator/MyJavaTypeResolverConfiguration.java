@@ -23,7 +23,6 @@ import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 public class MyJavaTypeResolverConfiguration extends JavaTypeResolverConfiguration {
 
 	public String getConfigurationType() {
-		// return super.getConfigurationType();
 		return MyJavaTypeResolverDefaultImpl.class.getName();
 	}
 

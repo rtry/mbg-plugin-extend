@@ -10,6 +10,7 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 import java.sql.Types;
 
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
 
 /**
@@ -31,9 +32,23 @@ public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 	// 达到类型映射的更改
 	// ======================================================
 	public MyJavaTypeResolverDefaultImpl() {
+
 		// 功能1 tinyint( >2 )数据（Byte）调整为（Integer）类型
-		
-		typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", new FullyQualifiedJavaType(
-				Integer.class.getName())));
+		// boolean tiny2int = super.context.getJdbcConnectionConfiguration()
+		// .getProperty(BIConstant.FILE_TINY2INT).equals("true");
+		//
+		// // 功能1 smallint( >2 )数据（Short）调整为（Integer）类型
+		// boolean small2int = super.context.getJdbcConnectionConfiguration()
+		// .getProperty(BIConstant.FILE_SMALL2INT).equals("true");
+		//
+		// if (tiny2int) {
+		// typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT",
+		// new FullyQualifiedJavaType(Integer.class.getName())));
+		// }
+		//
+		// if (small2int) {
+		// typeMap.put(Types.SMALLINT, new JdbcTypeInformation("SMALLINT",
+		// new FullyQualifiedJavaType(Integer.class.getName())));
+		// }
 	}
 }

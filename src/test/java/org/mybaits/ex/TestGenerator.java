@@ -169,6 +169,7 @@ public class TestGenerator {
 			// 自定义插件实现
 			MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
 			myBatisGenerator.generate(null);
+			System.out.println("x");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

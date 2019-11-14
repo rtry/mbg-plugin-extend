@@ -23,6 +23,7 @@ import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.InnerEnum;
+import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.XmlElement;
@@ -279,4 +280,12 @@ public interface CommentGenerator {
      */
     void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable,
             Set<FullyQualifiedJavaType> imports);
+
+	/**
+	 * addMapperComment 创建Mapper 注解
+	 * @param interfaze
+	 * @param introspectedTable
+	 * @Exception 异常描述
+	*/
+	void addMapperComment(Interface interfaze, IntrospectedTable introspectedTable);
 }

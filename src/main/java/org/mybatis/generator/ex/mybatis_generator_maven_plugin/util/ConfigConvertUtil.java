@@ -143,8 +143,8 @@ public class ConfigConvertUtil {
 		jdbcConnectionConfiguration.setDriverClass(config.getDb().getDriver());
 		// 基本-JDBCConnectionConfiguration 中增加自定义数据
 		jdbcConnectionConfiguration.addProperty(BIConstant.SCI, config.getDb().getMapperClass());
-		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb()
-				.isTiny2int() + "");
+		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb().isTiny2int() + "");
+		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_SMALL2INT, config.getDb().isSmall2int()+"");
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();

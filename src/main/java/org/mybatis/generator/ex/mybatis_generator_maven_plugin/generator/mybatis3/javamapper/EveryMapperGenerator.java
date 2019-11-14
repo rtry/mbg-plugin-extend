@@ -20,6 +20,15 @@ import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
 
+/**   
+ * 类名称：EveryMapperGenerator<br>
+ * 类描述: Mapper.java 生成逻辑  <br>
+ * 创建人：felicity		   <br>
+ * 创建时间：2019年11月14日 下午3:04:45<br>
+ * 备注:
+ * @version
+ * @see
+ */
 public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 
 	private ExtendUtil util;
@@ -40,6 +49,8 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 		Interface interfaze = new Interface(type);
 		interfaze.setVisibility(JavaVisibility.PUBLIC);
 		commentGenerator.addJavaFileComment(interfaze);
+
+        commentGenerator.addMapperComment(interfaze, introspectedTable);
 
 		String rootInterface = introspectedTable.getTableConfigurationProperty(PropertyRegistry.ANY_ROOT_INTERFACE);
 		if (!stringHasValue(rootInterface)) {
@@ -73,18 +84,20 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 		// ===================================
 		// 判断是否有扩展父类
 		// ===================================
+		
+		
+		// 扩展1:批量插入功能
 		String insertBatch = introspectedTable.getTableConfiguration().getProperty("insertBatch");
 		if (insertBatch.equals("true")) {
-			// 扩展1
 			FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(util.getInsertBatchClassName().concat(
 					"<" + introspectedTable.getBaseRecordType() + ">"));
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
 			interfaze.addSuperInterface(extend1);
 		}
 
+		// 扩展2：按需查询功能
 		String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");
 		if (selectOption.equals("true")) {
-			// 扩展2
 			FullyQualifiedJavaType extend2 = new FullyQualifiedJavaType(util.getSelectOptionClassName().concat(
 					"<" + introspectedTable.getBaseRecordType() + ", " + pkType.getFullyQualifiedName() + ", "
 							+ introspectedTable.getExampleType() + ">"));
@@ -92,9 +105,9 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getSelectOptionClassName()));
 		}
 
+		// 扩展3：不存在插入功能
 		String insertIfAbsent = introspectedTable.getTableConfiguration().getProperty("insertIfAbsent");
 		if (insertIfAbsent.equals("true")) {
-			// 扩展3
 			FullyQualifiedJavaType extend3 = new FullyQualifiedJavaType(util.getIfAbsentClassName().concat(
 					"<" + introspectedTable.getBaseRecordType() + ">"));
 			interfaze.addSuperInterface(extend3);

@@ -27,12 +27,14 @@ import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.InnerEnum;
+import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.JavaElement;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.Version;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.Enums.ExampleProperty;
 import org.mybatis.generator.internal.util.StringUtility;
 
@@ -285,12 +287,14 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		StringBuilder sb = new StringBuilder();
-		field.addJavaDocLine("/**");
-		sb.append(" * ");
-		sb.append(introspectedColumn.getRemarks());
-		field.addJavaDocLine(sb.toString().replace("\n", " "));
-		field.addJavaDocLine(" */");
+		if (introspectedColumn.getRemarks() != null && !introspectedColumn.getRemarks().isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			field.addJavaDocLine("/**");
+			sb.append(" * ");
+			sb.append(introspectedColumn.getRemarks());
+			field.addJavaDocLine(sb.toString().replace("\n", " "));
+			field.addJavaDocLine(" */");
+		}
 	}
 
 	/**
@@ -325,11 +329,13 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 			return;
 		}
 		String[] descs = BICommentConstant.getComments(name);
-		method.addJavaDocLine("/**");
-		for (String des : descs) {
-			method.addJavaDocLine(xh.concat(des.toString().replace("\n", " ")));
+		if (descs != null && descs.length > 0) {
+			method.addJavaDocLine("/**");
+			for (String des : descs) {
+				method.addJavaDocLine(xh.concat(des.toString().replace("\n", " ")));
+			}
+			method.addJavaDocLine(" */");
 		}
-		method.addJavaDocLine(" */");
 	}
 
 	/**
@@ -340,18 +346,20 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		method.addJavaDocLine("/**");
-		StringBuilder sb = new StringBuilder();
-		sb.append(" * ");
-		sb.append(method.getName() + ": 获取" + introspectedColumn.getRemarks());
-		method.addJavaDocLine(sb.toString().replace("\n", " "));
-		sb.setLength(0);
-		sb.append(" * @return ");
-		sb.append(introspectedColumn.getActualColumnName());
-		sb.append(" ");
-		// sb.append(introspectedColumn.getRemarks());
-		method.addJavaDocLine(sb.toString().replace("\n", " "));
-		method.addJavaDocLine(" */");
+		if (introspectedColumn.getRemarks() != null && !introspectedColumn.getRemarks().isEmpty()) {
+			method.addJavaDocLine("/**");
+			StringBuilder sb = new StringBuilder();
+			sb.append(" * ");
+			sb.append(method.getName() + ": 获取 " + introspectedColumn.getRemarks());
+			method.addJavaDocLine(sb.toString().replace("\n", " "));
+			sb.setLength(0);
+			sb.append(" * @return ");
+			sb.append(introspectedColumn.getActualColumnName());
+			sb.append(" ");
+			// sb.append(introspectedColumn.getRemarks());
+			method.addJavaDocLine(sb.toString().replace("\n", " "));
+			method.addJavaDocLine(" */");
+		}
 	}
 
 	/**
@@ -362,19 +370,21 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		method.addJavaDocLine("/**");
-		StringBuilder sb = new StringBuilder();
-		sb.append(" * ");
-		sb.append(method.getName() + ": 设置" + introspectedColumn.getRemarks());
-		method.addJavaDocLine(sb.toString().replace("\n", " "));
-		Parameter parm = method.getParameters().get(0);
-		sb.setLength(0);
-		sb.append(" * @param ");
-		sb.append(parm.getName());
-		sb.append(" ");
-		// sb.append(introspectedColumn.getRemarks());
-		method.addJavaDocLine(sb.toString().replace("\n", " "));
-		method.addJavaDocLine(" */");
+		if (introspectedColumn.getRemarks() != null && !introspectedColumn.getRemarks().isEmpty()) {
+			method.addJavaDocLine("/**");
+			StringBuilder sb = new StringBuilder();
+			sb.append(" * ");
+			sb.append(method.getName() + ": 设置 " + introspectedColumn.getRemarks());
+			method.addJavaDocLine(sb.toString().replace("\n", " "));
+			Parameter parm = method.getParameters().get(0);
+			sb.setLength(0);
+			sb.append(" * @param ");
+			sb.append(parm.getName());
+			sb.append(" ");
+			// sb.append(introspectedColumn.getRemarks());
+			method.addJavaDocLine(sb.toString().replace("\n", " "));
+			method.addJavaDocLine(" */");
+		}
 	}
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
@@ -393,12 +403,12 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 
 	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable,
 			boolean markAsDoNotDelete) {
-		//
+
 		// if (suppressAllComments) {
 		// return;
 		// }
 		// StringBuilder sb = new StringBuilder();
-		// innerClass.addJavaDocLine("/**");
+		// innerClass.addJavaDocLine("/**AAAAAAAAAAAAAAAAAAAAAAAAA");
 		// sb.append(" * ");
 		// sb.append(introspectedTable.getFullyQualifiedTable());
 		// innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
@@ -417,18 +427,43 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		StringBuilder sb = new StringBuilder();
 		innerClass.addJavaDocLine("/**");
 		sb.append(" * 类描述: ");
-		sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类");
+		sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: MBG(mybatis generator ex)");
+		sb.append(" * 创建者: 由 MBG(mybatis generator plug) 生成，请勿修改<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * 创建时间: ");
 		sb.append(currentDateStr);
+		sb.append("<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * @version ");
+		sb.append(" * @version "+Version.getVersionNumber());
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		innerClass.addJavaDocLine(" */");
+	}
+
+	@Override
+	public void addMapperComment(Interface interfaze, IntrospectedTable introspectedTable) {
+		if (suppressAllComments) {
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		interfaze.addJavaDocLine("/**");
+		sb.append(" * 类描述: ");
+		sb.append(introspectedTable.getFullyQualifiedTable() + "表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
+		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
+		sb.setLength(0);
+		sb.append(" * 创建者: 由 MBG(mybatis generator plug) 生成<br> ");
+		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
+		sb.setLength(0);
+		sb.append(" * 创建时间: ");
+		sb.append(currentDateStr);
+		sb.append("<br>");
+		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
+		sb.setLength(0);
+		sb.append(" * @version "+Version.getVersionNumber());
+		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
+		interfaze.addJavaDocLine(" */");
 	}
 }

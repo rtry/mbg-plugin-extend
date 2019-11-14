@@ -70,8 +70,8 @@ public class PrimaryKeyGenerator extends AbstractJavaGenerator {
         if (introspectedTable.isConstructorBased()) {
             addParameterizedConstructor(topLevelClass);
 
-            if (!introspectedTable.isImmutable()) {
                 addDefaultConstructor(topLevelClass);
+                if (!introspectedTable.isImmutable()) {
             }
         }
 

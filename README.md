@@ -1,12 +1,29 @@
-# mbg-plugin-extend
+## mbg-plugin
+> 基于mybatis-generator 的自定义Maven插件,只支持Mysql
 
-## mybatis-generator 自定义插件扩展
 
-	* 文件注释
-	* 类型转换
-	* mapper覆盖
+### TODO 
+* Model 类支持lombok 
+* Mapper 类支持生成自定义注解
+* 去掉 SelectOptionMapper 中关于selectOptionToMap
+* 优化 InsertBatchMapper 批量插入时，bean 不一致的情况
+* 优化 update 必须更新为空的方法
 
-## 单独工具ExportYNoteUtil
 
-	* 有道md文件导出
-	* md文件网络资源自动下载 
+
+### version: 0.0.2
+* 新增超类 InsertBatchMapper，可勾选，表示批量插入
+* 新增超类SelectOptionMapper，可勾选，表示按需查询
+* 新增超类InsertIfAbsentMapper，可勾选，表示不存在则插入
+* 去掉原来配置文件，改用自定义json 配置文件，可项目内共享
+* 新增可视化配置界面，期望一键生成
+* 可设置部分 Mysql 字段到 Java 字段的类型映射
+* 可设置是否驼峰
+
+### version: 0.0.1 
+* 数据库字段注解，自动生成到对应的Model
+* Mapper 类与方法注解
+* Mapper.xml 文件覆盖操作
+* 新增一个超类Mapper:BaseMapper.java，将基本操作方法提出到超类
+* xml->自定义扩展，Mapper->自定义扩展 保证自定义与生成数互不干扰
+
