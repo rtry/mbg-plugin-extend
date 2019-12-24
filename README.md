@@ -8,6 +8,7 @@
 * 去掉 SelectOptionMapper 中关于selectOptionToMap
 * 优化 InsertBatchMapper 批量插入时，bean 不一致的情况
 * 优化 update 必须更新为空的方法
+* 无主键的情况
 
 
 
