@@ -6,9 +6,10 @@
 * Model 类支持lombok 
 * Mapper 类支持生成自定义注解
 * 去掉 SelectOptionMapper 中关于selectOptionToMap
-* 优化 InsertBatchMapper 批量插入时，bean 不一致的情况
+* 优化 InsertBatchMapper 批量插入时，bean 不一致的情况（有的 bean 属性多一点，有的少有点）
 * 优化 update 必须更新为空的方法
 * 无主键的情况
+* BUG 主键不叫id的情况
 
 
 
