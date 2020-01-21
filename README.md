@@ -10,6 +10,7 @@
 * 优化 update 必须更新为空的方法
 * 无主键的情况
 * BUG 主键不叫id的情况
+* 生成的其他类 自动生成的注解问题
 
 
 
@@ -24,8 +25,8 @@
 
 ### version: 0.0.1 
 * 数据库字段注解，自动生成到对应的Model
-* Mapper 类与方法注解
+* Mapper.java 类与方法注解
 * Mapper.xml 文件覆盖操作
 * 新增一个超类Mapper:BaseMapper.java，将基本操作方法提出到超类
-* xml->自定义扩展，Mapper->自定义扩展 保证自定义与生成数互不干扰
+* Mapper.xml->自定义扩展，Mapper.java->自定义扩展 保证自定义与生成数互不干扰
 

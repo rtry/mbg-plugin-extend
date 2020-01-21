@@ -7,10 +7,6 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
 
-import java.sql.Types;
-
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
 
 /**

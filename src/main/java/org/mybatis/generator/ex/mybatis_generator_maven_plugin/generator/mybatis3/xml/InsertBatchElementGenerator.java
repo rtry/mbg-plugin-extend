@@ -100,7 +100,8 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 			sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
 			sb.append(',');
 			insertNotNullElement.addElement(new TextElement(sb.toString()));
-			insertTrimElement.addElement(insertNotNullElement);
+            //			insertTrimElement.addElement(insertNotNullElement);
+            insertTrimElement.addElement(new TextElement(sb.toString()));
 
 			sb.setLength(0);
 			sb.append("item." + introspectedColumn.getJavaProperty());
@@ -113,7 +114,8 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 			sb.append(getParameterClause(introspectedColumn, null));
 			sb.append(',');
 			valuesNotNullElement.addElement(new TextElement(sb.toString()));
-			valuesTrimElement.addElement(valuesNotNullElement);
+            //			valuesTrimElement.addElement(valuesNotNullElement);
+            valuesTrimElement.addElement(new TextElement(sb.toString()));
 		}
 
 		if (context.getPlugins().sqlMapInsertSelectiveElementGenerated(answer, introspectedTable)) {
