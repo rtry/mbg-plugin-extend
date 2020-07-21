@@ -59,5 +59,9 @@ public class BIConstant {
 	public static final String FILE_SMALL2INT = "filesmall2int";
 	
 	
+	/**
+	 * 生成Mapper对象方法的注解
+	 * */
+	public static final String startTag = " * ";
 	
 }

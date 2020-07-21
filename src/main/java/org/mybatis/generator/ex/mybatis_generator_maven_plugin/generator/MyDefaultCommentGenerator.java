@@ -36,6 +36,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.Version;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.Enums.ExampleProperty;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 import org.mybatis.generator.internal.util.StringUtility;
 
 /**
@@ -84,9 +85,12 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		currentDateStr = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
 	}
 
+	//*********************************************
+	// 此处为类的最顶部分注解
+	//*********************************************
 	@Override
 	public void addJavaFileComment(CompilationUnit compilationUnit) {
-		// add no file level comments by default
+		//compilationUnit.addFileCommentLine("/** 此处为类的最顶部分注解 */");
 	}
 
 	/**
@@ -317,11 +321,6 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		}
 	}
 
-	/**
-	 * 生成Mapper对象方法的注解
-	 * */
-	private static final String xh = " * ";
-
 	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
 		String name = method.getName();
 		// log.info("生成Mapper对象方法:" + name + "的注解");
@@ -332,7 +331,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		if (descs != null && descs.length > 0) {
 			method.addJavaDocLine("/**");
 			for (String des : descs) {
-				method.addJavaDocLine(xh.concat(des.toString().replace("\n", " ")));
+				method.addJavaDocLine(BIConstant.startTag.concat(des.toString().replace("\n", " ")));
 			}
 			method.addJavaDocLine(" */");
 		}
@@ -427,10 +426,14 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		StringBuilder sb = new StringBuilder();
 		innerClass.addJavaDocLine("/**");
 		sb.append(" * 类描述: ");
-		sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类<br>");
+		if(innerClass.getType().getShortName().endsWith("Example")){
+			sb.append(introspectedTable.getFullyQualifiedTable() + "表的查询类，请勿修改<br>");
+		}else{
+			sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类，请勿修改<br>");
+		}
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: 由 MBG(mybatis generator plug) 生成，请勿修改<br>");
+		sb.append(" * 创建者: " + BICommentConstant.createComment + "<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * 创建时间: ");
@@ -438,7 +441,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		sb.append("<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * @version "+Version.getVersionNumber());
+		sb.append(" * @version " + Version.getVersionNumber());
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		innerClass.addJavaDocLine(" */");
 	}
@@ -451,10 +454,11 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		StringBuilder sb = new StringBuilder();
 		interfaze.addJavaDocLine("/**");
 		sb.append(" * 类描述: ");
-		sb.append(introspectedTable.getFullyQualifiedTable() + "表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
+		sb.append(introspectedTable.getFullyQualifiedTable()
+				+ "表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: 由 MBG(mybatis generator plug) 生成<br> ");
+		sb.append(" * 创建者: " + BICommentConstant.createComment + "<br> ");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * 创建时间: ");
@@ -462,7 +466,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		sb.append("<br>");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * @version "+Version.getVersionNumber());
+		sb.append(" * @version " + Version.getVersionNumber());
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		interfaze.addJavaDocLine(" */");
 	}
