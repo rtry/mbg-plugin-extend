@@ -248,7 +248,7 @@ public class Context extends PropertyHolder {
 	 * Builds an XmlElement representation of this context. Note that the XML
 	 * may not necessarily validate if the context is invalid. Call the
 	 * <code>validate</code> method to check validity of this context.
-	 * 
+	 *
 	 * @return the XML representation of this context
 	 */
 	public XmlElement toXmlElement() {
@@ -415,7 +415,7 @@ public class Context extends PropertyHolder {
 	/**
 	 * Introspect tables based on the configuration specified in the
 	 * constructor. This method is long running.
-	 * 
+	 *
 	 * @param callback
 	 *            a progress callback if progress information is desired, or
 	 *            <code>null</code>
@@ -429,7 +429,7 @@ public class Context extends PropertyHolder {
 	 *            "bar", then the fully qualified table name is "foo.bar". If
 	 *            the Set is null or empty, then all tables in the configuration
 	 *            will be used for code generation.
-	 * 
+	 *
 	 * @throws SQLException
 	 *             if some error arises while introspecting the specified
 	 *             database tables.
@@ -512,12 +512,17 @@ public class Context extends PropertyHolder {
 		// ============================
 		// M1.基础接口位置(供子接口继承)
 		// ============================
+		String notBuildBaseMapper = getJdbcConnectionConfiguration().getProperty(BIConstant.notBuildBaseMapper);
+
 		String baseInterfaceName = getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
 		ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0, baseInterfaceName.lastIndexOf(".")));
 		ExtendGenerator ej = new ExtendGenerator(eUtil, this);
-
 		BaseInterfaceUtil util = new BaseInterfaceUtil(this);
-		generatedJavaFiles.addAll(util.getBaseInterfaceGenerated());
+
+		// 不生成超类文件
+		if (notBuildBaseMapper != null && notBuildBaseMapper.equals("true")) {
+			generatedJavaFiles.addAll(util.getBaseInterfaceGenerated());
+		}
 		// ============================
 
 		if (introspectedTables != null) {
@@ -539,11 +544,12 @@ public class Context extends PropertyHolder {
 				// ============================
 				// M3.生成扩展的方法
 				// ============================
-				generatedJavaFiles.addAll(ej.getExtendMapper());
-				generatedJavaFiles.addAll(ej.getInsertBatchMapper());
-				generatedJavaFiles.addAll(ej.getSelectOptionMappser());
-				generatedJavaFiles.addAll(ej.getInsertIfAbsentMappser());
-
+				if (notBuildBaseMapper != null && notBuildBaseMapper.equals("true")) {
+					generatedJavaFiles.addAll(ej.getExtendMapper());
+					generatedJavaFiles.addAll(ej.getInsertBatchMapper());
+					generatedJavaFiles.addAll(ej.getSelectOptionMappser());
+					generatedJavaFiles.addAll(ej.getInsertIfAbsentMappser());
+				}
 				// ============================
 				// M4.生成XML 文件
 				// ============================

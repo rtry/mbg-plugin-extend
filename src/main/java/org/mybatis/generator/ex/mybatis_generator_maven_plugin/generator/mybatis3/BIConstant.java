@@ -57,11 +57,15 @@ public class BIConstant {
 	public static final String SCI = "supportCustomInterface";
 	public static final String FILE_TINY2INT = "filetiny2int";
 	public static final String FILE_SMALL2INT = "filesmall2int";
-	
-	
+
+	//Java 配置
+	public static final String supportLombok = "supportLombok";
+
+	public static final String notBuildBaseMapper = "notBuildBaseMapper";
+
 	/**
 	 * 生成Mapper对象方法的注解
 	 * */
 	public static final String startTag = " * ";
-	
+
 }

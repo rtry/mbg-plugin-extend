@@ -50,7 +50,7 @@ public class ConfigConvertUtil {
 
 	/**
 	 * me2self:将MG配置对象转换为自定义配置对象. <br>
-	 * 
+	 *
 	 * @author Felicity
 	 * @param xml
 	 * @return
@@ -96,7 +96,7 @@ public class ConfigConvertUtil {
 
 	/**
 	 * self2me:將自定义配置对象转换为ME配置对象
-	 * 
+	 *
 	 * @author Felicity
 	 * @return
 	 * @since JDK 1.8
@@ -145,6 +145,8 @@ public class ConfigConvertUtil {
 		jdbcConnectionConfiguration.addProperty(BIConstant.SCI, config.getDb().getMapperClass());
 		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_TINY2INT, config.getDb().isTiny2int() + "");
 		jdbcConnectionConfiguration.addProperty(BIConstant.FILE_SMALL2INT, config.getDb().isSmall2int()+"");
+		jdbcConnectionConfiguration.addProperty(BIConstant.supportLombok, config.getDb().isSupportLombok()+"");
+		jdbcConnectionConfiguration.addProperty(BIConstant.notBuildBaseMapper, config.getDb().isNotBuildBaseMapper()+"");
 
 		// 基本-JavaTypeResolverConfiguration
 		JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
@@ -248,7 +250,7 @@ public class ConfigConvertUtil {
 
 	/**
 	 * writeJSONToFile:将JSON写到文档. <br>
-	 * 
+	 *
 	 * @author Felicity
 	 * @param cfg
 	 * @since JDK 1.8
@@ -260,7 +262,7 @@ public class ConfigConvertUtil {
 		JSONObject object = JSONObject.parseObject(json);
 		String pretty = JSON.toJSONString(object, SerializerFeature.PrettyFormat,
 				SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
-		
+
 		FileWriter fw = null;
 		PrintWriter out = null;
 		try {
@@ -287,7 +289,7 @@ public class ConfigConvertUtil {
 
 	/**
 	 * readJSONFromFile:从文档中读取JSON. <br>
-	 * 
+	 *
 	 * @author Felicity
 	 * @return
 	 * @since JDK 1.8
