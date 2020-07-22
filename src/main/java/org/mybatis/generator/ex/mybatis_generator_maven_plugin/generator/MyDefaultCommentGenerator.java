@@ -377,8 +377,9 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 			method.addJavaDocLine(sb.toString().replace("\n", " "));
 			Parameter parm = method.getParameters().get(0);
 			sb.setLength(0);
-            sb.append(" * @param " + introspectedColumn.getRemarks());
+            sb.append(" * @param ");
 			sb.append(parm.getName());
+            sb.append(" " + introspectedColumn.getRemarks());
 			sb.append(" ");
 			// sb.append(introspectedColumn.getRemarks());
 			method.addJavaDocLine(sb.toString().replace("\n", " "));
