@@ -513,14 +513,13 @@ public class Context extends PropertyHolder {
 		// M1.基础接口位置(供子接口继承)
 		// ============================
 		String notBuildBaseMapper = getJdbcConnectionConfiguration().getProperty(BIConstant.notBuildBaseMapper);
-
 		String baseInterfaceName = getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
 		ExtendUtil eUtil = new ExtendUtil(baseInterfaceName.substring(0, baseInterfaceName.lastIndexOf(".")));
 		ExtendGenerator ej = new ExtendGenerator(eUtil, this);
 		BaseInterfaceUtil util = new BaseInterfaceUtil(this);
 
 		// 不生成超类文件
-		if (notBuildBaseMapper != null && notBuildBaseMapper.equals("true")) {
+        if (notBuildBaseMapper != null && notBuildBaseMapper.equals("false")) {
 			generatedJavaFiles.addAll(util.getBaseInterfaceGenerated());
 		}
 		// ============================
@@ -544,7 +543,7 @@ public class Context extends PropertyHolder {
 				// ============================
 				// M3.生成扩展的方法
 				// ============================
-				if (notBuildBaseMapper != null && notBuildBaseMapper.equals("true")) {
+                if (notBuildBaseMapper != null && notBuildBaseMapper.equals("false")) {
 					generatedJavaFiles.addAll(ej.getExtendMapper());
 					generatedJavaFiles.addAll(ej.getInsertBatchMapper());
 					generatedJavaFiles.addAll(ej.getSelectOptionMappser());

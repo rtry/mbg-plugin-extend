@@ -266,7 +266,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
         try {
 
             getLog().info(bLine);
-            getLog().info("欢迎切换 mybatis.generator 扩展插件.");
+            getLog().info("欢迎切换 mybatis.generator 扩展插件 v" + Version.getVersionNumber());
             getLog().info(bLine);
             getLog().info("加载自定义扩展：可视化配置");
             getLog().info(sLine);
@@ -287,7 +287,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
                     getLog().info("无法获取当前运行的源文件夹o(>﹏<)o");
                     return;
                 }
-                getLog().info("成功加载运行环境：" + baseDir);
+                getLog().info("成功加载项目代码路径：" + baseDir);
                 getLog().info(sLine);
             }
 
