@@ -20,124 +20,121 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
 
 public class SelectOptionGenerator extends AbstractJavaClientGenerator {
 
-	private ExtendUtil util;
+    private ExtendUtil util;
 
-	public SelectOptionGenerator(Context context, ExtendUtil util) {
-		super(false);
-		super.context = context;
-		this.util = util;
-	}
+    public SelectOptionGenerator(Context context, ExtendUtil util) {
+        super(false);
+        super.context = context;
+        this.util = util;
+    }
 
-	@Override
-	public AbstractXmlGenerator getMatchedXMLGenerator() {
-		return new XMLMapperGenerator();
-	}
+    @Override
+    public AbstractXmlGenerator getMatchedXMLGenerator() {
+        return new XMLMapperGenerator();
+    }
 
-	@Override
-	public List<CompilationUnit> getCompilationUnits() {
+    @Override
+    public List<CompilationUnit> getCompilationUnits() {
 
-		CommentGenerator commentGenerator = context.getCommentGenerator();
-		StringBuffer sb = new StringBuffer();
-		sb.append("<");
-		sb.append(BIConstant.MODEL).append(",");
-		sb.append(BIConstant.PK).append(" extends Serializable,");
-		sb.append(BIConstant.EXAMPLE).append(",");
-		sb.append(">");
-		// 类名
-		FullyQualifiedJavaType type = new FullyQualifiedJavaType(util.getSelectOptionClassName()
-				+ sb.toString());
-		Interface interfaze = new Interface(type);
-		interfaze.setVisibility(JavaVisibility.PUBLIC);
-		commentGenerator.addJavaFileComment(interfaze);
+        CommentGenerator commentGenerator = context.getCommentGenerator();
+        StringBuffer sb = new StringBuffer();
+        sb.append("<");
+        sb.append(BIConstant.MODEL).append(",");
+        sb.append(BIConstant.PK).append(" extends Serializable,");
+        sb.append(BIConstant.EXAMPLE).append(",");
+        sb.append(">");
+        // 类名
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(util.getSelectOptionClassName() + sb.toString());
+        Interface interfaze = new Interface(type);
+        interfaze.setVisibility(JavaVisibility.PUBLIC);
+        commentGenerator.addJavaFileComment(interfaze);
 
-		FullyQualifiedJavaType siType = new FullyQualifiedJavaType(util.getExtendClassName());
-		interfaze.addSuperInterface(siType);
-		interfaze.addImportedType(siType);
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.io.Serializable"));
-		interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
-		interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.MapKey"));
+        FullyQualifiedJavaType siType = new FullyQualifiedJavaType(util.getExtendClassName());
+        interfaze.addSuperInterface(siType);
+        interfaze.addImportedType(siType);
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.io.Serializable"));
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.MapKey"));
 
-		// 查询指定列到对象中
-		addSelectOptionToListMethod(interfaze);
+        // 查询指定列到对象中
+        addSelectOptionToListMethod(interfaze);
 
-		// 查询指定列到Map中，以主键为KEY
-		addSelectOptionToMapNameMethod(interfaze);
+        // 查询指定列到Map中，以主键为KEY,移除
+        //        addSelectOptionToMapNameMethod(interfaze);
 
-		// 查询指定列到一个对象
-		addSelectOptionToOneNameMethod(interfaze);
+        // 查询指定列到一个对象
+        addSelectOptionToOneNameMethod(interfaze);
 
-		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
-		answer.add(interfaze);
+        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+        answer.add(interfaze);
 
-		return answer;
-	}
+        return answer;
+    }
 
-	private void addSelectOptionToListMethod(Interface interfaze) {
-		Method method = new Method();
+    private void addSelectOptionToListMethod(Interface interfaze) {
+        Method method = new Method();
 
-		method.setReturnType(new FullyQualifiedJavaType("List<T>"));
-		method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("List<T>"));
+        method.setVisibility(JavaVisibility.PUBLIC);
 
-		method.setName(util.getSelectOptionToListMethodName());
+        method.setName(util.getSelectOptionToListMethodName());
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-		method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options",
-				"@Param(\"options\")"));
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options", "@Param(\"options\")"));
 
-		FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
-		method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
+        FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
+        method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedTypes(importedTypes);
-		interfaze.addMethod(method);
-	}
+        interfaze.addImportedTypes(importedTypes);
+        interfaze.addMethod(method);
+    }
 
-	private void addSelectOptionToMapNameMethod(Interface interfaze) {
-		Method method = new Method();
+    @Deprecated
+    private void addSelectOptionToMapNameMethod(Interface interfaze) {
+        Method method = new Method();
 
-		method.setReturnType(new FullyQualifiedJavaType("Map<PK,T>"));
-		method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("Map<PK,T>"));
+        method.setVisibility(JavaVisibility.PUBLIC);
 
-		//FIXME  可能主键不会统一叫id
-		method.addAnnotation("@MapKey(\"id\")");
-		method.setName(util.getSelectOptionToMapMethodName());
+        // 可能主键不会统一叫id 所以该方法去除
+        method.addAnnotation("@MapKey(\"id\")");
+        method.setName(util.getSelectOptionToMapMethodName());
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-		method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options",
-				"@Param(\"options\")"));
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options", "@Param(\"options\")"));
 
-		FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
-		method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
+        FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
+        method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.Map"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.Map"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedTypes(importedTypes);
-		interfaze.addMethod(method);
-	}
+        interfaze.addImportedTypes(importedTypes);
+        interfaze.addMethod(method);
+    }
 
-	private void addSelectOptionToOneNameMethod(Interface interfaze) {
-		Method method = new Method();
+    private void addSelectOptionToOneNameMethod(Interface interfaze) {
+        Method method = new Method();
 
-		method.setReturnType(new FullyQualifiedJavaType("T"));
-		method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("T"));
+        method.setVisibility(JavaVisibility.PUBLIC);
 
-		method.setName(util.getSelectOptionToOneMethodName());
+        method.setName(util.getSelectOptionToOneMethodName());
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-		method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options",
-				"@Param(\"options\")"));
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("String[]"), "options", "@Param(\"options\")"));
 
-		FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
-		method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
+        FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
+        method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.Map"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.Map"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedTypes(importedTypes);
-		interfaze.addMethod(method);
-	}
+        interfaze.addImportedTypes(importedTypes);
+        interfaze.addMethod(method);
+    }
 
 }

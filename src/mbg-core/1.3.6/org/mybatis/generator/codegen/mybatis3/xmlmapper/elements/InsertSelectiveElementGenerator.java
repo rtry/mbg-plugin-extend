@@ -50,8 +50,12 @@ public class InsertSelectiveElementGenerator extends AbstractXmlElementGenerator
 
         context.getCommentGenerator().addComment(answer);
 
+        //是否自增,默认自增
+        boolean autoIncrement = true;
+
         GeneratedKey gk = introspectedTable.getGeneratedKey();
         if (gk != null) {
+
             IntrospectedColumn introspectedColumn = introspectedTable.getColumn(gk.getColumn());
             // if the column is null, then it's a configuration error. The
             // warning has already been reported
@@ -67,15 +71,21 @@ public class InsertSelectiveElementGenerator extends AbstractXmlElementGenerator
                 }
             }
 
-            if (introspectedColumn != null) {
+            //是否自增
+            if (introspectedColumn != null)
+                autoIncrement = introspectedColumn.isAutoIncrement();
 
+            //往XML中添加
+            if (introspectedColumn != null) {
                 if (gk.isJdbcStandard()) {
                     answer.addAttribute(new Attribute("useGeneratedKeys", "true")); //$NON-NLS-1$ //$NON-NLS-2$
                     answer.addAttribute(new Attribute("keyProperty", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
                     answer.addAttribute(new Attribute("keyColumn", introspectedColumn.getActualColumnName())); //$NON-NLS-1$
                 } else {
-                    answer.addElement(getSelectKey(introspectedColumn, gk));
+                    if (autoIncrement)
+                        answer.addElement(getSelectKey(introspectedColumn, gk));
                 }
+
             }
         }
 
@@ -97,8 +107,16 @@ public class InsertSelectiveElementGenerator extends AbstractXmlElementGenerator
         valuesTrimElement.addAttribute(new Attribute("suffixOverrides", ",")); //$NON-NLS-1$ //$NON-NLS-2$
         answer.addElement(valuesTrimElement);
 
-        for (IntrospectedColumn introspectedColumn : ListUtilities
-                .removeIdentityAndGeneratedAlwaysColumns(introspectedTable.getAllColumns())) {
+        List<IntrospectedColumn> introspectedColumns = null;
+        if (autoIncrement) {
+            introspectedColumns= ListUtilities
+                    .removeIdentityAndGeneratedAlwaysColumns(introspectedTable.getNonPrimaryKeyColumns());
+        }else{
+//            introspectedColumns= ListUtilities
+//                    .removeIdentityAndGeneratedAlwaysColumns(introspectedTable.getAllColumns());
+            introspectedColumns = introspectedTable.getAllColumns();
+        }
+        for (IntrospectedColumn introspectedColumn : introspectedColumns) {
 
             if (introspectedColumn.isSequenceColumn() || introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
                 // if it is a sequence column, it is not optional

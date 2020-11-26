@@ -101,7 +101,7 @@ public class SelectOptionElementGenerator extends AbstractXmlElementGenerator {
 		this.addOptionColumnListElements(parentElement);
 		this.addSelectOptionToListElements(parentElement);
 		this.addSelectOptionToOneElements(parentElement);
-		this.addSelectOptionToMapElements(parentElement);
+		//		this.addSelectOptionToMapElements(parentElement);
 	}
 
 	// 自定义

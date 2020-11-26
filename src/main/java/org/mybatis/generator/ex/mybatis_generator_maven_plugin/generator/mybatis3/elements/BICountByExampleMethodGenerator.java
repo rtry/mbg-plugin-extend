@@ -38,7 +38,7 @@ public class BICountByExampleMethodGenerator extends AbstractJavaMapperMethodGen
 
 		Method method = new Method();
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new FullyQualifiedJavaType("PK"));
+		method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
 		method.setName("countByExample");
 		method.addParameter(new Parameter(fqjt, "example"));
 		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);

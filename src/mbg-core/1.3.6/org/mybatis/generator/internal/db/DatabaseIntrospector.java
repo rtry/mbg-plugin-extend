@@ -325,9 +325,13 @@ public class DatabaseIntrospector {
 			return;
 		}
 
+		//标示 GK 是否匹配到字段
+		boolean flag = false;
+		
 		for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
 			for (IntrospectedColumn introspectedColumn : entry.getValue()) {
 				if (isMatchedColumn(introspectedColumn, gk)) {
+					flag = true;
 					if (gk.isIdentity() || gk.isJdbcStandard()) {
 						introspectedColumn.setIdentity(true);
 						introspectedColumn.setSequenceColumn(false);
@@ -338,6 +342,11 @@ public class DatabaseIntrospector {
 				}
 			}
 		}
+		
+		// 循环了一圈 没有匹配过，则再次取主键
+//		if(flag){
+//			introspectedTable.
+//		}
 	}
 
 	private boolean isMatchedColumn(IntrospectedColumn introspectedColumn, GeneratedKey gk) {

@@ -185,7 +185,10 @@ public class ConfigConvertUtil {
 				tc.setTableName(dt.getTableName());
 				tc.setDomainObjectName(dt.getClassName());
 				tc.addProperty("useActualColumnNames", flag + "");
-                tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
+				
+                //FIXME 此处，需要根据 表SQL 查找到主键 
+				tc.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
+                
 				tc.addProperty("insertBatch", dt.getExtend().isInsertBatch() + "");
 				tc.addProperty("insertIfAbsent", dt.getExtend().isInsertIfAbsent() + "");
 				tc.addProperty("selectOption", dt.getExtend().isSelectOption() + "");
