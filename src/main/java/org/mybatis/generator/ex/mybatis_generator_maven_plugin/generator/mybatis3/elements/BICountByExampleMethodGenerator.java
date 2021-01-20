@@ -17,8 +17,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:45:52 <br>
  * 备注:
- * @version
- * @see
  */
 public class BICountByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -33,7 +31,7 @@ public class BICountByExampleMethodGenerator extends AbstractJavaMapperMethodGen
 	public void addInterfaceElements(Interface interfaze) {
 		FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
 		importedTypes.add(fqjt);
 
 		Method method = new Method();

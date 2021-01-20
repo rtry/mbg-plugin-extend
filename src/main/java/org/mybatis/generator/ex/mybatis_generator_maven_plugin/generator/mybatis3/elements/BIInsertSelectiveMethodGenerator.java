@@ -17,44 +17,41 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:50:35 <br>
  * 备注:
- * @version
- * @see
  */
 public class BIInsertSelectiveMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-	public BIInsertSelectiveMethodGenerator() {
-		super();
-	}
+    public BIInsertSelectiveMethodGenerator() {
+        super();
+    }
 
-	@Override
-	public void addInterfaceElements(Interface interfaze) {
-		Method method = new Method();
+    @Override
+    public void addInterfaceElements(Interface interfaze) {
+        Method method = new Method();
 
-		method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setName("insertSelective");
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setName("insertSelective");
 
-		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-		importedTypes.add(parameterType);
-		method.addParameter(new Parameter(parameterType, "record"));
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
+        importedTypes.add(parameterType);
+        method.addParameter(new Parameter(parameterType, "record"));
 
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		addMapperAnnotations(method);
+        addMapperAnnotations(method);
 
-		if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze,
-				introspectedTable)) {
-			addExtraImports(interfaze);
-			interfaze.addImportedTypes(importedTypes);
-			interfaze.addMethod(method);
-		}
-	}
+        if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
+            addExtraImports(interfaze);
+            interfaze.addImportedTypes(importedTypes);
+            interfaze.addMethod(method);
+        }
+    }
 
-	public void addMapperAnnotations(Method method) {
-	}
+    public void addMapperAnnotations(Method method) {
+    }
 
-	public void addExtraImports(Interface interfaze) {
-	}
+    public void addExtraImports(Interface interfaze) {
+    }
 }

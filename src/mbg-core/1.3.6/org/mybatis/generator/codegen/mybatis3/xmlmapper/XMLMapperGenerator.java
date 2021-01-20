@@ -46,6 +46,7 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimary
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertBatchElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertIfAbsentElementGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.SelectOptionElementGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.UpdateBatchElementGenerator;
 
 /**
  * 
@@ -94,9 +95,12 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 
 		String insertBatch = introspectedTable.getTableConfiguration().getProperty("insertBatch");
 		if (insertBatch.equals("true")) {
-			// 1. 批量插入
+			// 1. 批量插入(所有字段)
 			AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
 			initializeAndExecuteGenerator(elementGenerator, answer);
+			// 2. 批量插入(非空字段)
+//			AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
+//			initializeAndExecuteGenerator(elementGenerator, answer);
 		}
 
 		String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");
@@ -111,6 +115,13 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 			// 3. 不存在插入
 			AbstractXmlElementGenerator insertIfAbsentGenerator = new InsertIfAbsentElementGenerator();
 			initializeAndExecuteGenerator(insertIfAbsentGenerator, answer);
+		}
+
+		String updateBatch = introspectedTable.getTableConfiguration().getProperty("updateBatch");
+		if (updateBatch.equals("true")) {
+			// 4. 根据Id批量更新
+			AbstractXmlElementGenerator updateBatchElementGenerator = new UpdateBatchElementGenerator();
+			initializeAndExecuteGenerator(updateBatchElementGenerator, answer);
 		}
 
 		// =========================

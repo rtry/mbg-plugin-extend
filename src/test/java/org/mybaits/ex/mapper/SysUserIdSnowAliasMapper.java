@@ -1,5 +1,6 @@
 package org.mybaits.ex.mapper;
 
+import org.mybaits.ex.base.UpdateBatchMapper;
 import org.mybaits.ex.base.BaseMapper;
 import org.mybaits.ex.base.InsertBatchMapper;
 import org.mybaits.ex.base.SelectOptionMapper;
@@ -12,6 +13,6 @@ import org.mybaits.ex.entity.SysUserIdSnowAliasExample;
  * 创建时间: 2020-11-26<br>
  * @version 0.0.3
  */
-public interface SysUserIdSnowAliasMapper extends BaseMapper<SysUserIdSnowAlias, Long, SysUserIdSnowAliasExample>,
+public interface SysUserIdSnowAliasMapper extends UpdateBatchMapper<SysUserIdSnowAlias>,  BaseMapper<SysUserIdSnowAlias, Long, SysUserIdSnowAliasExample>,
         InsertBatchMapper<SysUserIdSnowAlias>, SelectOptionMapper<SysUserIdSnowAlias, Long, SysUserIdSnowAliasExample> {
 }

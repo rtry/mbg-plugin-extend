@@ -39,7 +39,7 @@ public class EveryMapperUtil {
 	}
 
 	public Collection<? extends GeneratedJavaFile> getMapperGenerated(ExtendUtil util) {
-		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
+		List<GeneratedJavaFile> answer = new ArrayList<>();
 
 		// A.生成 BaseInterface Mapper
 		EveryMapperGenerator javaGenerator = new EveryMapperGenerator(context, introspectedTable,

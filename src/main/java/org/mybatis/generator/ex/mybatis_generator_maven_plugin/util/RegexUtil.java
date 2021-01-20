@@ -116,10 +116,11 @@ public class RegexUtil {
 		}
 		if (start != 0) {
 
-			Map<String, String> allPkg = new HashMap<String, String>();
+			Map<String, String> allPkg = new HashMap<>();
 			allPkg.put(BIConstant.ExtendInsertIfAbsentClass, eUtil.getIfAbsentClassName());
 			allPkg.put(BIConstant.ExtendSelectOptionClass, eUtil.getSelectOptionClassName());
 			allPkg.put(BIConstant.ExtendInsertBatchClass, eUtil.getInsertBatchClassName());
+			allPkg.put(BIConstant.ExtendUpdateByIdClass, eUtil.getUpdateBatchClassName());
 
 			// 1 添加新的继承
 			for (String iterf : result) {

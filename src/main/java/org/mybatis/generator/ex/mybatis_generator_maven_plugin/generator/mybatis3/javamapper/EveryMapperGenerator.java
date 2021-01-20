@@ -114,13 +114,22 @@ public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 			interfaze.addImportedType(new FullyQualifiedJavaType(util.getIfAbsentClassName()));
 		}
 
+		// 扩展4：批量更新
+		String updateBatch = introspectedTable.getTableConfiguration().getProperty("updateBatch");
+		if (updateBatch.equals("true")) {
+			FullyQualifiedJavaType extend4 = new FullyQualifiedJavaType(util.getUpdateBatchClassName().concat(
+					"<" + introspectedTable.getBaseRecordType() + ">"));
+			interfaze.addSuperInterface(extend4);
+			interfaze.addImportedType(new FullyQualifiedJavaType(util.getUpdateBatchClassName()));
+		}
+
 		if (stringHasValue(rootInterface)) {
 			FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(rootInterface);
 			interfaze.addSuperInterface(fqjt);
 			interfaze.addImportedType(fqjt);
 		}
 
-		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+		List<CompilationUnit> answer = new ArrayList<>();
 		if (context.getPlugins().clientGenerated(interfaze, null, introspectedTable)) {
 			answer.add(interfaze);
 		}

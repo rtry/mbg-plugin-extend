@@ -192,6 +192,8 @@ public class ConfigConvertUtil {
 				tc.addProperty("insertBatch", dt.getExtend().isInsertBatch() + "");
 				tc.addProperty("insertIfAbsent", dt.getExtend().isInsertIfAbsent() + "");
 				tc.addProperty("selectOption", dt.getExtend().isSelectOption() + "");
+				//FIXME 临时加
+				tc.addProperty("updateBatch", dt.getExtend().isSelectOption() + "");
 				context.addTableConfiguration(tc);
 			}
 		}

@@ -17,36 +17,33 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:50:07 <br>
  * 备注:
- * @version
- * @see
  */
 public class BIDeleteByPrimaryKeyMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-	@Override
-	public void addInterfaceElements(Interface interfaze) {
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
-		Method method = new Method();
-		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-		method.setName("deleteByPrimaryKey");
-		FullyQualifiedJavaType type = new FullyQualifiedJavaType(BIConstant.PK);
-		method.addParameter(new Parameter(type, "example"));
+    @Override
+    public void addInterfaceElements(Interface interfaze) {
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setName("deleteByPrimaryKey");
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(BIConstant.PK);
+        method.addParameter(new Parameter(type, "example"));
 
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		addMapperAnnotations(method);
+        addMapperAnnotations(method);
 
-		if (context.getPlugins().clientDeleteByPrimaryKeyMethodGenerated(method, interfaze,
-				introspectedTable)) {
-			addExtraImports(interfaze);
-			interfaze.addImportedTypes(importedTypes);
-			interfaze.addMethod(method);
-		}
-	}
+        if (context.getPlugins().clientDeleteByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable)) {
+            addExtraImports(interfaze);
+            interfaze.addImportedTypes(importedTypes);
+            interfaze.addMethod(method);
+        }
+    }
 
-	public void addMapperAnnotations(Method method) {
-	}
+    public void addMapperAnnotations(Method method) {
+    }
 
-	public void addExtraImports(Interface interfaze) {
-	}
+    public void addExtraImports(Interface interfaze) {
+    }
 }

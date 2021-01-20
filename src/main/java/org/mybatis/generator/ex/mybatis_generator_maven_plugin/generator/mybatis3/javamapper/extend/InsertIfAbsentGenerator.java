@@ -51,7 +51,7 @@ public class InsertIfAbsentGenerator extends AbstractJavaClientGenerator {
 
 		addInsertIfAbsentMethod(interfaze);
 
-		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+		List<CompilationUnit> answer = new ArrayList<>();
 		answer.add(interfaze);
 
 		return answer;
@@ -67,7 +67,7 @@ public class InsertIfAbsentGenerator extends AbstractJavaClientGenerator {
 
 		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
 		importedTypes.add(parameterType);
 		method.addParameter(new Parameter(parameterType, "record"));
 

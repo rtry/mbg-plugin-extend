@@ -548,6 +548,7 @@ public class Context extends PropertyHolder {
 					generatedJavaFiles.addAll(ej.getInsertBatchMapper());
 					generatedJavaFiles.addAll(ej.getSelectOptionMappser());
 					generatedJavaFiles.addAll(ej.getInsertIfAbsentMappser());
+					generatedJavaFiles.addAll(ej.getUpdateBatchMapper());
 				}
 				// ============================
 				// M4.生成XML 文件

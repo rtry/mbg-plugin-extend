@@ -51,7 +51,7 @@ public class InsertBatchGenerator extends AbstractJavaClientGenerator {
 
 		addInsertBatchMethod(interfaze);
 
-		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+		List<CompilationUnit> answer = new ArrayList<>();
 		answer.add(interfaze);
 
 		return answer;
@@ -68,7 +68,7 @@ public class InsertBatchGenerator extends AbstractJavaClientGenerator {
 		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List<"
 				+ BIConstant.MODEL + ">");
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
+		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
 		method.addParameter(new Parameter(parameterType, "records"));
 
 		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));

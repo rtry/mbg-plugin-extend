@@ -4,48 +4,56 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
 
 public class ExtendUtil {
 
-	private String pkgName;
-	private String brk = ".";
+    private String pkgName;
 
-	public ExtendUtil(String pkgName) {
-		super();
-		this.pkgName = pkgName;
-	}
+    private String brk = ".";
 
-	public String getExtendClassName() {
-		return pkgName.concat(brk).concat(BIConstant.ExtendSuperClass);
-	}
+    public ExtendUtil(String pkgName) {
+        super();
+        this.pkgName = pkgName;
+    }
 
-	public String getSelectOptionClassName() {
-		return pkgName.concat(brk).concat(BIConstant.ExtendSelectOptionClass);
-	}
+    public String getExtendClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendSuperClass);
+    }
 
-	public String getInsertBatchClassName() {
-		return pkgName.concat(brk).concat(BIConstant.ExtendInsertBatchClass);
-	}
-	public String getIfAbsentClassName() {
-		return pkgName.concat(brk).concat(BIConstant.ExtendInsertIfAbsentClass);
-	}
+    public String getSelectOptionClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendSelectOptionClass);
+    }
 
-	public String getInsertBatchMethodName() {
-		return BIConstant.ExtendInsertMethodName;
-	}
+    public String getInsertBatchClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendInsertBatchClass);
+    }
 
-	public String getSelectOptionToListMethodName() {
-		return BIConstant.ExtendSelectOptionToListName;
-	}
+    public String getIfAbsentClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendInsertIfAbsentClass);
+    }
 
-	public String getSelectOptionToMapMethodName() {
-		return BIConstant.ExtendSelectOptionToMapName;
-	}
+    public String getInsertBatchMethodName() {
+        return BIConstant.ExtendInsertMethodName;
+    }
 
-	public String getSelectOptionToOneMethodName() {
-		return BIConstant.ExtendSelectOptionToOneName;
-	}
+    public String getSelectOptionToListMethodName() {
+        return BIConstant.ExtendSelectOptionToListName;
+    }
 
+    public String getSelectOptionToMapMethodName() {
+        return BIConstant.ExtendSelectOptionToMapName;
+    }
 
-	public String getInsertIfAbsentMethodName() {
-		return BIConstant.ExtendInsertIfAbsentName;
-	}
+    public String getSelectOptionToOneMethodName() {
+        return BIConstant.ExtendSelectOptionToOneName;
+    }
 
+    public String getInsertIfAbsentMethodName() {
+        return BIConstant.ExtendInsertIfAbsentName;
+    }
+
+    public String getUpdateBatchClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendUpdateByIdClass);
+    }
+
+    public String getUpdateBatchMethodName() {
+        return BIConstant.ExtendUpdateByIdName;
+    }
 }

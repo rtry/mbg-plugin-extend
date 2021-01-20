@@ -17,8 +17,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:40:52 <br>
  * 备注:
- * @version
- * @see
  */
 public class InsertIfAbsentElementGenerator extends AbstractXmlElementGenerator {
 

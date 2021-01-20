@@ -17,42 +17,39 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:51:42 <br>
  * 备注:
- * @version
- * @see
  */
 public class BIUpdateByExampleSelectiveMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-	@Override
-	public void addInterfaceElements(Interface interfaze) {
-		Method method = new Method();
-		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-		method.setName("updateByExampleSelective");
+    @Override
+    public void addInterfaceElements(Interface interfaze) {
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setName("updateByExampleSelective");
 
-		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
-		method.addParameter(new Parameter(parameterType, "record", "@Param(\"record\")"));
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(BIConstant.MODEL);
+        method.addParameter(new Parameter(parameterType, "record", "@Param(\"record\")"));
 
-		FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
-		method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
+        FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
+        method.addParameter(new Parameter(exampleType, "example", "@Param(\"example\")"));
 
-		Set<FullyQualifiedJavaType> importedTypes = new HashSet<FullyQualifiedJavaType>();
-		importedTypes.add(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
+        Set<FullyQualifiedJavaType> importedTypes = new HashSet<FullyQualifiedJavaType>();
+        importedTypes.add(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Param"));
 
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		addMapperAnnotations(method);
+        addMapperAnnotations(method);
 
-		if (context.getPlugins().clientUpdateByExampleSelectiveMethodGenerated(method, interfaze,
-				introspectedTable)) {
-			addExtraImports(interfaze);
-			interfaze.addImportedTypes(importedTypes);
-			interfaze.addMethod(method);
-		}
-	}
+        if (context.getPlugins().clientUpdateByExampleSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
+            addExtraImports(interfaze);
+            interfaze.addImportedTypes(importedTypes);
+            interfaze.addMethod(method);
+        }
+    }
 
-	public void addMapperAnnotations(Method method) {
-	}
+    public void addMapperAnnotations(Method method) {
+    }
 
-	public void addExtraImports(Interface interfaze) {
-	}
+    public void addExtraImports(Interface interfaze) {
+    }
 }

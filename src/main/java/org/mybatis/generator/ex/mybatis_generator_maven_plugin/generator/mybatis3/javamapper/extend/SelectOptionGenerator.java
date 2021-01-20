@@ -60,7 +60,7 @@ public class SelectOptionGenerator extends AbstractJavaClientGenerator {
         addSelectOptionToListMethod(interfaze);
 
         // 查询指定列到Map中，以主键为KEY,移除
-        //        addSelectOptionToMapNameMethod(interfaze);
+        // addSelectOptionToMapNameMethod(interfaze);
 
         // 查询指定列到一个对象
         addSelectOptionToOneNameMethod(interfaze);

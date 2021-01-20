@@ -15,12 +15,10 @@ import java.util.List;
 
 /**
  * 类名称：InsertBatchElementGenerator <br>
- * 类描述: XML节点操作【批量添加对象，空字段不插入 】<br>
+ * 类描述: XML节点操作【批量添加对象，所有字段 】<br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:37:30 <br>
  * 备注:
- * @version
- * @see
  */
 public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
 

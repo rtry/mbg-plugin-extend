@@ -21,58 +21,55 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
  */
 public interface Enums {
 
-	/**
-	 * 类名称：ExampleProperty <br>
-	 * 类描述: Example属性注解 <br>
-	 * 创建人：felicity <br>
-	 * 创建时间：2019年7月26日 上午10:27:45 <br>
-	 * 备注:
-	 * 
-	 * @version
-	 * @see
-	 */
-	public enum ExampleProperty {
+    /**
+     * 类名称：ExampleProperty <br>
+     * 类描述: Example属性注解 <br>
+     * 创建人：felicity <br>
+     * 创建时间：2019年7月26日 上午10:27:45 <br>
+     * 备注:
+     */
+    public enum ExampleProperty {
 
-		orderByClause("orderByClause", "排序方式"),
+        orderByClause("orderByClause", "排序方式"),
 
-		distinct("distinct", "是否去重"),
+        distinct("distinct", "是否去重"),
 
-		oredCriteria("oredCriteria", "查询条件集合");
+        oredCriteria("oredCriteria", "查询条件集合");
 
-		private String name;
+        private String name;
 
-		private String des;
+        private String des;
 
-		public String getName() {
-			return name;
-		}
+        public String getName() {
+            return name;
+        }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+        public void setName(String name) {
+            this.name = name;
+        }
 
-		public String getDes() {
-			return des;
-		}
+        public String getDes() {
+            return des;
+        }
 
-		public void setDes(String des) {
-			this.des = des;
-		}
+        public void setDes(String des) {
+            this.des = des;
+        }
 
-		ExampleProperty(String name, String str) {
-			this.name = name;
-			this.des = str;
-		}
+        ExampleProperty(String name, String str) {
+            this.name = name;
+            this.des = str;
+        }
 
-		public static ExampleProperty get(String name) {
-			ExampleProperty[] es = ExampleProperty.values();
-			for (ExampleProperty e : es) {
-				if (e.getName().equals(name)) {
-					return e;
-				}
-			}
-			return null;
-		}
+        public static ExampleProperty get(String name) {
+            ExampleProperty[] es = ExampleProperty.values();
+            for (ExampleProperty e : es) {
+                if (e.getName().equals(name)) {
+                    return e;
+                }
+            }
+            return null;
+        }
 
-	}
+    }
 }

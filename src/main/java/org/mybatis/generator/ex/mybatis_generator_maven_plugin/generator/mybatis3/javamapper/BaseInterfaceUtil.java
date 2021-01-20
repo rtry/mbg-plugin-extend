@@ -34,7 +34,7 @@ public class BaseInterfaceUtil {
 	}
 
 	public Collection<? extends GeneratedJavaFile> getBaseInterfaceGenerated() {
-		List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
+		List<GeneratedJavaFile> answer = new ArrayList<>();
 
 		// A.生成 BaseInterface Mapper
 		BaseInterfaceGenerator javaGenerator = new BaseInterfaceGenerator(false,context);

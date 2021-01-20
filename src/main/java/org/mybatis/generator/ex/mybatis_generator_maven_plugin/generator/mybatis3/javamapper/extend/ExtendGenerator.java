@@ -108,4 +108,19 @@ public class ExtendGenerator {
 		}
 		return answer;
 	}
+
+	public Collection<? extends GeneratedJavaFile> getUpdateBatchMapper() {
+		List<GeneratedJavaFile> answer = new ArrayList<>();
+
+		UpdateBatchGenerator ibj = new UpdateBatchGenerator(context, util);
+		List<CompilationUnit> compilationUnits = ibj.getCompilationUnits();
+		for (CompilationUnit compilationUnit : compilationUnits) {
+			GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit, context
+					.getJavaClientGeneratorConfiguration().getTargetProject(),
+					context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+					context.getJavaFormatter());
+			answer.add(gjf);
+		}
+		return answer;
+	}
 }

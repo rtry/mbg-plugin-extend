@@ -14,39 +14,36 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:51:07 <br>
  * 备注:
- * @version
- * @see
  */
 public class BISelectByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-	public BISelectByExampleMethodGenerator() {
-		super();
-	}
+    public BISelectByExampleMethodGenerator() {
+        super();
+    }
 
-	@Override
-	public void addInterfaceElements(Interface interfaze) {
+    @Override
+    public void addInterfaceElements(Interface interfaze) {
 
-		Method method = new Method();
-		method.setVisibility(JavaVisibility.PUBLIC);
-		// 返回值
-		method.setReturnType(new FullyQualifiedJavaType("List<" + BIConstant.MODEL + ">"));
-		// 方法名
-		method.setName("selectByExample");
-		// 参数
-		method.addParameter(new Parameter(new FullyQualifiedJavaType(BIConstant.EXAMPLE), "example"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        // 返回值
+        method.setReturnType(new FullyQualifiedJavaType("List<" + BIConstant.MODEL + ">"));
+        // 方法名
+        method.setName("selectByExample");
+        // 参数
+        method.addParameter(new Parameter(new FullyQualifiedJavaType(BIConstant.EXAMPLE), "example"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
-		if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze,
-				introspectedTable)) {
-			addExtraImports(interfaze);
-			interfaze.addMethod(method);
-		}
-	}
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
+            addExtraImports(interfaze);
+            interfaze.addMethod(method);
+        }
+    }
 
-	public void addMapperAnnotations(Interface interfaze, Method method) {
-	}
+    public void addMapperAnnotations(Interface interfaze, Method method) {
+    }
 
-	public void addExtraImports(Interface interfaze) {
-	}
+    public void addExtraImports(Interface interfaze) {
+    }
 }
