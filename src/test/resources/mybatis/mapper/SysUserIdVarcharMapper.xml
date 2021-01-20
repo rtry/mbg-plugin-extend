@@ -222,6 +222,51 @@
       </trim>
     </foreach>
   </insert>
+  <insert id="insertBatchSelect" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into sys_user_id_varchar
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.userId != null">
+          user_id,
+        </if>
+        <if test="item.userName != null">
+          user_name,
+        </if>
+        <if test="item.headImage != null">
+          head_image,
+        </if>
+        <if test="item.phone != null">
+          phone,
+        </if>
+        <if test="item.sex != null">
+          sex,
+        </if>
+        <if test="item.address != null">
+          address,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.userId != null">
+          #{item.userId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.userName != null">
+          #{item.userName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.headImage != null">
+          #{item.headImage,jdbcType=VARCHAR},
+        </if>
+        <if test="item.phone != null">
+          #{item.phone,jdbcType=CHAR},
+        </if>
+        <if test="item.sex != null">
+          #{item.sex,jdbcType=TINYINT},
+        </if>
+        <if test="item.address != null">
+          #{item.address,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
   <sql id="Option_Column_List">
     <foreach collection="options" item="item" separator=",">
       ${item}

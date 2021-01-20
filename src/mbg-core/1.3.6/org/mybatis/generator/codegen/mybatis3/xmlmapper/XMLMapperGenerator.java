@@ -43,10 +43,7 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByExample
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithBLOBsElementGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithoutBLOBsElementGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertBatchElementGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.InsertIfAbsentElementGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.SelectOptionElementGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.UpdateBatchElementGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml.*;
 
 /**
  * 
@@ -99,8 +96,8 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 			AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
 			initializeAndExecuteGenerator(elementGenerator, answer);
 			// 2. 批量插入(非空字段)
-//			AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
-//			initializeAndExecuteGenerator(elementGenerator, answer);
+			AbstractXmlElementGenerator insertBatchSelectElementGenerator = new InsertBatchSelectElementGenerator();
+			initializeAndExecuteGenerator(insertBatchSelectElementGenerator, answer);
 		}
 
 		String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");

@@ -31,8 +31,11 @@ public class BIConstant {
     // =======================================
     public static final String ExtendInsertBatchClass = "InsertBatch" + MAPPER;
 
-    // 方法：批量插入
+    // 方法：批量插入(全部)
     public static final String ExtendInsertMethodName = "insertBatch";
+
+    // 方法：批量插入（非空）
+    public static final String ExtendInsertSelectMethodName = "insertBatchSelect";
 
     // =======================================
     // 按列查询

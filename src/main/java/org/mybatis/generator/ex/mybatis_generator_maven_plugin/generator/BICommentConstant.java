@@ -51,6 +51,9 @@ public class BICommentConstant {
         // =======================
         String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)", "@param records 数据集合", "@return 受影响条数" };
         coms.put("insertBatch", insertBatch);
+        String[] insertBatchSelect = { "insertBatchSelect 批量插入非空数据数据", "@param records 数据集合",
+                "该方法必须在allowMultiQueries=true才能执行" };
+        coms.put("insertBatchSelect", insertBatchSelect);
 
         // =======================
         // 扩展方法-指定列查询

@@ -5,12 +5,14 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import java.util.List;
 
 import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
+import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
 
 /**
@@ -19,8 +21,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:37:30 <br>
  * 备注:
- * @version
- * @see
  */
 public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerator {
 
@@ -29,74 +29,73 @@ public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerat
      */
     @Override
     public void addElements(XmlElement parentElement) {
-
         XmlElement answer = new XmlElement("insert");
 
-        answer.addAttribute(new Attribute("id", BIConstant.ExtendInsertMethodName));
+        answer.addAttribute(new Attribute("id", BIConstant.ExtendInsertSelectMethodName));
+
+        FullyQualifiedJavaType parameterType = introspectedTable.getRules().calculateAllFieldsClass();
 
         answer.addAttribute(new Attribute("parameterType", "java.util.List"));
 
         context.getCommentGenerator().addComment(answer);
 
-        StringBuilder sb = new StringBuilder();
+        //是否自增,默认自增
+        boolean autoIncrement = true;
 
-        sb.append("insert into ");
-        sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
-        answer.addElement(new TextElement(sb.toString()));
+        GeneratedKey gk = introspectedTable.getGeneratedKey();
+        if (gk != null) {
+
+            IntrospectedColumn introspectedColumn = introspectedTable.getColumn(gk.getColumn());
+            //******************************
+            // 修复如果主键不叫默认id
+            //******************************
+            if (introspectedColumn == null) {
+                List<IntrospectedColumn> cls = introspectedTable.getPrimaryKeyColumns();
+                if (!cls.isEmpty()) {
+                    String pkName = cls.get(0).getActualColumnName();
+                    introspectedColumn = introspectedTable.getColumn(pkName);
+                }
+            }
+            //是否自增
+            if (introspectedColumn != null)
+                autoIncrement = introspectedColumn.isAutoIncrement();
+        }
 
         XmlElement forElement = new XmlElement("foreach");
         forElement.addAttribute(new Attribute("collection", "list"));
         forElement.addAttribute(new Attribute("item", "item"));
         forElement.addAttribute(new Attribute("index", "index"));
+        forElement.addAttribute(new Attribute("separator", ";"));
 
-        XmlElement ifElement = new XmlElement("if");
-        ifElement.addAttribute(new Attribute("test", "index==0"));
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("insert into ");
+        sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
+        forElement.addElement(new TextElement(sb.toString()));
 
         XmlElement insertTrimElement = new XmlElement("trim");
         insertTrimElement.addAttribute(new Attribute("prefix", "("));
         insertTrimElement.addAttribute(new Attribute("suffix", ")"));
         insertTrimElement.addAttribute(new Attribute("suffixOverrides", ","));
-        ifElement.addElement(insertTrimElement);
-        forElement.addElement(ifElement);
-        answer.addElement(forElement);
-
-        answer.addElement(new TextElement("values"));
-
-        XmlElement forElement2 = new XmlElement("foreach");
-        forElement2.addAttribute(new Attribute("collection", "list"));
-        forElement2.addAttribute(new Attribute("item", "item"));
-        forElement2.addAttribute(new Attribute("index", "index"));
-        forElement2.addAttribute(new Attribute("separator", ","));
+        forElement.addElement(insertTrimElement);
 
         XmlElement valuesTrimElement = new XmlElement("trim");
-        valuesTrimElement.addAttribute(new Attribute("prefix", "("));
+        valuesTrimElement.addAttribute(new Attribute("prefix", "values ("));
         valuesTrimElement.addAttribute(new Attribute("suffix", ")"));
         valuesTrimElement.addAttribute(new Attribute("suffixOverrides", ","));
-        forElement2.addElement(valuesTrimElement);
-        answer.addElement(forElement2);
+        forElement.addElement(valuesTrimElement);
 
-        //判断主键 是否自增
-        IntrospectedColumn pkColumn = null;
-        List<IntrospectedColumn> cls = introspectedTable.getPrimaryKeyColumns();
-        if (!cls.isEmpty()) {
-            String pkName = cls.get(0).getActualColumnName();
-            pkColumn = introspectedTable.getColumn(pkName);
-        }
-        // 默认 自增
-        boolean autoIncrement = true;
-        if (pkColumn != null)
-            autoIncrement = pkColumn.isAutoIncrement();
+        answer.addElement(forElement);
 
-        //根据自增与否 ，生成XML
-        List<IntrospectedColumn> columns = null;
+        List<IntrospectedColumn> introspectedColumns = null;
         if (autoIncrement) {
-            columns = ListUtilities
+            introspectedColumns = ListUtilities
                     .removeIdentityAndGeneratedAlwaysColumns(introspectedTable.getNonPrimaryKeyColumns());
         } else {
-            columns = introspectedTable.getAllColumns();
+            introspectedColumns = introspectedTable.getAllColumns();
         }
+        for (IntrospectedColumn introspectedColumn : introspectedColumns) {
 
-        for (IntrospectedColumn introspectedColumn : columns) {
             if (introspectedColumn.isSequenceColumn() || introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
                 sb.setLength(0);
                 sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
@@ -107,7 +106,6 @@ public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerat
                 sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
                 sb.append(',');
                 valuesTrimElement.addElement(new TextElement(sb.toString()));
-
                 continue;
             }
 
@@ -121,8 +119,7 @@ public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerat
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(',');
             insertNotNullElement.addElement(new TextElement(sb.toString()));
-            //			insertTrimElement.addElement(insertNotNullElement);
-            insertTrimElement.addElement(new TextElement(sb.toString()));
+            insertTrimElement.addElement(insertNotNullElement);
 
             sb.setLength(0);
             sb.append("item." + introspectedColumn.getJavaProperty());
@@ -131,12 +128,10 @@ public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerat
             valuesNotNullElement.addAttribute(new Attribute("test", sb.toString()));
 
             sb.setLength(0);
-            // 调整自己的方法
             sb.append(getParameterClause(introspectedColumn, null));
             sb.append(',');
             valuesNotNullElement.addElement(new TextElement(sb.toString()));
-            //			valuesTrimElement.addElement(valuesNotNullElement);
-            valuesTrimElement.addElement(new TextElement(sb.toString()));
+            valuesTrimElement.addElement(valuesNotNullElement);
         }
 
         if (context.getPlugins().sqlMapInsertSelectiveElementGenerated(answer, introspectedTable)) {
@@ -144,11 +139,6 @@ public class InsertBatchSelectElementGenerator extends AbstractXmlElementGenerat
         }
     }
 
-    /**
-     * getParameterClause 自定义 获取不为空的字段
-     * @param introspectedColumn 字段对象
-     * @param prefix 前缀
-     */
     public static String getParameterClause(IntrospectedColumn introspectedColumn, String prefix) {
         StringBuilder sb = new StringBuilder();
 

@@ -20,62 +20,82 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
 
 public class InsertBatchGenerator extends AbstractJavaClientGenerator {
 
-	private ExtendUtil util;
+    private ExtendUtil util;
 
-	public InsertBatchGenerator(Context context, ExtendUtil util) {
-		super(false);
-		super.context = context;
-		this.util = util;
-	}
+    public InsertBatchGenerator(Context context, ExtendUtil util) {
+        super(false);
+        super.context = context;
+        this.util = util;
+    }
 
-	@Override
-	public AbstractXmlGenerator getMatchedXMLGenerator() {
-		return new XMLMapperGenerator();
-	}
+    @Override
+    public AbstractXmlGenerator getMatchedXMLGenerator() {
+        return new XMLMapperGenerator();
+    }
 
-	@Override
-	public List<CompilationUnit> getCompilationUnits() {
+    @Override
+    public List<CompilationUnit> getCompilationUnits() {
 
-		CommentGenerator commentGenerator = context.getCommentGenerator();
+        CommentGenerator commentGenerator = context.getCommentGenerator();
 
-		// 类名
-		FullyQualifiedJavaType type = new FullyQualifiedJavaType(util.getInsertBatchClassName()
-				+ "<" + BIConstant.MODEL + ">");
-		Interface interfaze = new Interface(type);
-		interfaze.setVisibility(JavaVisibility.PUBLIC);
-		commentGenerator.addJavaFileComment(interfaze);
+        // 类名
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(
+                util.getInsertBatchClassName() + "<" + BIConstant.MODEL + ">");
+        Interface interfaze = new Interface(type);
+        interfaze.setVisibility(JavaVisibility.PUBLIC);
+        commentGenerator.addJavaFileComment(interfaze);
 
-		FullyQualifiedJavaType siType = new FullyQualifiedJavaType(util.getExtendClassName());
-		interfaze.addSuperInterface(siType);
-		interfaze.addImportedType(siType);
+        FullyQualifiedJavaType siType = new FullyQualifiedJavaType(util.getExtendClassName());
+        interfaze.addSuperInterface(siType);
+        interfaze.addImportedType(siType);
 
-		addInsertBatchMethod(interfaze);
+        //批量插入所有字段
+        addInsertBatchMethod(interfaze);
+        //批量插入非空字段
+        addInsertBatchSelectMethod(interfaze);
 
-		List<CompilationUnit> answer = new ArrayList<>();
-		answer.add(interfaze);
+        List<CompilationUnit> answer = new ArrayList<>();
+        answer.add(interfaze);
 
-		return answer;
-	}
+        return answer;
+    }
 
-	private void addInsertBatchMethod(Interface interfaze) {
-		Method method = new Method();
+    private void addInsertBatchMethod(Interface interfaze) {
+        Method method = new Method();
 
-		method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-		method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setName(util.getInsertBatchMethodName());
 
-		method.setName(util.getInsertBatchMethodName());
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List<" + BIConstant.MODEL + ">");
 
-		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List<"
-				+ BIConstant.MODEL + ">");
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
+        method.addParameter(new Parameter(parameterType, "records"));
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
-		method.addParameter(new Parameter(parameterType, "records"));
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        interfaze.addImportedTypes(importedTypes);
+        interfaze.addMethod(method);
+    }
 
-		interfaze.addImportedTypes(importedTypes);
-		interfaze.addMethod(method);
-	}
+    private void addInsertBatchSelectMethod(Interface interfaze) {
+        Method method = new Method();
+
+//        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setName(util.getInsertBatchSelectMethodName());
+
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List<" + BIConstant.MODEL + ">");
+
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
+        method.addParameter(new Parameter(parameterType, "records"));
+
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+
+        interfaze.addImportedTypes(importedTypes);
+        interfaze.addMethod(method);
+    }
 
 }

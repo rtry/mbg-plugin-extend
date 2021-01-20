@@ -33,6 +33,10 @@ public class ExtendUtil {
         return BIConstant.ExtendInsertMethodName;
     }
 
+    public String getInsertBatchSelectMethodName() {
+        return BIConstant.ExtendInsertSelectMethodName;
+    }
+
     public String getSelectOptionToListMethodName() {
         return BIConstant.ExtendSelectOptionToListName;
     }

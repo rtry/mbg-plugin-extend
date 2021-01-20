@@ -232,6 +232,28 @@ public class SysUserIdVarcharCRUD extends BaseRunApplication {
         Assert.assertEquals(i, length);
     }
 
+    @Test
+    public void insertBatchSelect() {
+        String phone = "18300077771";
+        SysUserIdVarcharExample example = new SysUserIdVarcharExample();
+        example.createCriteria().andPhoneEqualTo(phone);
+        SysUserIdVarcharMapper.deleteByExample(example);
+
+        List<SysUserIdVarchar> records = new ArrayList<>();
+        int length = 5;
+        for (int i = 0; i < length; i++) {
+            SysUserIdVarchar sysUser = createSysUserWithSnowId(phone);
+            sysUser.setUserName(sysUser.getUserName() + "-" + i);
+            if (i % 2 == 1)
+                sysUser.setAddress("TK");
+            else
+                sysUser.setAddress(null);
+            records.add(sysUser);
+        }
+        SysUserIdVarcharMapper.insertBatchSelect(records);
+
+    }
+
     // 批量更新
     @Test
     public void updateBatch() {

@@ -1,41 +1,36 @@
 {
-	"currently":[
-		{
-			"className":"SysUserIdVarchar",
-			"extend":{
-				"insertBatch":true,
-				"insertIfAbsent":false,
-				"selectOption":true
-			},
-			"folder":{
-				"mapperTarget":"src\\test\\java",
-				"modelTarget":"src\\test\\java",
-				"xmlTarget":"src\\test\\resources"
-			},
-			"mapperPkg":"org.mybaits.ex.mapper",
-			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_varchar",
-			"xmlPkg":"mybatis.mapper"
+	"currently":[{
+		"className":"SysUserIdVarchar",
+		"extend":{
+			"insertBatch":true,
+			"insertIfAbsent":false,
+			"selectOption":true
 		},
-		{
-			"className":"SysUserIdSnow",
-			"extend":{
-				"insertBatch":true,
-				"insertIfAbsent":false,
-				"selectOption":true
-			},
-			"folder":{
-				"mapperTarget":"src\\test\\java",
-				"modelTarget":"src\\test\\java",
-				"xmlTarget":"src\\test\\resources"
-			},
-			"mapperPkg":"org.mybaits.ex.mapper",
-			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_snow",
-			"xmlPkg":"mybatis.mapper"
+		"folder":{
+			"mapperTarget":"src\\test\\java",
+			"modelTarget":"src\\test\\java",
+			"xmlTarget":"src\\test\\resources"
 		},
+		"mapperPkg":"org.mybaits.ex.mapper",
+		"modelPkg":"org.mybaits.ex.entity",
+		"tableName":"sys_user_id_varchar",
+		"xmlPkg":"mybatis.mapper"
+	}],
+	"db":{
+		"autoFile":true,
+		"driver":"com.mysql.jdbc.Driver",
+		"mapperClass":"org.mybaits.ex.base.BaseMapper",
+		"notBuildBaseMapper":false,
+		"pw":"123456",
+		"small2int":true,
+		"supportLombok":false,
+		"tiny2int":true,
+		"url":"jdbc:mysql://192.168.253.106:3306/felicity",
+		"user":"root"
+	},
+	"history":[
 		{
-			"className":"SysUserIdSnowAlias",
+			"className":"SysUserIdAuto",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
@@ -48,7 +43,7 @@
 			},
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_snow_alias",
+			"tableName":"sys_user_id_auto",
 			"xmlPkg":"mybatis.mapper"
 		},
 		{
@@ -69,7 +64,7 @@
 			"xmlPkg":"mybatis.mapper"
 		},
 		{
-			"className":"SysUserIdAuto",
+			"className":"SysUserIdSnowAlias",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
@@ -82,21 +77,25 @@
 			},
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_auto",
+			"tableName":"sys_user_id_snow_alias",
+			"xmlPkg":"mybatis.mapper"
+		},
+		{
+			"className":"SysUserIdSnow",
+			"extend":{
+				"insertBatch":true,
+				"insertIfAbsent":false,
+				"selectOption":true
+			},
+			"folder":{
+				"mapperTarget":"src\\test\\java",
+				"modelTarget":"src\\test\\java",
+				"xmlTarget":"src\\test\\resources"
+			},
+			"mapperPkg":"org.mybaits.ex.mapper",
+			"modelPkg":"org.mybaits.ex.entity",
+			"tableName":"sys_user_id_snow",
 			"xmlPkg":"mybatis.mapper"
 		}
-	],
-	"db":{
-		"autoFile":true,
-		"driver":"com.mysql.jdbc.Driver",
-		"mapperClass":"org.mybaits.ex.base.BaseMapper",
-		"notBuildBaseMapper":false,
-		"pw":"123456",
-		"small2int":true,
-		"supportLombok":false,
-		"tiny2int":true,
-		"url":"jdbc:mysql://192.168.253.106:3306/felicity",
-		"user":"root"
-	},
-	"history":[]
+	]
 }
