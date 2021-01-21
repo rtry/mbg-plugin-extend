@@ -12,11 +12,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mybaits.ex.entity.SysUserIdAuto;
 import org.mybaits.ex.entity.SysUserIdAutoExample;
+import org.mybaits.ex.entity.SysUserIdVarchar;
+import org.mybaits.ex.entity.SysUserIdAutoExample;
 import org.mybaits.ex.mapper.SysUserIdAutoMapper;
 import org.mybaits.ex.zrun.BaseRunApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @className SysUserIdAutoCRUD
@@ -230,6 +234,82 @@ public class SysUserIdAutoCRUD extends BaseRunApplication {
         int i = sysUserIdAutoMapper.insertBatch(records);
 
         Assert.assertEquals(i, length);
+
+    }
+
+    @Test
+    public void insertBatchSelect() {
+        String phone = "18300077771";
+        SysUserIdAutoExample example = new SysUserIdAutoExample();
+        example.createCriteria().andPhoneEqualTo(phone);
+        sysUserIdAutoMapper.deleteByExample(example);
+
+        List<SysUserIdAuto> records = new ArrayList<>();
+        int length = 5;
+        for (int i = 0; i < length; i++) {
+            SysUserIdAuto sysUser = createSysUserNoPK(phone);
+            sysUser.setUserName(sysUser.getUserName() + "-" + i);
+            if (i % 2 == 1)
+                sysUser.setAddress("TK");
+            else
+                sysUser.setAddress(null);
+            records.add(sysUser);
+        }
+        sysUserIdAutoMapper.insertBatchSelect(records);
+
+    }
+
+    // 批量更新
+    @Test
+    public void updateBatch() {
+
+        String phone = "18300007771";
+        SysUserIdAutoExample example = new SysUserIdAutoExample();
+        example.createCriteria().andPhoneEqualTo(phone);
+        sysUserIdAutoMapper.deleteByExample(example);
+
+        List<SysUserIdAuto> records = new ArrayList<>();
+        int length = 5;
+        for (int i = 0; i < length; i++) {
+            SysUserIdAuto sysUser = createSysUserNoPK(phone);
+            sysUser.setUserName(sysUser.getUserName() + "-" + i);
+            records.add(sysUser);
+        }
+        int i = sysUserIdAutoMapper.insertBatch(records);
+
+        Assert.assertEquals(i, length);
+        List<SysUserIdAuto> sysUserIdVarchars = sysUserIdAutoMapper.selectByExample(example);
+        for (int m = 0; m < sysUserIdVarchars.size(); m++) {
+            SysUserIdAuto SysUserIdAuto = sysUserIdVarchars.get(m);
+            if (m % 2 == 0) {
+                SysUserIdAuto.setAddress("JJJ");
+            } else {
+                SysUserIdAuto.setHeadImage("BBB");
+            }
+        }
+        sysUserIdAutoMapper.updateBatchById(sysUserIdVarchars);
+
+    }
+
+    @Test
+    public void updateMapByExample() {
+        String phone = "18300008888";
+        SysUserIdAutoExample example = new SysUserIdAutoExample();
+        example.createCriteria().andPhoneEqualTo(phone);
+        sysUserIdAutoMapper.deleteByExample(example);
+
+        SysUserIdAuto sysUser = createSysUserNoPK(phone);
+        sysUserIdAutoMapper.insertSelective(sysUser);
+
+        Long aLong = sysUserIdAutoMapper.countByExample(example);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("address", "JDNLDFJDSLFJLSD");
+        map.put("address", "ddd");
+        map.put("sex", null);
+        int i = sysUserIdAutoMapper.updateMapByExample(map, example);
+
+        Assert.assertEquals(i, aLong.intValue());
 
     }
 

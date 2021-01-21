@@ -15,15 +15,12 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml;
 
-import org.mybatis.generator.api.IntrospectedColumn;
+import static org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant.ExtendUpdateMapByExample;
+
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
-import org.mybatis.generator.codegen.mybatis3.ListUtilities;
-import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
-
-import static org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant.ExtendUpdateMapByExample;
 
 public class UpdateMapByExampleElementGenerator extends AbstractXmlElementGenerator {
 
@@ -57,15 +54,6 @@ public class UpdateMapByExampleElementGenerator extends AbstractXmlElementGenera
 
         dynamicElement.addElement(forElement);
 
-//        for (IntrospectedColumn introspectedColumn : ListUtilities
-//                .removeGeneratedAlwaysColumns(introspectedTable.getAllColumns())) {
-//
-//            sb.setLength(0);
-//            sb.append(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn));
-//            sb.append(" = ");
-//            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "record."));
-//            sb.append(',');
-//        }
         sb.setLength(0);
         sb.append("${key} = #{val}");
         forElement.addElement(new TextElement(sb.toString()));

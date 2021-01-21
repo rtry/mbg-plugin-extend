@@ -1,9 +1,15 @@
 package org.mybaits.ex.mapper;
 
+
+
+
 import org.mybaits.ex.base.UpdateBatchMapper;
-import org.mybaits.ex.base.BaseMapper;
 import org.mybaits.ex.base.InsertBatchMapper;
 import org.mybaits.ex.base.SelectOptionMapper;
+
+
+import org.mybaits.ex.base.BaseMapper;
+
 import org.mybaits.ex.entity.SysUserIdVarchar;
 import org.mybaits.ex.entity.SysUserIdVarcharExample;
 
@@ -13,7 +19,6 @@ import org.mybaits.ex.entity.SysUserIdVarcharExample;
  * 创建时间: 2020-11-26<br>
  * @version 0.0.3
  */
-public interface SysUserIdVarcharMapper
-        extends UpdateBatchMapper<SysUserIdVarchar>, BaseMapper<SysUserIdVarchar, String, SysUserIdVarcharExample>,
-        InsertBatchMapper<SysUserIdVarchar>, SelectOptionMapper<SysUserIdVarchar, String, SysUserIdVarcharExample> {
+public interface SysUserIdVarcharMapper extends UpdateBatchMapper<SysUserIdVarchar>,  InsertBatchMapper<SysUserIdVarchar>,        SelectOptionMapper<SysUserIdVarchar, String, SysUserIdVarcharExample>,
+         BaseMapper<SysUserIdVarchar, String, SysUserIdVarcharExample> {
 }

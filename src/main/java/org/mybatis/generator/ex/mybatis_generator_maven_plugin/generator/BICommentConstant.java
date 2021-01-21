@@ -59,7 +59,7 @@ public class BICommentConstant {
         String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)", "@param records 数据集合", "@return 受影响条数" };
         coms.put("insertBatch", insertBatch);
         String[] insertBatchSelect = { "insertBatchSelect 批量插入非空数据数据", "@param records 数据集合",
-                "该方法必须在allowMultiQueries=true才能执行" };
+                "特别：该方法必须在allowMultiQueries=true才能执行" };
         coms.put("insertBatchSelect", insertBatchSelect);
 
         // =======================
@@ -83,7 +83,7 @@ public class BICommentConstant {
         // 扩展方法-根据ID批量更新
         // =======================
         String[] updateBatchById = { "updateBatchById 根据ID批量更新各对象非空的属性", "records 数据集合 -【必须存在ID】",
-                "该方法必须在allowMultiQueries=true才能执行" };
+                "特别：该方法必须在allowMultiQueries=true才能执行" };
         coms.put("updateBatchById", updateBatchById);
 
     }

@@ -1,10 +1,11 @@
 {
 	"currently":[{
-		"className":"SysUserIdVarchar",
+		"className":"SysUserIdAuto",
 		"extend":{
 			"insertBatch":true,
 			"insertIfAbsent":false,
-			"selectOption":true
+			"selectOption":true,
+			"updateBatch":true
 		},
 		"folder":{
 			"mapperTarget":"src\\test\\java",
@@ -13,7 +14,7 @@
 		},
 		"mapperPkg":"org.mybaits.ex.mapper",
 		"modelPkg":"org.mybaits.ex.entity",
-		"tableName":"sys_user_id_varchar",
+		"tableName":"sys_user_id_auto",
 		"xmlPkg":"mybatis.mapper"
 	}],
 	"db":{
@@ -30,28 +31,12 @@
 	},
 	"history":[
 		{
-			"className":"SysUserIdAuto",
-			"extend":{
-				"insertBatch":true,
-				"insertIfAbsent":false,
-				"selectOption":true
-			},
-			"folder":{
-				"mapperTarget":"src\\test\\java",
-				"modelTarget":"src\\test\\java",
-				"xmlTarget":"src\\test\\resources"
-			},
-			"mapperPkg":"org.mybaits.ex.mapper",
-			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_auto",
-			"xmlPkg":"mybatis.mapper"
-		},
-		{
 			"className":"SysUserIdAlias",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
-				"selectOption":true
+				"selectOption":true,
+				"updateBatch":false
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -68,7 +53,8 @@
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
-				"selectOption":true
+				"selectOption":true,
+				"updateBatch":false
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -85,7 +71,8 @@
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
-				"selectOption":true
+				"selectOption":true,
+				"updateBatch":false
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -95,6 +82,24 @@
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
 			"tableName":"sys_user_id_snow",
+			"xmlPkg":"mybatis.mapper"
+		},
+		{
+			"className":"SysUserIdVarchar",
+			"extend":{
+				"insertBatch":true,
+				"insertIfAbsent":false,
+				"selectOption":true,
+				"updateBatch":false
+			},
+			"folder":{
+				"mapperTarget":"src\\test\\java",
+				"modelTarget":"src\\test\\java",
+				"xmlTarget":"src\\test\\resources"
+			},
+			"mapperPkg":"org.mybaits.ex.mapper",
+			"modelPkg":"org.mybaits.ex.entity",
+			"tableName":"sys_user_id_varchar",
 			"xmlPkg":"mybatis.mapper"
 		}
 	]

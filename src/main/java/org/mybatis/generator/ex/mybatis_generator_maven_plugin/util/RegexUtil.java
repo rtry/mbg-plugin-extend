@@ -17,8 +17,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:27:09 <br>
  * 备注:
- * @version
- * @see
  */
 public class RegexUtil {
 
@@ -72,7 +70,6 @@ public class RegexUtil {
      * remove 移除 目标指定接口
      * @param fileCode 整个Mapper 字符串
      * @param result 待移除接口字符数组
-     * @return
      */
     public static String remove(String fileCode, Set<String> result) {
 
@@ -98,10 +95,6 @@ public class RegexUtil {
      * add 新加 目标 指定接口
      * @param filCode 整个Mapper 字符串
      * @param result 指定接口字符集合
-     * @param gex
-     * @param eUtil
-     * @return
-     * 
      */
     public static String add(String filCode, Set<String> result, Set<String> gex, ExtendUtil eUtil) {
         if (result.isEmpty())

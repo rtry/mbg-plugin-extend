@@ -4,16 +4,16 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
 
 public class DataConvertImpl extends DataConvertSuper {
-	
-	private ConfigConvertUtil ccutil;
 
-	public DataConvertImpl(ConfigConvertUtil ccutil) {
-		this.ccutil= ccutil;
-	}
+    private ConfigConvertUtil configConvertUtil;
 
-	@Override
-	public Config initConf() {
-		return ccutil.readJSONFromFile();
-	}
+    public DataConvertImpl(ConfigConvertUtil configConvertUtil) {
+        this.configConvertUtil = configConvertUtil;
+    }
+
+    @Override
+    public Config initConf() {
+        return configConvertUtil.readJSONFromFile();
+    }
 
 }

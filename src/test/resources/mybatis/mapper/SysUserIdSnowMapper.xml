@@ -196,6 +196,17 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="updateMapByExample" parameterType="map">
+    update sys_user_id_snow
+    <set>
+      <foreach collection="map" index="key" item="val" separator=",">
+        ${key} = #{val}
+      </foreach>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <insert id="insertBatch" parameterType="java.util.List">
     insert into sys_user_id_snow
     <foreach collection="list" index="index" item="item">
@@ -219,6 +230,51 @@
         #{item.phone,jdbcType=CHAR},
         #{item.sex,jdbcType=TINYINT},
         #{item.address,jdbcType=VARCHAR},
+      </trim>
+    </foreach>
+  </insert>
+  <insert id="insertBatchSelect" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into sys_user_id_snow
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.id != null">
+          id,
+        </if>
+        <if test="item.userName != null">
+          user_name,
+        </if>
+        <if test="item.headImage != null">
+          head_image,
+        </if>
+        <if test="item.phone != null">
+          phone,
+        </if>
+        <if test="item.sex != null">
+          sex,
+        </if>
+        <if test="item.address != null">
+          address,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.id != null">
+          #{item.id,jdbcType=BIGINT},
+        </if>
+        <if test="item.userName != null">
+          #{item.userName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.headImage != null">
+          #{item.headImage,jdbcType=VARCHAR},
+        </if>
+        <if test="item.phone != null">
+          #{item.phone,jdbcType=CHAR},
+        </if>
+        <if test="item.sex != null">
+          #{item.sex,jdbcType=TINYINT},
+        </if>
+        <if test="item.address != null">
+          #{item.address,jdbcType=VARCHAR},
+        </if>
       </trim>
     </foreach>
   </insert>
