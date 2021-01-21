@@ -7,7 +7,9 @@
 package org.mybaits.ex.zrun.id;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -283,6 +285,28 @@ public class SysUserIdVarcharCRUD extends BaseRunApplication {
             }
         }
         SysUserIdVarcharMapper.updateBatchById(sysUserIdVarchars);
+
+    }
+
+    @Test
+    public void updateMapByExample() {
+        String phone = "18300008888";
+        SysUserIdVarcharExample example = new SysUserIdVarcharExample();
+        example.createCriteria().andPhoneEqualTo(phone);
+        SysUserIdVarcharMapper.deleteByExample(example);
+
+        SysUserIdVarchar sysUser = createSysUserWithSnowId(phone);
+        SysUserIdVarcharMapper.insertSelective(sysUser);
+
+        Long aLong = SysUserIdVarcharMapper.countByExample(example);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("address", "JDNLDFJDSLFJLSD");
+        map.put("address", "ddd");
+        map.put("sex", null);
+        int i = SysUserIdVarcharMapper.updateMapByExample(map, example);
+
+        Assert.assertEquals(i, aLong.intValue());
 
     }
 

@@ -21,8 +21,6 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
  * 创建人：felicity <br>
  * 创建时间：2019年7月26日 下午5:51:23 <br>
  * 备注:
- * @version
- * @see
  */
 public class JavaTypePlugin extends PluginAdapter {
 

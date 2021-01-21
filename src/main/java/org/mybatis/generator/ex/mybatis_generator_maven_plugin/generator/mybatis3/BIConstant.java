@@ -27,6 +27,11 @@ public class BIConstant {
     public static final String ExtendSuperClass = "Extend" + MAPPER;
 
     // =======================================
+    // 根据Example更新Map
+    // =======================================
+    public static final String ExtendUpdateMapByExample = "updateMapByExample";
+
+    // =======================================
     // 批量插入
     // =======================================
     public static final String ExtendInsertBatchClass = "InsertBatch" + MAPPER;

@@ -2,6 +2,7 @@ package org.mybaits.ex.base;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 public interface BaseMapper<T, PK extends Serializable, E> {
@@ -61,4 +62,12 @@ public interface BaseMapper<T, PK extends Serializable, E> {
      * @return 受影响条数
      */
     int updateByPrimaryKeySelective(T record);
+
+    /**
+     * updateMapByExample 根据条件和Map更新数据
+     * @param map key->数据库中字段 value->要改的值
+     * @param example 更新的条件
+     * @return 受影响条数
+     */
+    int updateMapByExample(@Param("map") Map map, @Param("example") E example);
 }

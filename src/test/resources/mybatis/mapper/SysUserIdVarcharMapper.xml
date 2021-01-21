@@ -196,6 +196,17 @@
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+  <update id="updateMapByExample" parameterType="map">
+    update sys_user_id_varchar
+    <set>
+      <foreach collection="map" index="key" item="val" separator=",">
+        ${key} = #{val}
+      </foreach>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <insert id="insertBatch" parameterType="java.util.List">
     insert into sys_user_id_varchar
     <foreach collection="list" index="index" item="item">

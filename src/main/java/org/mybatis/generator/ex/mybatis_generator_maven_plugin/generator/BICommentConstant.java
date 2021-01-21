@@ -47,6 +47,13 @@ public class BICommentConstant {
         coms.put("updateByPrimaryKeySelective", updateByPrimaryKeySelective);
 
         // =======================
+        // 扩展方法-更新空属性
+        // =======================
+        String[] updateMapByExample = { "updateMapByExample 根据条件和Map更新数据", "@param map key->数据库中字段 value->要改的值",
+                "@param example 更新的条件", "@return 受影响条数" };
+        coms.put("updateMapByExample", updateMapByExample);
+
+        // =======================
         // 扩展方法-批量插入
         // =======================
         String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)", "@param records 数据集合", "@return 受影响条数" };

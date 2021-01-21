@@ -29,6 +29,7 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BISelectByPrimaryKeyMethodGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIUpdateByExampleSelectiveMethodGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.elements.BIUpdateByPrimaryKeySelectiveMethodGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.UpdateMapByExampleMethodGenerator;
 
 public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 
@@ -87,10 +88,22 @@ public class BaseInterfaceGenerator extends AbstractJavaClientGenerator {
 		// 更新，按主键
 		addUpdateByPrimaryKeySelectiveMethod(interfaze);
 
+
+		// ===========================================
+		// 基础接口 附加部分
+		// ===========================================
+		// 更新，按需求 更新map的值
+		addUpdateMapByExampleMethod(interfaze);
+
 		List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
 		answer.add(interfaze);
 
 		return answer;
+	}
+
+	private void addUpdateMapByExampleMethod(Interface interfaze) {
+		AbstractJavaMapperMethodGenerator methodGenerator = new UpdateMapByExampleMethodGenerator();
+		initializeAndExecuteGenerator(methodGenerator, interfaze);
 	}
 
 	protected void addCountByExampleMethod(Interface interfaze) {
