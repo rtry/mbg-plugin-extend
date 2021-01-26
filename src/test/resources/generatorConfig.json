@@ -5,7 +5,7 @@
 			"insertBatch":true,
 			"insertIfAbsent":false,
 			"selectOption":true,
-			"updateBatch":false
+			"updateBatch":true
 		},
 		"folder":{
 			"mapperTarget":"src\\test\\java",
@@ -31,7 +31,7 @@
 	},
 	"history":[
 		{
-			"className":"SysUserIdAlias",
+			"className":"SysUserIdAuto",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
@@ -45,7 +45,7 @@
 			},
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_alias",
+			"tableName":"sys_user_id_auto",
 			"xmlPkg":"mybatis.mapper"
 		},
 		{
@@ -67,12 +67,30 @@
 			"xmlPkg":"mybatis.mapper"
 		},
 		{
+			"className":"SysUserIdAlias",
+			"extend":{
+				"insertBatch":true,
+				"insertIfAbsent":false,
+				"selectOption":true,
+				"updateBatch":false
+			},
+			"folder":{
+				"mapperTarget":"src\\test\\java",
+				"modelTarget":"src\\test\\java",
+				"xmlTarget":"src\\test\\resources"
+			},
+			"mapperPkg":"org.mybaits.ex.mapper",
+			"modelPkg":"org.mybaits.ex.entity",
+			"tableName":"sys_user_id_alias",
+			"xmlPkg":"mybatis.mapper"
+		},
+		{
 			"className":"SysUserIdSnow",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
 				"selectOption":true,
-				"updateBatch":true
+				"updateBatch":false
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -82,24 +100,6 @@
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
 			"tableName":"sys_user_id_snow",
-			"xmlPkg":"mybatis.mapper"
-		},
-		{
-			"className":"SysUserIdAuto",
-			"extend":{
-				"insertBatch":true,
-				"insertIfAbsent":false,
-				"selectOption":true,
-				"updateBatch":true
-			},
-			"folder":{
-				"mapperTarget":"src\\test\\java",
-				"modelTarget":"src\\test\\java",
-				"xmlTarget":"src\\test\\resources"
-			},
-			"mapperPkg":"org.mybaits.ex.mapper",
-			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_auto",
 			"xmlPkg":"mybatis.mapper"
 		}
 	]

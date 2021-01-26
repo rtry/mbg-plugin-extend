@@ -3,7 +3,7 @@ package org.mybaits.ex.entity;
 /**
  * 类描述: sys_user_id_alias表的实体类，请勿修改<br>
  * 创建者: 由 MBG(mybatis generator plug) 生成<br>
- * 创建时间: 2021-01-20<br>
+ * 创建时间: 2021-01-26<br>
  * @version 0.0.4
  */
 public class SysUserIdAlias {

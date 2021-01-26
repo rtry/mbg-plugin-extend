@@ -1,6 +1,6 @@
 package org.mybaits.ex.mapper;
 
-import org.mybaits.ex.base.UpdateBatchMapper;
+
 import org.mybaits.ex.base.BaseMapper;
 import org.mybaits.ex.base.InsertBatchMapper;
 import org.mybaits.ex.base.SelectOptionMapper;
@@ -13,5 +13,5 @@ import org.mybaits.ex.entity.SysUserIdAliasExample;
  * 创建时间: 2020-11-26<br>
  * @version 0.0.3
  */
-public interface SysUserIdAliasMapper extends UpdateBatchMapper<SysUserIdAlias>,  BaseMapper<SysUserIdAlias, Long, SysUserIdAliasExample>, InsertBatchMapper<SysUserIdAlias>, SelectOptionMapper<SysUserIdAlias, Long, SysUserIdAliasExample> {
+public interface SysUserIdAliasMapper extends   BaseMapper<SysUserIdAlias, Long, SysUserIdAliasExample>, InsertBatchMapper<SysUserIdAlias>, SelectOptionMapper<SysUserIdAlias, Long, SysUserIdAliasExample> {
 }

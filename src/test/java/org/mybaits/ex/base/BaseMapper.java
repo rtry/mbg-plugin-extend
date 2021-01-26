@@ -22,10 +22,10 @@ public interface BaseMapper<T, PK extends Serializable, E> {
 
     /**
      * deleteByPrimaryKey:通过主键删除
-     * @param id 表的主键
+     * @param pk 表的主键
      * @return 受影响条数
      */
-    int deleteByPrimaryKey(PK example);
+    int deleteByPrimaryKey(PK pk);
 
     /**
      * insertSelective:有选择性的插入数据(空数据不会插入)

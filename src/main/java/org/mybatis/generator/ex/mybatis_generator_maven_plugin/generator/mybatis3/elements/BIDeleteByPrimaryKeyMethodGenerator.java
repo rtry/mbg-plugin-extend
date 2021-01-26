@@ -28,7 +28,7 @@ public class BIDeleteByPrimaryKeyMethodGenerator extends AbstractJavaMapperMetho
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setName("deleteByPrimaryKey");
         FullyQualifiedJavaType type = new FullyQualifiedJavaType(BIConstant.PK);
-        method.addParameter(new Parameter(type, "example"));
+        method.addParameter(new Parameter(type, "pk"));
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
