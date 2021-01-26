@@ -69,5 +69,5 @@ public interface BaseMapper<T, PK extends Serializable, E> {
      * @param example 更新的条件
      * @return 受影响条数
      */
-    int updateMapByExample(@Param("map") Map map, @Param("example") E example);
+    int updateMapByExample(@Param("map") Map<String, Object> map, @Param("example") E example);
 }

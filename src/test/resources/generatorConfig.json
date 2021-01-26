@@ -1,11 +1,11 @@
 {
 	"currently":[{
-		"className":"SysUserIdAuto",
+		"className":"SysUserIdVarchar",
 		"extend":{
 			"insertBatch":true,
 			"insertIfAbsent":false,
 			"selectOption":true,
-			"updateBatch":true
+			"updateBatch":false
 		},
 		"folder":{
 			"mapperTarget":"src\\test\\java",
@@ -14,7 +14,7 @@
 		},
 		"mapperPkg":"org.mybaits.ex.mapper",
 		"modelPkg":"org.mybaits.ex.entity",
-		"tableName":"sys_user_id_auto",
+		"tableName":"sys_user_id_varchar",
 		"xmlPkg":"mybatis.mapper"
 	}],
 	"db":{
@@ -72,7 +72,7 @@
 				"insertBatch":true,
 				"insertIfAbsent":false,
 				"selectOption":true,
-				"updateBatch":false
+				"updateBatch":true
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -85,12 +85,12 @@
 			"xmlPkg":"mybatis.mapper"
 		},
 		{
-			"className":"SysUserIdVarchar",
+			"className":"SysUserIdAuto",
 			"extend":{
 				"insertBatch":true,
 				"insertIfAbsent":false,
 				"selectOption":true,
-				"updateBatch":false
+				"updateBatch":true
 			},
 			"folder":{
 				"mapperTarget":"src\\test\\java",
@@ -99,7 +99,7 @@
 			},
 			"mapperPkg":"org.mybaits.ex.mapper",
 			"modelPkg":"org.mybaits.ex.entity",
-			"tableName":"sys_user_id_varchar",
+			"tableName":"sys_user_id_auto",
 			"xmlPkg":"mybatis.mapper"
 		}
 	]

@@ -25,7 +25,7 @@ public class UpdateMapByExampleMethodGenerator extends AbstractJavaMapperMethodG
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setName(ExtendUpdateMapByExample);
 
-        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("Map");
+        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("Map<String,Object>");
         method.addParameter(new Parameter(parameterType, "map", "@Param(\"map\")"));
 
         FullyQualifiedJavaType exampleType = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
