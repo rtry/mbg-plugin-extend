@@ -16,9 +16,12 @@ public class BICommentConstant {
      * createComment:创建者声明
      * @since Ver 1.1
      */
-    public static final String createComment = "由 MBG(mybatis generator plug) 生成";
+    public static final String CREATE_COMMENT = "由 MBG(mybatis generator plug) 生成";
 
-    private static final Map<String, String[]> coms = new HashMap<>();
+    /**
+     * 方法的注解集合
+     */
+    private static final Map<String, String[]> COMMENTS = new HashMap<>();
 
     // 初始化注释对象
     static {
@@ -37,30 +40,30 @@ public class BICommentConstant {
         String[] updateByPrimaryKeySelective = { "updateByPrimaryKeySelective:通过主键有选择性的更新对象",
                 "@param record  表对象（不为空的数据都会更新）对象中必须含有主键", "@return 受影响条数" };
 
-        coms.put("countByExample", countByExample);
-        coms.put("deleteByExample", deleteByExample);
-        coms.put("deleteByPrimaryKey", deleteByPrimaryKey);
-        coms.put("insertSelective", insertSelective);
-        coms.put("selectByExample", selectByExample);
-        coms.put("selectByPrimaryKey", selectByPrimaryKey);
-        coms.put("updateByExampleSelective", updateByExampleSelective);
-        coms.put("updateByPrimaryKeySelective", updateByPrimaryKeySelective);
+        COMMENTS.put("countByExample", countByExample);
+        COMMENTS.put("deleteByExample", deleteByExample);
+        COMMENTS.put("deleteByPrimaryKey", deleteByPrimaryKey);
+        COMMENTS.put("insertSelective", insertSelective);
+        COMMENTS.put("selectByExample", selectByExample);
+        COMMENTS.put("selectByPrimaryKey", selectByPrimaryKey);
+        COMMENTS.put("updateByExampleSelective", updateByExampleSelective);
+        COMMENTS.put("updateByPrimaryKeySelective", updateByPrimaryKeySelective);
 
         // =======================
         // 扩展方法-更新空属性
         // =======================
         String[] updateMapByExample = { "updateMapByExample 根据条件和Map更新数据", "@param map key->数据库中字段 value->要改的值",
                 "@param example 更新的条件", "@return 受影响条数" };
-        coms.put("updateMapByExample", updateMapByExample);
+        COMMENTS.put("updateMapByExample", updateMapByExample);
 
         // =======================
         // 扩展方法-批量插入
         // =======================
         String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)", "@param records 数据集合", "@return 受影响条数" };
-        coms.put("insertBatch", insertBatch);
+        COMMENTS.put("insertBatch", insertBatch);
         String[] insertBatchSelect = { "insertBatchSelect 批量插入非空数据数据", "@param records 数据集合",
                 "特别：该方法必须在allowMultiQueries=true才能执行" };
-        coms.put("insertBatchSelect", insertBatchSelect);
+        COMMENTS.put("insertBatchSelect", insertBatchSelect);
 
         // =======================
         // 扩展方法-指定列查询
@@ -69,22 +72,22 @@ public class BICommentConstant {
                 "@param example 查询条件", "@return 表对象List集合" };
         String[] selectOptionToOne = { "selectOptionToOne 指定列查询一个表对象", "@param options 查询字段数组(表数据库字段)",
                 "@param example 查询条件", "@return 表对象" };
-        coms.put("selectOptionToList", selectOptionToList);
-        coms.put("selectOptionToOne", selectOptionToOne);
+        COMMENTS.put("selectOptionToList", selectOptionToList);
+        COMMENTS.put("selectOptionToOne", selectOptionToOne);
 
         // =======================
         // 扩展方法-指定列查询
         // =======================
         String[] insertIfAbsent = { "insertIfAbsent 如果不存在，则插入", "@param record 表对象 -【对象数据中，必须包含判断存在的标准(唯一性约束)】",
                 "@return 受影响条数" };
-        coms.put("insertIfAbsent", insertIfAbsent);
+        COMMENTS.put("insertIfAbsent", insertIfAbsent);
 
         // =======================
         // 扩展方法-根据ID批量更新
         // =======================
         String[] updateBatchById = { "updateBatchById 根据ID批量更新各对象非空的属性", "records 数据集合 -【必须存在ID】",
                 "特别：该方法必须在allowMultiQueries=true才能执行" };
-        coms.put("updateBatchById", updateBatchById);
+        COMMENTS.put("updateBatchById", updateBatchById);
 
     }
 
@@ -93,8 +96,8 @@ public class BICommentConstant {
      * @param key Mapper 方法名
      */
     public static String[] getComments(String key) {
-        if (coms.containsKey(key)) {
-            return coms.get(key);
+        if (COMMENTS.containsKey(key)) {
+            return COMMENTS.get(key);
         } else {
             String[] empty = {};
             return empty;

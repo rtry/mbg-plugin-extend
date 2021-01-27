@@ -375,10 +375,10 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 			sb.append(" * ");
 			sb.append(method.getName() + ": 设置 " + introspectedColumn.getRemarks());
 			method.addJavaDocLine(sb.toString().replace("\n", " "));
-			Parameter parm = method.getParameters().get(0);
+			Parameter parameter = method.getParameters().get(0);
 			sb.setLength(0);
             sb.append(" * @param ");
-			sb.append(parm.getName());
+			sb.append(parameter.getName());
             sb.append(" " + introspectedColumn.getRemarks());
 			sb.append(" ");
 			// sb.append(introspectedColumn.getRemarks());
@@ -428,13 +428,13 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		innerClass.addJavaDocLine("/**");
 		sb.append(" * 类描述: ");
 		if(innerClass.getType().getShortName().endsWith("Example")){
-			sb.append(introspectedTable.getFullyQualifiedTable() + "表的查询类，请勿修改<br>");
+			sb.append(introspectedTable.getFullyQualifiedTable() + " 表的查询类，请勿修改<br>");
 		}else{
-			sb.append(introspectedTable.getFullyQualifiedTable() + "表的实体类，请勿修改<br>");
+			sb.append(introspectedTable.getFullyQualifiedTable() + " 表的实体类，请勿修改<br>");
 		}
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: " + BICommentConstant.createComment + "<br>");
+		sb.append(" * 创建者: " + BICommentConstant.CREATE_COMMENT + "<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * 创建时间: ");
@@ -456,10 +456,10 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		interfaze.addJavaDocLine("/**");
 		sb.append(" * 类描述: ");
 		sb.append(introspectedTable.getFullyQualifiedTable()
-				+ "表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
+				+ " 表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: " + BICommentConstant.createComment + "<br> ");
+		sb.append(" * 创建者: " + BICommentConstant.CREATE_COMMENT + "<br> ");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
 		sb.append(" * 创建时间: ");
