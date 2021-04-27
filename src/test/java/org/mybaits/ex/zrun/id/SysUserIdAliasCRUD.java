@@ -232,4 +232,18 @@ public class SysUserIdAliasCRUD extends BaseRunApplication {
 
     }
 
+    @Test
+    public void test() {
+        SysUserIdAliasExample example = new SysUserIdAliasExample();
+        SysUserIdAliasExample.Criteria criteria = example.createCriteria().andUserIdEqualTo(1L);
+
+        SysUserIdAliasExample example2 = new SysUserIdAliasExample();
+        SysUserIdAliasExample.Criteria criteria2 = example2.createCriteria().andUserIdEqualTo(2L);
+
+
+        System.out.println(criteria.getAllCriteria().get(0).getValue());
+        System.out.println(criteria2.getAllCriteria().get(0).getValue());
+        System.out.println(criteria == criteria2);
+
+    }
 }

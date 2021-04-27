@@ -35,8 +35,11 @@ import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.FrameworkContext;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
 
 /**
  * 
@@ -67,69 +70,85 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         // ************************
         commentGenerator.addModelClassComment(topLevelClass, introspectedTable);
 
+        ExtendUtil extendUtil = (ExtendUtil) FrameworkContext.get("extendUtil");
+        //import 导入
+        FullyQualifiedJavaType siType = new FullyQualifiedJavaType(extendUtil.getExtendExampleClassName());
+        topLevelClass.setSuperClass(siType);
+        topLevelClass.addImportedType(siType);
+
+
         // add default constructor
         Method method = new Method();
+
+        //移除 构造方法
+        /*
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setConstructor(true);
         method.setName(type.getShortName());
-        method.addBodyLine("oredCriteria = new ArrayList<Criteria>();"); 
+        method.addBodyLine("oredCriteria = new ArrayList<Criteria>();");
 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
+        */
 
         // add field, getter, setter for orderby clause
+
+
         Field field = new Field();
+        //移除 orderByClause 属性
+        /*
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getStringInstance());
-        field.setName("orderByClause"); 
+        field.setName("orderByClause");
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
+        */
 
-        method = new Method();
+        /*method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("setOrderByClause"); 
         method.addParameter(new Parameter(FullyQualifiedJavaType
                 .getStringInstance(), "orderByClause")); 
         method.addBodyLine("this.orderByClause = orderByClause;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
-        method = new Method();
+        /*method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setReturnType(FullyQualifiedJavaType.getStringInstance());
         method.setName("getOrderByClause"); 
         method.addBodyLine("return orderByClause;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
         // add field, getter, setter for distinct
-        field = new Field();
+        /*field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getBooleanPrimitiveInstance());
         field.setName("distinct"); 
         commentGenerator.addFieldComment(field, introspectedTable);
-        topLevelClass.addField(field);
+        topLevelClass.addField(field);*/
 
-        method = new Method();
+        /*method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("setDistinct"); 
         method.addParameter(new Parameter(FullyQualifiedJavaType
                 .getBooleanPrimitiveInstance(), "distinct")); 
         method.addBodyLine("this.distinct = distinct;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
-        method = new Method();
+        /*method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setReturnType(FullyQualifiedJavaType
                 .getBooleanPrimitiveInstance());
         method.setName("isDistinct"); 
         method.addBodyLine("return distinct;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
         // add field and methods for the list of ored criteria
-        field = new Field();
+        /*field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
 
         FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(
@@ -145,7 +164,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         method.setName("getOredCriteria"); 
         method.addBodyLine("return oredCriteria;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
         method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
@@ -187,14 +206,14 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
 
-        method = new Method();
+       /* method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("clear"); 
         method.addBodyLine("oredCriteria.clear();"); 
         method.addBodyLine("orderByClause = null;"); 
         method.addBodyLine("distinct = false;"); 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
+        topLevelClass.addMethod(method);*/
 
         // now generate the inner class that holds the AND conditions
         topLevelClass
@@ -202,7 +221,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
 
         topLevelClass.addInnerClass(getCriteriaInnerClass());
 
-        topLevelClass.addInnerClass(getCriterionInnerClass());
+//        topLevelClass.addInnerClass(getCriterionInnerClass());
 
         List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
         if (context.getPlugins().modelExampleClassGenerated(
@@ -391,13 +410,16 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         context.getCommentGenerator().addClassComment(answer,
                 introspectedTable);
 
+        FullyQualifiedJavaType siType = new FullyQualifiedJavaType("AbstractCriteria");
+        answer.setSuperClass(siType);
+
         Method method = new Method();
-        method.setVisibility(JavaVisibility.PROTECTED);
+       /* method.setVisibility(JavaVisibility.PROTECTED);
         method.setName("AbstractGeneratedCriteria"); 
         method.setConstructor(true);
         method.addBodyLine("super();"); 
         method.addBodyLine("criteria = new ArrayList<Criterion>();"); 
-        answer.addMethod(method);
+        answer.addMethod(method);*/
 
         List<String> criteriaLists = new ArrayList<String>();
         criteriaLists.add("criteria"); 
@@ -413,16 +435,16 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         }
 
         // now generate the isValid method
-        method = new Method();
+       /* method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("isValid"); 
+        method.setName("isValid");
         method.setReturnType(FullyQualifiedJavaType
                 .getBooleanPrimitiveInstance());
         StringBuilder sb = new StringBuilder();
         Iterator<String> strIter = criteriaLists.iterator();
-        sb.append("return "); 
+        sb.append("return ");
         sb.append(strIter.next());
-        sb.append(".size() > 0"); 
+        sb.append(".size() > 0");
         if (!strIter.hasNext()) {
             sb.append(';');
         }
@@ -438,10 +460,10 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             }
             method.addBodyLine(sb.toString());
         }
-        answer.addMethod(method);
+        answer.addMethod(method);*/
 
         // now generate the getAllCriteria method
-        if (criteriaLists.size() > 1) {
+       /* if (criteriaLists.size() > 1) {
             field = new Field();
             field.setName("allCriteria"); 
             field.setType(new FullyQualifiedJavaType("List<Criterion>")); 
@@ -467,87 +489,87 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             method.addBodyLine("}"); 
             method.addBodyLine("return allCriteria;"); 
         }
-        answer.addMethod(method);
+        answer.addMethod(method);*/
 
         // now we need to generate the methods that will be used in the SqlMap
         // to generate the dynamic where clause
         topLevelClass.addImportedType(FullyQualifiedJavaType
                 .getNewListInstance());
-        topLevelClass.addImportedType(FullyQualifiedJavaType
-                .getNewArrayListInstance());
+//        topLevelClass.addImportedType(FullyQualifiedJavaType
+//                .getNewArrayListInstance());
 
         field = new Field();
-        field.setVisibility(JavaVisibility.PROTECTED);
-        FullyQualifiedJavaType listOfCriterion = new FullyQualifiedJavaType(
-                "java.util.List<Criterion>"); 
-        field.setType(listOfCriterion);
-        field.setName("criteria"); 
-        answer.addField(field);
+//        field.setVisibility(JavaVisibility.PROTECTED);
+//        FullyQualifiedJavaType listOfCriterion = new FullyQualifiedJavaType(
+//                "java.util.List<Criterion>");
+//        field.setType(listOfCriterion);
+//        field.setName("criteria");
+//        answer.addField(field);
 
-        method = new Method();
-        method.setVisibility(JavaVisibility.PUBLIC);
-        method.setReturnType(field.getType());
-        method.setName(getGetterMethodName(field.getName(), field
-                .getType()));
-        method.addBodyLine("return criteria;"); 
-        answer.addMethod(method);
-
-        // now add the methods for simplifying the individual field set methods
-        method = new Method();
-        method.setVisibility(JavaVisibility.PROTECTED);
-        method.setName("addCriterion"); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getStringInstance(), "condition")); 
-        method.addBodyLine("if (condition == null) {"); 
-        method
-                .addBodyLine("throw new RuntimeException(\"Value for condition cannot be null\");"); 
-        method.addBodyLine("}"); 
-        method.addBodyLine("criteria.add(new Criterion(condition));"); 
-        if (criteriaLists.size() > 1) {
-            method.addBodyLine("allCriteria = null;"); 
-        }
-        answer.addMethod(method);
-
-        method = new Method();
-        method.setVisibility(JavaVisibility.PROTECTED);
-        method.setName("addCriterion"); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getStringInstance(), "condition")); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getObjectInstance(), "value")); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getStringInstance(), "property")); 
-        method.addBodyLine("if (value == null) {"); 
-        method
-                .addBodyLine("throw new RuntimeException(\"Value for \" + property + \" cannot be null\");"); 
-        method.addBodyLine("}"); 
-        method.addBodyLine("criteria.add(new Criterion(condition, value));"); 
-        if (criteriaLists.size() > 1) {
-            method.addBodyLine("allCriteria = null;"); 
-        }
-        answer.addMethod(method);
-
-        method = new Method();
-        method.setVisibility(JavaVisibility.PROTECTED);
-        method.setName("addCriterion"); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getStringInstance(), "condition")); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getObjectInstance(), "value1")); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getObjectInstance(), "value2")); 
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getStringInstance(), "property")); 
-        method.addBodyLine("if (value1 == null || value2 == null) {"); 
-        method
-                .addBodyLine("throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");"); 
-        method.addBodyLine("}"); 
-        method
-                .addBodyLine("criteria.add(new Criterion(condition, value1, value2));"); 
-        if (criteriaLists.size() > 1) {
-            method.addBodyLine("allCriteria = null;"); 
-        }
-        answer.addMethod(method);
+//        method = new Method();
+//        method.setVisibility(JavaVisibility.PUBLIC);
+//        method.setReturnType(field.getType());
+//        method.setName(getGetterMethodName(field.getName(), field
+//                .getType()));
+//        method.addBodyLine("return criteria;");
+//        answer.addMethod(method);
+//
+//        // now add the methods for simplifying the individual field set methods
+//        method = new Method();
+//        method.setVisibility(JavaVisibility.PROTECTED);
+//        method.setName("addCriterion");
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getStringInstance(), "condition"));
+//        method.addBodyLine("if (condition == null) {");
+//        method
+//                .addBodyLine("throw new RuntimeException(\"Value for condition cannot be null\");");
+//        method.addBodyLine("}");
+//        method.addBodyLine("criteria.add(new Criterion(condition));");
+//        if (criteriaLists.size() > 1) {
+//            method.addBodyLine("allCriteria = null;");
+//        }
+//        answer.addMethod(method);
+//
+//        method = new Method();
+//        method.setVisibility(JavaVisibility.PROTECTED);
+//        method.setName("addCriterion");
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getStringInstance(), "condition"));
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getObjectInstance(), "value"));
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getStringInstance(), "property"));
+//        method.addBodyLine("if (value == null) {");
+//        method
+//                .addBodyLine("throw new RuntimeException(\"Value for \" + property + \" cannot be null\");");
+//        method.addBodyLine("}");
+//        method.addBodyLine("criteria.add(new Criterion(condition, value));");
+//        if (criteriaLists.size() > 1) {
+//            method.addBodyLine("allCriteria = null;");
+//        }
+//        answer.addMethod(method);
+//
+//        method = new Method();
+//        method.setVisibility(JavaVisibility.PROTECTED);
+//        method.setName("addCriterion");
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getStringInstance(), "condition"));
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getObjectInstance(), "value1"));
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getObjectInstance(), "value2"));
+//        method.addParameter(new Parameter(FullyQualifiedJavaType
+//                .getStringInstance(), "property"));
+//        method.addBodyLine("if (value1 == null || value2 == null) {");
+//        method
+//                .addBodyLine("throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");");
+//        method.addBodyLine("}");
+//        method
+//                .addBodyLine("criteria.add(new Criterion(condition, value1, value2));");
+//        if (criteriaLists.size() > 1) {
+//            method.addBodyLine("allCriteria = null;");
+//        }
+//        answer.addMethod(method);
 
         FullyQualifiedJavaType listOfDates = new FullyQualifiedJavaType(
                 "java.util.List<java.util.Date>"); 

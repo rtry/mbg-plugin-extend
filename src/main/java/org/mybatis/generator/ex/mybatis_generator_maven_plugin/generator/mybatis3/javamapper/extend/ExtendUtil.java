@@ -60,4 +60,8 @@ public class ExtendUtil {
     public String getUpdateBatchMethodName() {
         return BIConstant.ExtendUpdateByIdName;
     }
+
+    public String getExtendExampleClassName() {
+        return pkgName.concat(brk).concat(BIConstant.ExtendExampleClass);
+    }
 }
