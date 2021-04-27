@@ -15,7 +15,7 @@ public final class Version {
     /**
      * 小版本
      */
-    public final static int REVISION_VERSION = 16;
+    public final static int REVISION_VERSION = 6;
 
     public static String getVersionNumber() {
         return Version.MAJOR_VERSION + "." + Version.MINOR_VERSION + "." + Version.REVISION_VERSION;
