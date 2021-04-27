@@ -74,14 +74,14 @@ public class DynamicSqlMapperGenerator extends AbstractJavaClientGenerator {
     
     @Override
     public List<CompilationUnit> getCompilationUnits() {
-        progressCallback.startTask(getString("Progress.17", //$NON-NLS-1$
+        progressCallback.startTask(getString("Progress.17", 
                 introspectedTable.getFullyQualifiedTable().toString()));
         preCalculate();
         
         Interface interfaze = createBasicInterface();
 
         TopLevelClass supportClass = getSupportClass();
-        String staticImportString = supportClass.getType().getFullyQualifiedNameWithoutTypeParameters() + ".*"; //$NON-NLS-1$
+        String staticImportString = supportClass.getType().getFullyQualifiedNameWithoutTypeParameters() + ".*"; 
         interfaze.addStaticImport(staticImportString);
 
         addBasicCountMethod(interfaze);
@@ -115,7 +115,7 @@ public class DynamicSqlMapperGenerator extends AbstractJavaClientGenerator {
 
     private void preCalculate() {
         recordType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
-        resultMapId = recordType.getShortNameWithoutTypeArguments() + "Result"; //$NON-NLS-1$
+        resultMapId = recordType.getShortNameWithoutTypeArguments() + "Result"; 
         tableFieldName =
                 JavaBeansUtil.getValidPropertyName(introspectedTable.getFullyQualifiedTable().getDomainObjectName());
         fragmentGenerator = new FragmentGenerator.Builder()
@@ -130,8 +130,8 @@ public class DynamicSqlMapperGenerator extends AbstractJavaClientGenerator {
         Interface interfaze = new Interface(type);
         interfaze.setVisibility(JavaVisibility.PUBLIC);
         context.getCommentGenerator().addJavaFileComment(interfaze);
-        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper")); //$NON-NLS-1$
-        interfaze.addAnnotation("@Mapper"); //$NON-NLS-1$
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper")); 
+        interfaze.addAnnotation("@Mapper"); 
 
         String rootInterface = introspectedTable
                 .getTableConfigurationProperty(PropertyRegistry.ANY_ROOT_INTERFACE);

@@ -46,19 +46,19 @@ public class AnnotatedUpdateByPrimaryKeyWithoutBLOBsMethodGenerator
     @Override
     public void addMapperAnnotations(Method method) {
 
-        method.addAnnotation("@Update({"); //$NON-NLS-1$
+        method.addAnnotation("@Update({"); 
 
         StringBuilder sb = new StringBuilder();
         javaIndent(sb, 1);
-        sb.append("\"update "); //$NON-NLS-1$
+        sb.append("\"update "); 
         sb.append(escapeStringForJava(introspectedTable.getFullyQualifiedTableNameAtRuntime()));
-        sb.append("\","); //$NON-NLS-1$
+        sb.append("\","); 
         method.addAnnotation(sb.toString());
 
         // set up for first column
         sb.setLength(0);
         javaIndent(sb, 1);
-        sb.append("\"set "); //$NON-NLS-1$
+        sb.append("\"set "); 
 
         Iterator<IntrospectedColumn> iter;
         if (isSimple) {
@@ -73,21 +73,21 @@ public class AnnotatedUpdateByPrimaryKeyWithoutBLOBsMethodGenerator
             IntrospectedColumn introspectedColumn = iter.next();
 
             sb.append(escapeStringForJava(getEscapedColumnName(introspectedColumn)));
-            sb.append(" = "); //$NON-NLS-1$
+            sb.append(" = "); 
             sb.append(getParameterClause(introspectedColumn));
 
             if (iter.hasNext()) {
                 sb.append(',');
             }
 
-            sb.append("\","); //$NON-NLS-1$
+            sb.append("\","); 
             method.addAnnotation(sb.toString());
 
             // set up for the next column
             if (iter.hasNext()) {
                 sb.setLength(0);
                 javaIndent(sb, 1);
-                sb.append("  \""); //$NON-NLS-1$
+                sb.append("  \""); 
             }
         }
 
@@ -97,15 +97,15 @@ public class AnnotatedUpdateByPrimaryKeyWithoutBLOBsMethodGenerator
             sb.setLength(0);
             javaIndent(sb, 1);
             if (and) {
-                sb.append("  \"and "); //$NON-NLS-1$
+                sb.append("  \"and "); 
             } else {
-                sb.append("\"where "); //$NON-NLS-1$
+                sb.append("\"where "); 
                 and = true;
             }
 
             IntrospectedColumn introspectedColumn = iter.next();
             sb.append(escapeStringForJava(getEscapedColumnName(introspectedColumn)));
-            sb.append(" = "); //$NON-NLS-1$
+            sb.append(" = "); 
             sb.append(getParameterClause(introspectedColumn));
             sb.append('\"');
             if (iter.hasNext()) {
@@ -114,11 +114,11 @@ public class AnnotatedUpdateByPrimaryKeyWithoutBLOBsMethodGenerator
             method.addAnnotation(sb.toString());
         }
 
-        method.addAnnotation("})"); //$NON-NLS-1$
+        method.addAnnotation("})"); 
     }
 
     @Override
     public void addExtraImports(Interface interfaze) {
-        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Update")); //$NON-NLS-1$
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Update")); 
     }
 }

@@ -61,16 +61,16 @@ public class DynamicSqlSupportClassGenerator {
         FullyQualifiedJavaType mapperType = new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType());
         FullyQualifiedJavaType recordType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         
-        return mapperType.getPackageName() + "." + recordType.getShortNameWithoutTypeArguments() + "DynamicSqlSupport"; //$NON-NLS-1$ //$NON-NLS-2$
+        return mapperType.getPackageName() + "." + recordType.getShortNameWithoutTypeArguments() + "DynamicSqlSupport";  //$NON-NLS-2$
         
     }
     private TopLevelClass buildBasicClass() {
         TopLevelClass topLevelClass = new TopLevelClass(calculateClassName());
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
         topLevelClass.setFinal(true);
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlColumn")); //$NON-NLS-1$
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlTable")); //$NON-NLS-1$
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("java.sql.JDBCType")); //$NON-NLS-1$
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlColumn"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlTable"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("java.sql.JDBCType"));
         return topLevelClass;
     }
     
@@ -80,14 +80,14 @@ public class DynamicSqlSupportClassGenerator {
         innerClass.setVisibility(JavaVisibility.PUBLIC);
         innerClass.setStatic(true);
         innerClass.setFinal(true);
-        innerClass.setSuperClass(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlTable")); //$NON-NLS-1$
+        innerClass.setSuperClass(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlTable"));
         
         Method method = new Method(fqjt.getShortName());
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setConstructor(true);
-        method.addBodyLine("super(\"" //$NON-NLS-1$
+        method.addBodyLine("super(\""
                 + escapeStringForJava(introspectedTable.getFullyQualifiedTableNameAtRuntime())
-                + "\");"); //$NON-NLS-1$
+                + "\");");
         innerClass.addMethod(method);
         
         commentGenerator.addClassAnnotation(innerClass, introspectedTable, topLevelClass.getImportedTypes());
@@ -106,7 +106,7 @@ public class DynamicSqlSupportClassGenerator {
         field.setFinal(true);
         
         StringBuilder initializationString = new StringBuilder();
-        initializationString.append(String.format("new %s()", //$NON-NLS-1$
+        initializationString.append(String.format("new %s()",
                 escapeStringForJava(introspectedTable.getFullyQualifiedTable().getDomainObjectName())));
         field.setInitializationString(initializationString.toString());
         return field;
@@ -122,7 +122,7 @@ public class DynamicSqlSupportClassGenerator {
         field.setVisibility(JavaVisibility.PUBLIC);
         field.setStatic(true);
         field.setFinal(true);
-        field.setInitializationString(tableFieldName + "." + fieldName); //$NON-NLS-1$
+        field.setInitializationString(tableFieldName + "." + fieldName);
         commentGenerator.addFieldAnnotation(field, introspectedTable, column, topLevelClass.getImportedTypes());
         topLevelClass.addField(field);
         
@@ -141,18 +141,18 @@ public class DynamicSqlSupportClassGenerator {
         } else {
             typeParameter = column.getFullyQualifiedJavaType();
         }
-        return new FullyQualifiedJavaType(String.format("SqlColumn<%s>", typeParameter.getShortName())); //$NON-NLS-1$
+        return new FullyQualifiedJavaType(String.format("SqlColumn<%s>", typeParameter.getShortName()));
     }
 
     private String calculateInnerInitializationString(IntrospectedColumn column) {
         StringBuilder initializationString = new StringBuilder();
         
-        initializationString.append(String.format("column(\"%s\", JDBCType.%s", //$NON-NLS-1$ //$NON-NLS-2$
+        initializationString.append(String.format("column(\"%s\", JDBCType.%s",  //$NON-NLS-2$
                 escapeStringForJava(getEscapedColumnName(column)),
             column.getJdbcTypeName()));
         
         if (StringUtility.stringHasValue(column.getTypeHandler())) {
-            initializationString.append(String.format(", \"%s\")", column.getTypeHandler())); //$NON-NLS-1$
+            initializationString.append(String.format(", \"%s\")", column.getTypeHandler()));
         } else {
             initializationString.append(')');
         }

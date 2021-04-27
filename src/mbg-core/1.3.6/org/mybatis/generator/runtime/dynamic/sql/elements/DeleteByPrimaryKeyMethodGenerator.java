@@ -43,15 +43,15 @@ public class DeleteByPrimaryKeyMethodGenerator extends AbstractMethodGenerator {
         Set<FullyQualifiedJavaType> imports = new HashSet<FullyQualifiedJavaType>();
         Set<String> staticImports = new HashSet<String>();
         
-        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSL")); //$NON-NLS-1$
-        staticImports.add("org.mybatis.dynamic.sql.SqlBuilder.*"); //$NON-NLS-1$
+        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.delete.DeleteDSL"));
+        staticImports.add("org.mybatis.dynamic.sql.SqlBuilder.*");
         
-        Method method = new Method("deleteByPrimaryKey"); //$NON-NLS-1$
+        Method method = new Method("deleteByPrimaryKey");
         method.setDefault(true);
         context.getCommentGenerator().addGeneralMethodAnnotation(method, introspectedTable, imports);
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         
-        method.addBodyLine("return DeleteDSL.deleteFromWithMapper(this::delete, " + tableFieldName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        method.addBodyLine("return DeleteDSL.deleteFromWithMapper(this::delete, " + tableFieldName + ")");  //$NON-NLS-2$
         
         MethodParts methodParts = fragmentGenerator.getPrimaryKeyWhereClauseAndParameters();
         for (Parameter parameter : methodParts.getParameters()) {
@@ -60,8 +60,8 @@ public class DeleteByPrimaryKeyMethodGenerator extends AbstractMethodGenerator {
         method.addBodyLines(methodParts.getBodyLines());
         imports.addAll(methodParts.getImports());
         
-        method.addBodyLine("        .build()"); //$NON-NLS-1$
-        method.addBodyLine("        .execute();"); //$NON-NLS-1$
+        method.addBodyLine("        .build()");
+        method.addBodyLine("        .execute();");
         
         return MethodAndImports.withMethod(method)
                 .withImports(imports)

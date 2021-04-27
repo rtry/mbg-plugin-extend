@@ -41,7 +41,7 @@ import org.mybatis.generator.internal.util.StringUtility;
 
 /**
  * 类名称：MyDefaultCommentGenerator <br>
- * 类描述: 自定义生成注解方式 <br>
+ * @describe 自定义生成注解方式 <br>
  * 创建人：felicity <br>
  * 创建时间：2018年4月24日 下午6:04:23 <br>
  * 修改人：felicity <br>
@@ -413,7 +413,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		// sb.append(introspectedTable.getFullyQualifiedTable());
 		// innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		// sb.setLength(0);
-		// sb.append(" * @author:  MBG(mybatis generator)");
+		// sb.append(" * @author  MBG(mybatis generator)");
 		// sb.append(" ");
 		// sb.append(currentDateStr);
 		// innerClass.addJavaDocLine(" */");
@@ -426,7 +426,7 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		}
 		StringBuilder sb = new StringBuilder();
 		innerClass.addJavaDocLine("/**");
-		sb.append(" * 类描述: ");
+		sb.append(" * @describe ");
 		if(innerClass.getType().getShortName().endsWith("Example")){
 			sb.append(introspectedTable.getFullyQualifiedTable() + " 表的查询类，请勿修改<br>");
 		}else{
@@ -434,10 +434,10 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		}
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: " + BICommentConstant.CREATE_COMMENT + "<br>");
+		sb.append(" * @author " + BICommentConstant.CREATE_COMMENT + "<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建时间: ");
+		sb.append(" * @date ");
 		sb.append(currentDateStr);
 		sb.append("<br>");
 		innerClass.addJavaDocLine(sb.toString().replace("\n", " "));
@@ -454,15 +454,15 @@ public class MyDefaultCommentGenerator implements CommentGenerator {
 		}
 		StringBuilder sb = new StringBuilder();
 		interfaze.addJavaDocLine("/**");
-		sb.append(" * 类描述: ");
+		sb.append(" * @describe ");
 		sb.append(introspectedTable.getFullyQualifiedTable()
 				+ " 表的Mapper对象，已包含CRUD操作，可在该接口中自定义方法<br>");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建者: " + BICommentConstant.CREATE_COMMENT + "<br> ");
+		sb.append(" * @author " + BICommentConstant.CREATE_COMMENT + "<br> ");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));
 		sb.setLength(0);
-		sb.append(" * 创建时间: ");
+		sb.append(" * @date ");
 		sb.append(currentDateStr);
 		sb.append("<br>");
 		interfaze.addJavaDocLine(sb.toString().replace("\n", " "));

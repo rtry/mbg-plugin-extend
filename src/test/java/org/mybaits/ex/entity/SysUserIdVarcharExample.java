@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 类描述: sys_user_id_varchar表的查询类，请勿修改<br>
- * 创建者: 由 MBG(mybatis generator plug) 生成<br>
- * 创建时间: 2021-01-26<br>
- * @version 0.0.4
+ * @describe sys_user_id_varchar 表的查询类，请勿修改<br>
+ * @author 由 MBG(mybatis generator plug) 生成<br>
+ * @date 2021-04-27<br>
+ * @version 0.0.16
  */
 public class SysUserIdVarcharExample {
     /**
@@ -78,10 +78,10 @@ public class SysUserIdVarcharExample {
         distinct = false;
     }
 
-    protected abstract static class GeneratedCriteria {
+    protected abstract static class AbstractGeneratedCriteria {
         protected List<Criterion> criteria;
 
-        protected GeneratedCriteria() {
+        protected AbstractGeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
         }
@@ -530,7 +530,7 @@ public class SysUserIdVarcharExample {
         }
     }
 
-    public static class Criteria extends GeneratedCriteria {
+    public static class Criteria extends AbstractGeneratedCriteria {
 
         protected Criteria() {
             super();

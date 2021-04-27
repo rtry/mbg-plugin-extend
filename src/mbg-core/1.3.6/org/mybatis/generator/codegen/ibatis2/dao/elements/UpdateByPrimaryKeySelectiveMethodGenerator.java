@@ -46,17 +46,17 @@ public class UpdateByPrimaryKeySelectiveMethodGenerator extends
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
         Method method = getMethodShell(importedTypes);
         if (generateForJava5) {
-            method.addAnnotation("@Override"); //$NON-NLS-1$
+            method.addAnnotation("@Override");
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("int rows = "); //$NON-NLS-1$
+        sb.append("int rows = ");
         sb.append(daoTemplate.getUpdateMethod(introspectedTable
                 .getIbatis2SqlMapNamespace(), introspectedTable
-                .getUpdateByPrimaryKeySelectiveStatementId(), "record")); //$NON-NLS-1$
+                .getUpdateByPrimaryKeySelectiveStatementId(), "record"));
         method.addBodyLine(sb.toString());
 
-        method.addBodyLine("return rows;"); //$NON-NLS-1$
+        method.addBodyLine("return rows;");
 
         if (context.getPlugins()
                 .clientUpdateByPrimaryKeySelectiveMethodGenerated(method,
@@ -97,7 +97,7 @@ public class UpdateByPrimaryKeySelectiveMethodGenerator extends
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setName(getDAOMethodNameCalculator()
                 .getUpdateByPrimaryKeySelectiveMethodName(introspectedTable));
-        method.addParameter(new Parameter(parameterType, "record")); //$NON-NLS-1$
+        method.addParameter(new Parameter(parameterType, "record"));
 
         for (FullyQualifiedJavaType fqjt : daoTemplate.getCheckedExceptions()) {
             method.addException(fqjt);

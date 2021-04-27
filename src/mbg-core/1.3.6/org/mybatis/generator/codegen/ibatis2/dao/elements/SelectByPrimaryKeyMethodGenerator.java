@@ -49,7 +49,7 @@ public class SelectByPrimaryKeyMethodGenerator extends
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
         Method method = getMethodShell(importedTypes);
         if (generateForJava5) {
-            method.addAnnotation("@Override"); //$NON-NLS-1$
+            method.addAnnotation("@Override");
         }
 
         // generate the implementation method
@@ -64,20 +64,20 @@ public class SelectByPrimaryKeyMethodGenerator extends
 
             sb.setLength(0);
             sb.append(keyType.getShortName());
-            sb.append(" _key = new "); //$NON-NLS-1$
+            sb.append(" _key = new ");
             sb.append(keyType.getShortName());
-            sb.append("();"); //$NON-NLS-1$
+            sb.append("();");
             method.addBodyLine(sb.toString());
 
             for (IntrospectedColumn introspectedColumn : introspectedTable
                     .getPrimaryKeyColumns()) {
                 sb.setLength(0);
-                sb.append("_key."); //$NON-NLS-1$
+                sb.append("_key.");
                 sb.append(getSetterMethodName(introspectedColumn
                         .getJavaProperty()));
                 sb.append('(');
                 sb.append(introspectedColumn.getJavaProperty());
-                sb.append(");"); //$NON-NLS-1$
+                sb.append(");");
                 method.addBodyLine(sb.toString());
             }
         }
@@ -86,14 +86,14 @@ public class SelectByPrimaryKeyMethodGenerator extends
 
         sb.setLength(0);
         sb.append(returnType.getShortName());
-        sb.append(" record = ("); //$NON-NLS-1$
+        sb.append(" record = (");
         sb.append(returnType.getShortName());
-        sb.append(") "); //$NON-NLS-1$
+        sb.append(") ");
         sb.append(daoTemplate.getQueryForObjectMethod(introspectedTable
                 .getIbatis2SqlMapNamespace(), introspectedTable
-                .getSelectByPrimaryKeyStatementId(), "_key")); //$NON-NLS-1$
+                .getSelectByPrimaryKeyStatementId(), "_key"));
         method.addBodyLine(sb.toString());
-        method.addBodyLine("return record;"); //$NON-NLS-1$
+        method.addBodyLine("return record;");
 
         if (context.getPlugins().clientSelectByPrimaryKeyMethodGenerated(
                 method, topLevelClass, introspectedTable)) {
@@ -130,7 +130,7 @@ public class SelectByPrimaryKeyMethodGenerator extends
             FullyQualifiedJavaType type = new FullyQualifiedJavaType(
                     introspectedTable.getPrimaryKeyType());
             importedTypes.add(type);
-            method.addParameter(new Parameter(type, "_key")); //$NON-NLS-1$
+            method.addParameter(new Parameter(type, "_key"));
         } else {
             for (IntrospectedColumn introspectedColumn : introspectedTable
                     .getPrimaryKeyColumns()) {

@@ -45,22 +45,22 @@ public class CountByExampleMethodGenerator extends AbstractDAOElementGenerator {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
         Method method = getMethodShell(importedTypes);
         if (generateForJava5) {
-            method.addAnnotation("@Override"); //$NON-NLS-1$
+            method.addAnnotation("@Override");
         }
 
         // generate the implementation method
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Long count = (Long)  "); //$NON-NLS-1$
+        sb.append("Long count = (Long)  ");
         sb.append(daoTemplate.getQueryForObjectMethod(introspectedTable
                 .getIbatis2SqlMapNamespace(), introspectedTable
-                .getCountByExampleStatementId(), "example")); //$NON-NLS-1$
+                .getCountByExampleStatementId(), "example"));
         method.addBodyLine(sb.toString());
 
         if (generateForJava5) {
-            method.addBodyLine("return count;"); //$NON-NLS-1$
+            method.addBodyLine("return count;");
         } else {
-            method.addBodyLine("return count.longValue();"); //$NON-NLS-1$
+            method.addBodyLine("return count.longValue();");
         }
 
         if (context.getPlugins().clientCountByExampleMethodGenerated(method,
@@ -91,10 +91,10 @@ public class CountByExampleMethodGenerator extends AbstractDAOElementGenerator {
 
         Method method = new Method();
         method.setVisibility(getExampleMethodVisibility());
-        method.setReturnType(new FullyQualifiedJavaType("long")); //$NON-NLS-1$
+        method.setReturnType(new FullyQualifiedJavaType("long"));
         method.setName(getDAOMethodNameCalculator()
                 .getCountByExampleMethodName(introspectedTable));
-        method.addParameter(new Parameter(type, "example")); //$NON-NLS-1$
+        method.addParameter(new Parameter(type, "example"));
 
         for (FullyQualifiedJavaType fqjt : daoTemplate.getCheckedExceptions()) {
             method.addException(fqjt);

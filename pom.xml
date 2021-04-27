@@ -4,7 +4,7 @@
     <groupId>org.mybatis.generator.ex</groupId>
     <artifactId>mybatis-generator-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>mybatis-generator-maven-plugin Chinese extended implementation</name>
     <url>http://maven.apache.org</url>
 

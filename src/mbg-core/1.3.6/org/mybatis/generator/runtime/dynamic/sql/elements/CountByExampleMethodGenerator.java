@@ -39,19 +39,19 @@ public class CountByExampleMethodGenerator extends AbstractMethodGenerator {
         
         Set<FullyQualifiedJavaType> imports = new HashSet<FullyQualifiedJavaType>();
 
-        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.QueryExpressionDSL")); //$NON-NLS-1$
-        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.MyBatis3SelectModelAdapter")); //$NON-NLS-1$
-        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlBuilder")); //$NON-NLS-1$
-        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.SelectDSL")); //$NON-NLS-1$
+        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.QueryExpressionDSL"));
+        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.MyBatis3SelectModelAdapter"));
+        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.SqlBuilder"));
+        imports.add(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.select.SelectDSL"));
         
-        Method method = new Method("countByExample"); //$NON-NLS-1$
+        Method method = new Method("countByExample");
         method.setDefault(true);
         context.getCommentGenerator().addGeneralMethodAnnotation(method, introspectedTable, imports);
         
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("QueryExpressionDSL<MyBatis3SelectModelAdapter<Long>>"); //$NON-NLS-1$
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("QueryExpressionDSL<MyBatis3SelectModelAdapter<Long>>");
         method.setReturnType(returnType);
-        method.addBodyLine("return SelectDSL.selectWithMapper(this::count, SqlBuilder.count())"); //$NON-NLS-1$
-        method.addBodyLine("        .from(" + tableFieldName + ");"); //$NON-NLS-1$ //$NON-NLS-2$
+        method.addBodyLine("return SelectDSL.selectWithMapper(this::count, SqlBuilder.count())");
+        method.addBodyLine("        .from(" + tableFieldName + ");");  //$NON-NLS-2$
         
         return MethodAndImports.withMethod(method)
                 .withImports(imports)

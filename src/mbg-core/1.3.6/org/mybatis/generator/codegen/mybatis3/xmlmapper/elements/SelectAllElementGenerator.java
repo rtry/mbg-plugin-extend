@@ -29,7 +29,7 @@ public class SelectAllElementGenerator extends AbstractXmlElementGenerator {
 
 	@Override
 	public void addElements(XmlElement parentElement) {
-		XmlElement answer = new XmlElement("select"); //$NON-NLS-1$
+		XmlElement answer = new XmlElement("select"); 
 		answer.addAttribute(new Attribute("id", introspectedTable.getSelectAll()));
 		answer.addAttribute(new Attribute("resultMap", introspectedTable.getBaseResultMapId()));
 
