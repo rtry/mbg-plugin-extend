@@ -1,21 +1,12 @@
-/*  
- * @file com.mdlk.framework.jdbc.mybatis.mge.example.AbstractExample.java
- * @date 2021/4/27
- * @author rtry
- * @copyright 马丁洛克 Corporation 2021 版权所有
- * @version 0.0.1  
- */
-package org.mybaits.ex.base;
+package org.mybaits.ex.base; 
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @className AbstractExample
- * @describe 查询条件超类
- * @author rtry
- * @date 2021/4/27 18:54
- * @version 0.0.1
+ * @describe 查询条件超类df
+ * @author 由 MBG(mybatis generator plug) 生成<br>
  */
 public abstract class AbstractExample {
 
@@ -34,44 +25,67 @@ public abstract class AbstractExample {
      */
     protected List<AbstractCriteria> oredCriteria;
 
+    /**
+     * 构造方法
+     */
     public AbstractExample() {
         oredCriteria = new ArrayList<>();
     }
 
-    //get set 方法
+    /**
+     * getOredCriteria
+     */
     public List<AbstractCriteria> getOredCriteria() {
         return oredCriteria;
     }
 
+    /**
+     * setOrderByClause
+     */
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
     }
 
+    /**
+     * getOrderByClause
+     */
     public String getOrderByClause() {
         return orderByClause;
     }
 
+    /**
+     * setDistinct
+     */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 
+    /**
+     * isDistinct
+     */
     public boolean isDistinct() {
         return distinct;
     }
 
+    /**
+     * clear
+     */
     public void clear() {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
     }
 
-    //静态类
+    /**
+     * @className AbstractExample
+     * @describe 静态类 内部构造条件
+     * @author 由 MBG(mybatis generator plug) 生成<br>
+     */
     public static class AbstractCriteria {
 
         protected List<Criterion> criteria;
 
         public AbstractCriteria() {
-            System.out.println("进行构造...");
             criteria = new ArrayList<Criterion>();
         }
 
@@ -110,22 +124,51 @@ public abstract class AbstractExample {
 
     }
 
+    /**
+     * @className AbstractExample
+     * @describe 内部静态类
+     * @author 由 MBG(mybatis generator plug) 生成<br>
+     */
     public static class Criterion {
 
+        /**
+         * 条件
+         */
         private String condition;
 
+        /**
+         * 值
+         */
         private Object value;
 
+        /**
+         * 第二值
+         */
         private Object secondValue;
 
+        /**
+         * 没值
+         */
         private boolean noValue;
 
+        /**
+         * 单独值
+         */
         private boolean singleValue;
 
+        /**
+         * between
+         */
         private boolean betweenValue;
 
+        /**
+         * list
+         */
         private boolean listValue;
 
+        /**
+         * type
+         */
         private String typeHandler;
 
         public String getCondition() {

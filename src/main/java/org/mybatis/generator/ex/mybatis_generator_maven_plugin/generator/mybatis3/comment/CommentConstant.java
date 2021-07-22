@@ -59,9 +59,10 @@ public class CommentConstant {
         // 扩展方法-批量插入
         // =======================
         String[] insertBatch = { "insertBatch 批量插入数据(按集合中第一条数据的有效列)", "@param records 数据集合", "@return 受影响条数" };
-        COMMENTS.put("insertBatch", insertBatch);
         String[] insertBatchSelect = { "insertBatchSelect 批量插入非空数据数据", "@param records 数据集合",
                 "特别：该方法必须在allowMultiQueries=true才能执行" };
+
+        COMMENTS.put("insertBatch", insertBatchSelect);
         COMMENTS.put("insertBatchSelect", insertBatchSelect);
 
         // =======================

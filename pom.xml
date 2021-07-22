@@ -4,7 +4,8 @@
     <groupId>org.mybatis.generator.ex</groupId>
     <artifactId>mybatis-generator-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>0.0.6</version>
+    <!--版本号 更改-->
+    <version>0.0.7</version>
     <name>mybatis-generator-maven-plugin Chinese extended implementation</name>
     <url>http://maven.apache.org</url>
 
@@ -135,27 +136,6 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.4</version>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>build-helper-maven-plugin</artifactId>-->
-<!--                <version>1.4</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>add-source</id>-->
-<!--                        <phase>generate-sources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>add-source</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <sources>-->
-<!--                                <source>${basedir}/src/mbg-core/1.3.6</source>-->
-<!--                                &lt;!&ndash; 我们可以通过在这里添加多个source节点，来添加任意多个源文件夹 &ndash;&gt;-->
-<!--                            </sources>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
 
         </plugins>
 

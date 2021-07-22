@@ -4,7 +4,7 @@ package org.mybaits.ex.entity;
  * @describe sys_user_id_varchar 表的实体类，请勿修改<br>
  * @author 由 MBG(mybatis generator plug) 生成<br>
  * @date 2021-07-22<br>
- * @version 0.0.6
+ * @version 0.0.7
  */
 public class SysUserIdVarchar {
     /**

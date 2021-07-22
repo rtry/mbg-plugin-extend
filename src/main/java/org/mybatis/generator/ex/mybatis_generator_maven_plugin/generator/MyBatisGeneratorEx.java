@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -402,18 +403,26 @@ public class MyBatisGeneratorEx {
                     }
                 } else if (shortName.equals("AbstractExample")) {
                     //处理 AbstractExample 类的特殊生成
-                    System.out.println("生成... AbstractExample  ");
-
                     try {
                         String newMapperTargetPackage = baseModelJavaType.getPackageName();
                         String daoTargetDir = javaFile.getTargetProject();
                         File file = new File(shellCallback.getDirectory(daoTargetDir, newMapperTargetPackage),
                                 javaFile.getFileName());
 
-                        String fistLine = "package " + newMapperTargetPackage + "; \n";
-                        String readFile = readFile(new File(
-                                this.getClass().getClassLoader().getResource("AbstractExample.template").getFile()));
-                        writeFile(file, fistLine + readFile, "UTF-8");
+                        StringBuffer buffer = new StringBuffer();
+                        buffer.append("package ").append(newMapperTargetPackage).append("; \n");
+
+                        InputStream resourceAsStream = this.getClass().getClassLoader()
+                                .getResourceAsStream("AbstractExample.template");
+                        BufferedReader in = new BufferedReader(new InputStreamReader(resourceAsStream));
+                        String line = "";
+                        while ((line = in.readLine()) != null) {
+                            buffer.append(line).append("\n");
+
+                        }
+                        String input = buffer.toString();
+
+                        writeFile(file, input, "UTF-8");
 
                         //移除自动写
                         removes.add(javaFile);

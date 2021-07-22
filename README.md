@@ -9,8 +9,8 @@
 * 无主键的情况
 
 ### version 0.0.7
-* 移除批量插入 InsertBatchMethod 方法，改由InsertBatchSelectMethod 方法的实现  √
-* 保证 InsertBatchMethod 的方法名不变   √
+* 移除批量插入 InsertBatchMethod 方法，改由InsertBatchSelectMethod 方法的实现  
+* 保证 InsertBatchMethod 的方法名不变   
 * 生成 AbstractExample 对象 
 
 ### version 0.0.6 
