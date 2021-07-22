@@ -52,7 +52,6 @@ public class ConfigConvertUtil {
 
     /**
      * me2self:将MG配置对象转换为自定义配置对象. <br>
-     *
      * @author Felicity
      * @since JDK 1.8
      */

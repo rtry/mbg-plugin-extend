@@ -46,10 +46,6 @@ import org.mybatis.generator.internal.util.StringUtility;
  * 创建时间：2018年4月24日 下午6:04:23 <br>
  * 修改人：felicity <br>
  * 修改时间：2018年4月24日 下午6:04:23 <br>
- * 修改备注:
- * 
- * @version
- * @see
  */
 public class MyDefaultCommentGenerator implements CommentGenerator {
 

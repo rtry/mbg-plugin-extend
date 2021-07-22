@@ -20,7 +20,6 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
  * 类描述: 数据库与Java数据类型转换<br>
  * 创建人：felicity <br>
  * 创建时间：2019年7月26日 下午5:51:23 <br>
- * 备注:
  */
 public class JavaTypePlugin extends PluginAdapter {
 

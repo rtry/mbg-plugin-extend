@@ -1,5 +1,10 @@
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin;
 
+/**
+ * @className Version
+ * @describe 版本展示
+ * @date  2021/07/22 10:32
+ */
 public final class Version {
 
     /**

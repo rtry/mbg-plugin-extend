@@ -60,9 +60,6 @@ import org.mybatis.generator.logging.LogFactory;
  * 修改人：felicity <br>
  * 修改时间：2018年4月24日 下午5:37:54 <br>
  * 修改备注:
- * 
- * @version
- * @see
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.TEST)
 public class MyBatisGeneratorMojo extends AbstractMojo {
@@ -184,10 +181,10 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
     @Override
     public String toString() {
         return "MyMojo [savedClassloader=" + savedClassloader + ", project=" + project + ", outputDirectory="
-                + outputDirectory + ", configurationFile=" + configurationFile + ", verbose=" + verbose
-                + ", overwrite=" + overwrite + ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL="
-                + jdbcURL + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword + ", tableNames="
-                + tableNames + ", contexts=" + contexts + ", skip=" + skip + ", includeCompileDependencies="
+                + outputDirectory + ", configurationFile=" + configurationFile + ", verbose=" + verbose + ", overwrite="
+                + overwrite + ", sqlScript=" + sqlScript + ", jdbcDriver=" + jdbcDriver + ", jdbcURL=" + jdbcURL
+                + ", jdbcUserId=" + jdbcUserId + ", jdbcPassword=" + jdbcPassword + ", tableNames=" + tableNames
+                + ", contexts=" + contexts + ", skip=" + skip + ", includeCompileDependencies="
                 + includeCompileDependencies + ", includeAllDependencies=" + includeAllDependencies + "]";
     }
 
@@ -228,16 +225,7 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
             rss.add(resource);
         }
 
-        //		if (configurationFile == null) {
-        //			throw new MojoExecutionException(Messages.getString("RuntimeError.0"));
-        //		}
-
         List<String> warnings = new ArrayList<String>();
-
-        //		if (!configurationFile.exists()) {
-        //			throw new MojoExecutionException(Messages.getString("RuntimeError.1",
-        //					configurationFile.toString()));
-        //		}
 
         runScriptIfNecessary();
 
@@ -273,23 +261,18 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
 
             String baseDir = project.getBasedir().getPath() + "\\";
             Set<String> set = new HashSet<String>();
-            if (baseDir == null || baseDir.equals("")) {
-                getLog().info("无法获取当前运行的项目路径o(>﹏<)o");
-                return;
-            } else {
-                for (String e : rss) {
-                    int j = e.indexOf(baseDir);
-                    if (j != -1) {
-                        set.add(e.substring(j + baseDir.length(), e.length()));
-                    }
+            for (String e : rss) {
+                int j = e.indexOf(baseDir);
+                if (j != -1) {
+                    set.add(e.substring(j + baseDir.length()));
                 }
-                if (set == null || set.isEmpty()) {
-                    getLog().info("无法获取当前运行的源文件夹o(>﹏<)o");
-                    return;
-                }
-                getLog().info("成功加载项目代码路径：" + baseDir);
-                getLog().info(sLine);
             }
+            if (set == null || set.isEmpty()) {
+                getLog().info("无法获取当前运行的源文件夹o(>﹏<)o");
+                return;
+            }
+            getLog().info("成功加载项目代码路径：" + baseDir);
+            getLog().info(sLine);
 
             // 配置文件路径
             ConfigConvertUtil ccutil = new ConfigConvertUtil(cff, baseDir);
@@ -339,11 +322,8 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
                     //根据配置显示是否需要转换
                     t.setJavaTypeResolverConfiguration(new MyJavaTypeResolverConfiguration());
 
-                } catch (NoSuchFieldException | SecurityException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+                        | IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
@@ -354,12 +334,10 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
             // 自定义的生成器
             MyBatisGeneratorEx myBatisGenerator = new MyBatisGeneratorEx(config, callback, warnings);
 
-            myBatisGenerator
-                    .generate(new MavenProgressCallback(getLog(), verbose), contextsToRun, fullyqualifiedTables);
+            myBatisGenerator.generate(new MavenProgressCallback(getLog(), verbose), contextsToRun,
+                    fullyqualifiedTables);
 
-        } catch (SQLException e) {
-            throw new MojoExecutionException(e.getMessage());
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             throw new MojoExecutionException(e.getMessage());
         } catch (InvalidConfigurationException e) {
             for (String error : e.getErrors()) {

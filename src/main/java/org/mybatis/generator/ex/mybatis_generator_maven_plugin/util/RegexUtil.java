@@ -16,7 +16,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述: 正则表达式计算新旧接口 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:27:09 <br>
- * 备注:
  */
 public class RegexUtil {
 

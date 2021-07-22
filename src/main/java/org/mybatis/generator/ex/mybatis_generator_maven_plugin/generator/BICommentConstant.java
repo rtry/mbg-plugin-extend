@@ -8,7 +8,6 @@ import java.util.Map;
  * 类描述: 方法注解控制 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:32:29 <br>
- * 备注:
  */
 public class BICommentConstant {
 

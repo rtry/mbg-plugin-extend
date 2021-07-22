@@ -16,9 +16,6 @@ import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
  * 创建时间：2018年4月25日 下午2:44:29 <br>
  * 修改人：felicity <br>
  * 修改时间：2018年4月25日 下午2:44:29 <br>
- * 修改备注:
- * @version
- * @see
  */
 public class MyJavaTypeResolverDefaultImpl extends JavaTypeResolverDefaultImpl {
 

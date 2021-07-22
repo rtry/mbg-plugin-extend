@@ -32,7 +32,6 @@ public class FrameworkContext {
      * @param key 放入上下文的KEY
      * @return java.lang.Object
      * @author panxw
-     * @Exception 异常描述
      */
     public static Object get(String key) {
         return threadLocalMap.get().get(key);
@@ -43,7 +42,6 @@ public class FrameworkContext {
      *
      * @param initialContext 初始上下文
      * @author panxw
-     * @Exception 异常描述
      */
     public static void init(Map<String, Object> initialContext) {
         //初始化时，一定要先清空，因为可能存在，线程池复用

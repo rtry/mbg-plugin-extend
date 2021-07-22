@@ -14,10 +14,6 @@ package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator;
  * 创建时间：2018年4月25日 上午10:03:10 <br>
  * 修改人：felicity <br>
  * 修改时间：2018年4月25日 上午10:03:10 <br>
- * 修改备注:
- * 
- * @version
- * @see
  */
 public interface Enums {
 

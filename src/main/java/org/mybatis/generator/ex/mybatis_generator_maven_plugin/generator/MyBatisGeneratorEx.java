@@ -54,10 +54,6 @@ import org.mybatis.generator.internal.XmlFileMergerJaxp;
  * 创建时间：2018年9月21日 下午2:51:03 <br>
  * 修改人：felicity <br>
  * 修改时间：2018年9月21日 下午2:51:03 <br>
- * 修改备注:
- * 
- * @version
- * @see
  */
 public class MyBatisGeneratorEx {
 

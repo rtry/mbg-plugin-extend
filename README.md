@@ -1,13 +1,24 @@
 ## mbg-plugin
-> 基于mybatis-generator 的自定义Maven插件,只支持Mysql
+> 基于mybatis-generator 的自定义Maven插件,支持Mysql 其他数据库 未经测试
 
 
 ### TODO 
 * Model 类支持lombok 
-* Mapper 类支持生成自定义注解
-* 优化 InsertBatchMapper 批量插入时，bean 不一致的情况（有的 bean 属性多一点，有的少有点）
+* Mapper 类支持生成自定义注解 
 * 优化 update 必须更新为空的方法
 * 无主键的情况
+
+### version 0.0.6 
+* 兼容版本
+* 生成对象AbstractExample
+* 通过ID批量更新对象 UpdateBatchMapper
+
+
+### version 0.0.5
+* 抽象 xxExample 对象 
+* InsertBatchMapper 批量插入时，bean 不一致的情况（有的 bean 属性多一点，有的少有点）
+* 新增 更新空对象
+
 
 ### version 0.0.4
 * 主键分别为，自增，雪花，字符串等情况
@@ -15,6 +26,7 @@
 * 根据Id批量更新非空字段（需要开启 批量提交状态 ）
 * 根据 根据条件和Map更新数据（可为空的数据）
 * 批量插入非空数据数据
+
 
 ### version 0.0.3
 * 同步支持框架中超类和自动生成超类
@@ -30,6 +42,7 @@
 * 新增可视化配置界面，期望一键生成
 * 可设置部分 Mysql 字段到 Java 字段的类型映射
 * 可设置是否驼峰
+
 
 ### version: 0.0.1 
 * 数据库字段注解，自动生成到对应的Model

@@ -16,9 +16,6 @@ import org.mybatis.generator.config.JavaTypeResolverConfiguration;
  * 创建时间：2018年4月25日 下午2:25:27 <br>
  * 修改人：felicity <br>
  * 修改时间：2018年4月25日 下午2:25:27 <br>
- * 修改备注:
- * @version
- * @see
  */
 public class MyJavaTypeResolverConfiguration extends JavaTypeResolverConfiguration {
 
