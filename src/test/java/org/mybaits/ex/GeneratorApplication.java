@@ -24,16 +24,17 @@ import org.mybatis.generator.config.JavaTypeResolverConfiguration;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.Version;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.comment.MyDefaultCommentGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.resolver.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 /**
- * @author panxw
+ * @author rtry
  * @className GeneratorApplication
  * @describe  该程序用来生成测试所需的源文件
  * @date 2020/11/25 10:50
@@ -58,7 +59,7 @@ public class GeneratorApplication {
 
     /**
      * GeneratorApplication 构造方法， 
-     * @author panxw 
+     * @author rtry
      */
     public GeneratorApplication() {
 
@@ -96,7 +97,7 @@ public class GeneratorApplication {
         try {
 
             log.info(bLine);
-            log.info("欢迎切换 mybatis.generator 扩展插件.");
+            log.info("欢迎切换 mybatis.generator 扩展插件. " + Version.getVersionNumber());
             log.info(bLine);
             log.info("加载自定义扩展：可视化配置");
 

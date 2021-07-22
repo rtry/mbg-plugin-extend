@@ -37,8 +37,8 @@ import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.MergeConstants;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.ExtendUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.RegexUtil;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
@@ -52,8 +52,6 @@ import org.mybatis.generator.internal.XmlFileMergerJaxp;
  * 类描述: 重写生成逻辑<br>
  * 创建人：felicity <br>
  * 创建时间：2018年9月21日 下午2:51:03 <br>
- * 修改人：felicity <br>
- * 修改时间：2018年9月21日 下午2:51:03 <br>
  */
 public class MyBatisGeneratorEx {
 

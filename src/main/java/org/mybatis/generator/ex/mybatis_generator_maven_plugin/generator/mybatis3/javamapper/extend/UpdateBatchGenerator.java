@@ -12,7 +12,8 @@ import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.ExtendUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.TreeSet;
 /**
  * @className UpdateBatchGenerator
  * @describe 批量更新JAVA类生成器
- * @author panxw
+ * @author rtry
  * @date 2021/1/19 19:24
  */
 public class UpdateBatchGenerator extends AbstractJavaClientGenerator {

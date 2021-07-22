@@ -17,137 +17,134 @@ import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
 
 /**   
  * 类名称：EveryMapperGenerator<br>
  * 类描述: Mapper.java 生成逻辑  <br>
  * 创建人：felicity		   <br>
  * 创建时间：2019年11月14日 下午3:04:45<br>
- * 备注:
- * @version
- * @see
  */
 public class EveryMapperGenerator extends AbstractJavaClientGenerator {
 
-	private ExtendUtil util;
+    private ExtendUtil util;
 
-	public EveryMapperGenerator(Context context, IntrospectedTable introspectedTable, ExtendUtil util,
-			boolean requiresXMLGenerator) {
-		super(requiresXMLGenerator);
-		this.introspectedTable = introspectedTable;
-		this.context = context;
-		this.util = util;
-	}
+    String booleanStr = "true";
 
-	@Override
-	public List<CompilationUnit> getCompilationUnits() {
-		CommentGenerator commentGenerator = context.getCommentGenerator();
+    public EveryMapperGenerator(Context context, IntrospectedTable introspectedTable, ExtendUtil util,
+            boolean requiresXMLGenerator) {
+        super(requiresXMLGenerator);
+        this.introspectedTable = introspectedTable;
+        this.context = context;
+        this.util = util;
+    }
 
-		FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType());
-		Interface interfaze = new Interface(type);
-		interfaze.setVisibility(JavaVisibility.PUBLIC);
-		commentGenerator.addJavaFileComment(interfaze);
+    @Override
+    public List<CompilationUnit> getCompilationUnits() {
+        CommentGenerator commentGenerator = context.getCommentGenerator();
+
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType());
+        Interface interfaze = new Interface(type);
+        interfaze.setVisibility(JavaVisibility.PUBLIC);
+        commentGenerator.addJavaFileComment(interfaze);
 
         commentGenerator.addMapperComment(interfaze, introspectedTable);
 
-		String rootInterface = introspectedTable.getTableConfigurationProperty(PropertyRegistry.ANY_ROOT_INTERFACE);
-		if (!stringHasValue(rootInterface)) {
-			rootInterface = context.getJavaClientGeneratorConfiguration().getProperty(
-					PropertyRegistry.ANY_ROOT_INTERFACE);
-		}
+        String rootInterface = introspectedTable.getTableConfigurationProperty(PropertyRegistry.ANY_ROOT_INTERFACE);
+        if (!stringHasValue(rootInterface)) {
+            rootInterface = context.getJavaClientGeneratorConfiguration()
+                    .getProperty(PropertyRegistry.ANY_ROOT_INTERFACE);
+        }
 
-		String mapperInterfaceClass = context.getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
-		FullyQualifiedJavaType si = new FullyQualifiedJavaType(mapperInterfaceClass);
-		String sampleClass = mapperInterfaceClass.substring(mapperInterfaceClass.lastIndexOf(".") + 1,
-				mapperInterfaceClass.length());
+        String mapperInterfaceClass = context.getJdbcConnectionConfiguration().getProperty(BIConstant.SCI);
+        FullyQualifiedJavaType si = new FullyQualifiedJavaType(mapperInterfaceClass);
+        String sampleClass = mapperInterfaceClass.substring(mapperInterfaceClass.lastIndexOf(".") + 1,
+                mapperInterfaceClass.length());
 
-		FullyQualifiedJavaType pkType = null;
+        FullyQualifiedJavaType pkType = null;
 
-		List<IntrospectedColumn> introspectedColumns = introspectedTable.getPrimaryKeyColumns();
-		for (IntrospectedColumn introspectedColumn : introspectedColumns) {
-			pkType = introspectedColumn.getFullyQualifiedJavaType();
-			interfaze.addImportedType(pkType);
-		}
+        List<IntrospectedColumn> introspectedColumns = introspectedTable.getPrimaryKeyColumns();
+        for (IntrospectedColumn introspectedColumn : introspectedColumns) {
+            pkType = introspectedColumn.getFullyQualifiedJavaType();
+            interfaze.addImportedType(pkType);
+        }
 
-		interfaze.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
-		interfaze.addImportedType(new FullyQualifiedJavaType(introspectedTable.getExampleType()));
+        interfaze.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        interfaze.addImportedType(new FullyQualifiedJavaType(introspectedTable.getExampleType()));
 
-		String temp = sampleClass.concat("<" + introspectedTable.getBaseRecordType() + ", "
-				+ pkType.getFullyQualifiedName() + ", " + introspectedTable.getExampleType() + ">");
+        String temp = sampleClass.concat("<" + introspectedTable.getBaseRecordType() + ", "
+                + pkType.getFullyQualifiedName() + ", " + introspectedTable.getExampleType() + ">");
 
-		FullyQualifiedJavaType siType = new FullyQualifiedJavaType(temp);
-		interfaze.addSuperInterface(siType);
-		interfaze.addImportedType(si);
+        FullyQualifiedJavaType siType = new FullyQualifiedJavaType(temp);
+        interfaze.addSuperInterface(siType);
+        interfaze.addImportedType(si);
 
-		// ===================================
-		// 判断是否有扩展父类
-		// ===================================
-		
-		
-		// 扩展1:批量插入功能
-		String insertBatch = introspectedTable.getTableConfiguration().getProperty("insertBatch");
-		if (insertBatch.equals("true")) {
-			FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(util.getInsertBatchClassName().concat(
-					"<" + introspectedTable.getBaseRecordType() + ">"));
-			interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
-			interfaze.addSuperInterface(extend1);
-		}
+        // ===================================
+        // 判断是否有扩展父类
+        // ===================================
 
-		// 扩展2：按需查询功能
-		String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");
-		if (selectOption.equals("true")) {
-			FullyQualifiedJavaType extend2 = new FullyQualifiedJavaType(util.getSelectOptionClassName().concat(
-					"<" + introspectedTable.getBaseRecordType() + ", " + pkType.getFullyQualifiedName() + ", "
-							+ introspectedTable.getExampleType() + ">"));
-			interfaze.addSuperInterface(extend2);
-			interfaze.addImportedType(new FullyQualifiedJavaType(util.getSelectOptionClassName()));
-		}
+        // 扩展1:批量插入功能
+        String insertBatch = introspectedTable.getTableConfiguration().getProperty("insertBatch");
+        if (booleanStr.equals(insertBatch)) {
+            FullyQualifiedJavaType extend1 = new FullyQualifiedJavaType(
+                    util.getInsertBatchClassName().concat("<" + introspectedTable.getBaseRecordType() + ">"));
+            interfaze.addImportedType(new FullyQualifiedJavaType(util.getInsertBatchClassName()));
+            interfaze.addSuperInterface(extend1);
+        }
 
-		// 扩展3：不存在插入功能
-		String insertIfAbsent = introspectedTable.getTableConfiguration().getProperty("insertIfAbsent");
-		if (insertIfAbsent.equals("true")) {
-			FullyQualifiedJavaType extend3 = new FullyQualifiedJavaType(util.getIfAbsentClassName().concat(
-					"<" + introspectedTable.getBaseRecordType() + ">"));
-			interfaze.addSuperInterface(extend3);
-			interfaze.addImportedType(new FullyQualifiedJavaType(util.getIfAbsentClassName()));
-		}
+        // 扩展2：按需查询功能
+        String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");
+        if (booleanStr.equals(selectOption)) {
+            FullyQualifiedJavaType extend2 = new FullyQualifiedJavaType(
+                    util.getSelectOptionClassName().concat("<" + introspectedTable.getBaseRecordType() + ", "
+                            + pkType.getFullyQualifiedName() + ", " + introspectedTable.getExampleType() + ">"));
+            interfaze.addSuperInterface(extend2);
+            interfaze.addImportedType(new FullyQualifiedJavaType(util.getSelectOptionClassName()));
+        }
 
-		// 扩展4：批量更新
-		String updateBatch = introspectedTable.getTableConfiguration().getProperty("updateBatch");
-		if (updateBatch.equals("true")) {
-			FullyQualifiedJavaType extend4 = new FullyQualifiedJavaType(util.getUpdateBatchClassName().concat(
-					"<" + introspectedTable.getBaseRecordType() + ">"));
-			interfaze.addSuperInterface(extend4);
-			interfaze.addImportedType(new FullyQualifiedJavaType(util.getUpdateBatchClassName()));
-		}
+        // 扩展3：不存在插入功能
+        String insertIfAbsent = introspectedTable.getTableConfiguration().getProperty("insertIfAbsent");
+        if (booleanStr.equals(insertIfAbsent)) {
+            FullyQualifiedJavaType extend3 = new FullyQualifiedJavaType(
+                    util.getIfAbsentClassName().concat("<" + introspectedTable.getBaseRecordType() + ">"));
+            interfaze.addSuperInterface(extend3);
+            interfaze.addImportedType(new FullyQualifiedJavaType(util.getIfAbsentClassName()));
+        }
 
-		if (stringHasValue(rootInterface)) {
-			FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(rootInterface);
-			interfaze.addSuperInterface(fqjt);
-			interfaze.addImportedType(fqjt);
-		}
+        // 扩展4：批量更新
+        String updateBatch = introspectedTable.getTableConfiguration().getProperty("updateBatch");
+        if (booleanStr.equals(updateBatch)) {
+            FullyQualifiedJavaType extend4 = new FullyQualifiedJavaType(
+                    util.getUpdateBatchClassName().concat("<" + introspectedTable.getBaseRecordType() + ">"));
+            interfaze.addSuperInterface(extend4);
+            interfaze.addImportedType(new FullyQualifiedJavaType(util.getUpdateBatchClassName()));
+        }
 
-		List<CompilationUnit> answer = new ArrayList<>();
-		if (context.getPlugins().clientGenerated(interfaze, null, introspectedTable)) {
-			answer.add(interfaze);
-		}
+        if (stringHasValue(rootInterface)) {
+            FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(rootInterface);
+            interfaze.addSuperInterface(fqjt);
+            interfaze.addImportedType(fqjt);
+        }
 
-		List<CompilationUnit> extraCompilationUnits = getExtraCompilationUnits();
-		if (extraCompilationUnits != null) {
-			answer.addAll(extraCompilationUnits);
-		}
+        List<CompilationUnit> answer = new ArrayList<>();
+        if (context.getPlugins().clientGenerated(interfaze, null, introspectedTable)) {
+            answer.add(interfaze);
+        }
 
-		return answer;
-	}
+        List<CompilationUnit> extraCompilationUnits = getExtraCompilationUnits();
+        if (extraCompilationUnits != null) {
+            answer.addAll(extraCompilationUnits);
+        }
 
-	public List<CompilationUnit> getExtraCompilationUnits() {
-		return null;
-	}
+        return answer;
+    }
 
-	@Override
-	public AbstractXmlGenerator getMatchedXMLGenerator() {
-		return new XMLMapperGenerator();
-	}
+    public List<CompilationUnit> getExtraCompilationUnits() {
+        return null;
+    }
+
+    @Override
+    public AbstractXmlGenerator getMatchedXMLGenerator() {
+        return new XMLMapperGenerator();
+    }
 }

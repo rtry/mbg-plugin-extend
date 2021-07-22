@@ -15,7 +15,7 @@
  */
 package org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.xml;
 
-import static org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant.ExtendUpdateMapByExample;
+import static org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant.ExtendUpdateMapByExample;
 
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;

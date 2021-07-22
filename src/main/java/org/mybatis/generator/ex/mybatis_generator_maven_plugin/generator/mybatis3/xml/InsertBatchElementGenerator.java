@@ -9,7 +9,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
 
 import java.util.List;
 
@@ -144,8 +144,6 @@ public class InsertBatchElementGenerator extends AbstractXmlElementGenerator {
      * getParameterClause 自定义 获取不为空的字段
      * @param introspectedColumn
      * @param prefix
-     * @return
-     * @Exception 异常描述
      */
     public static String getParameterClause(IntrospectedColumn introspectedColumn, String prefix) {
         StringBuilder sb = new StringBuilder();

@@ -40,12 +40,12 @@ import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.XmlFormatter;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.FrameworkContext;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.BaseInterfaceUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.FrameworkContext;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.BaseMapperUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.EveryMapperUtil;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.ExtendUtil;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.ExtendGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.ExtendUtil;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.PluginAggregator;
@@ -521,7 +521,7 @@ public class Context extends PropertyHolder {
 
         FrameworkContext.set("extendUtil", eUtil);
         ExtendGenerator ej = new ExtendGenerator(eUtil, this);
-        BaseInterfaceUtil util = new BaseInterfaceUtil(this);
+        BaseMapperUtil util = new BaseMapperUtil(this);
 
         // 不生成超类文件
         if ("false".equals(notBuildBaseMapper)) {

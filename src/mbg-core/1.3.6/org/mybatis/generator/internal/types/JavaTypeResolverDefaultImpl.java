@@ -28,7 +28,7 @@ import org.mybatis.generator.api.JavaTypeResolver;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
 import org.mybatis.generator.internal.util.StringUtility;
 
 /**

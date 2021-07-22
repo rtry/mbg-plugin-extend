@@ -1,7 +1,7 @@
 /*  
  * @file com.mdlk.framework.jdbc.mybatis.mge.example.AbstractExample.java
  * @date 2021/4/27
- * @author panxw
+ * @author rtry
  * @copyright 马丁洛克 Corporation 2021 版权所有
  * @version 0.0.1  
  */
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @className AbstractExample
  * @describe 查询条件超类
- * @author panxw
+ * @author rtry
  * @date 2021/4/27 18:54
  * @version 0.0.1
  */

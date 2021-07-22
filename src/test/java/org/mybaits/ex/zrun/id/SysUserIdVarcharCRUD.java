@@ -22,7 +22,7 @@ import org.mybaits.ex.zrun.BaseRunApplication;
 /**
  * @className SysUserIdVarcharCRUD
  * @describe 主键由MYSQL 自增
- * @author panxw
+ * @author rtry
  * @date 2020/11/26 10:40
  */
 public class SysUserIdVarcharCRUD extends BaseRunApplication {

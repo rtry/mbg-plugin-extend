@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @className SysUserIdAutoCRUD
  * @describe 主键由MYSQL 自增
- * @author panxw
+ * @author rtry
  * @date 2020/11/26 10:40
  */
 public class SysUserIdAutoCRUD extends BaseRunApplication {

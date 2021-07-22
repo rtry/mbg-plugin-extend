@@ -12,7 +12,7 @@ import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.BIConstant;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.BIConstant;
 
 /**
  * 类名称：UpdateBatchElementGenerator <br>

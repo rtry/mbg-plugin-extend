@@ -41,9 +41,14 @@ import org.mybatis.generator.config.Context;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.Config;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.dto.DataConvertSuper;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.conf.ui.MainUI;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.constant.Version;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyBatisGeneratorEx;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyDefaultCommentGenerator;
-import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.comment.MyDefaultCommentGenerator;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.resolver.MyJavaTypeResolverConfiguration;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.maven.MavenLogFactory;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.maven.MavenProgressCallback;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.maven.MavenShellCallback;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.maven.SqlScriptRunner;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.ConfigConvertUtil;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.util.DataConvertImpl;
 import org.mybatis.generator.exception.InvalidConfigurationException;
@@ -54,12 +59,9 @@ import org.mybatis.generator.logging.LogFactory;
 
 /**
  * 类名称：MyMojo <br>
- * 类描述: 覆盖原mybatis插件,(注解,insert后ID,全局指定类型转换) <br>
+ * 类描述: 覆盖原mybatis插件 <br>
  * 创建人：felicity <br>
  * 创建时间：2018年4月24日 下午5:37:54 <br>
- * 修改人：felicity <br>
- * 修改时间：2018年4月24日 下午5:37:54 <br>
- * 修改备注:
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.TEST)
 public class MyBatisGeneratorMojo extends AbstractMojo {

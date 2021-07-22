@@ -19,7 +19,7 @@ import java.io.InputStream;
 /**
  * @className BaseRunApplication
  * @describe 测试超类
- * @author panxw
+ * @author rtry
  * @date 2020/11/26 10:26
  */
 
@@ -53,7 +53,7 @@ public class BaseRunApplication {
 
     /**
      * nextId 生成一个Id 
-     * @author panxw 
+     * @author rtry
      * @return java.lang.Long
      */
     public Long nextId() {
