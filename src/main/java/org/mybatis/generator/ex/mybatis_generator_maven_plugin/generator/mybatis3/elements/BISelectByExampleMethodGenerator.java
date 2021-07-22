@@ -13,7 +13,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述:复写【超类BaseMapper-8大基本方法】 按条件查询 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:51:07 <br>
- * 备注:
  */
 public class BISelectByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -36,14 +35,7 @@ public class BISelectByExampleMethodGenerator extends AbstractJavaMapperMethodGe
 
         interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
         if (context.getPlugins().clientInsertSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
-            addExtraImports(interfaze);
             interfaze.addMethod(method);
         }
-    }
-
-    public void addMapperAnnotations(Interface interfaze, Method method) {
-    }
-
-    public void addExtraImports(Interface interfaze) {
     }
 }

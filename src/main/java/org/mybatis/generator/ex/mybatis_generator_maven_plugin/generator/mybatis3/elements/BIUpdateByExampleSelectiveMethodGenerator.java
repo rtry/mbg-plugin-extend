@@ -16,7 +16,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述: 复写【超类BaseMapper-8大基本方法】更新不为空的数据 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:51:42 <br>
- * 备注:
  */
 public class BIUpdateByExampleSelectiveMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -38,18 +37,9 @@ public class BIUpdateByExampleSelectiveMethodGenerator extends AbstractJavaMappe
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-        addMapperAnnotations(method);
-
         if (context.getPlugins().clientUpdateByExampleSelectiveMethodGenerated(method, interfaze, introspectedTable)) {
-            addExtraImports(interfaze);
             interfaze.addImportedTypes(importedTypes);
             interfaze.addMethod(method);
         }
-    }
-
-    public void addMapperAnnotations(Method method) {
-    }
-
-    public void addExtraImports(Interface interfaze) {
     }
 }

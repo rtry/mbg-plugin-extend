@@ -16,7 +16,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述: 复写【超类BaseMapper-8大基本方法】按主键查询 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:51:25 <br>
- * 备注:
  */
 public class BISelectByPrimaryKeyMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -34,22 +33,15 @@ public class BISelectByPrimaryKeyMethodGenerator extends AbstractJavaMapperMetho
         // 方法名称
         method.setName("selectByPrimaryKey");
 
-        //
         FullyQualifiedJavaType PKType = new FullyQualifiedJavaType(BIConstant.PK);
         method.addParameter(new Parameter(PKType, "id"));
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
         if (context.getPlugins().clientSelectByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable)) {
-            addExtraImports(interfaze);
             interfaze.addImportedTypes(importedTypes);
             interfaze.addMethod(method);
         }
     }
 
-    public void addMapperAnnotations(Interface interfaze, Method method) {
-    }
-
-    public void addExtraImports(Interface interfaze) {
-    }
 }

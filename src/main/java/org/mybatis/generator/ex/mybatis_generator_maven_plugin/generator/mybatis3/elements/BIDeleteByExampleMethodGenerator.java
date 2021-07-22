@@ -16,7 +16,6 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述: 复写【超类BaseMapper-8大基本方法】按条件删除 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:49:42 <br>
- * 备注:
  */
 public class BIDeleteByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
@@ -38,19 +37,10 @@ public class BIDeleteByExampleMethodGenerator extends AbstractJavaMapperMethodGe
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-        addMapperAnnotations(method);
-
         if (context.getPlugins().clientDeleteByExampleMethodGenerated(method, interfaze, introspectedTable)) {
-            addExtraImports(interfaze);
             interfaze.addImportedTypes(importedTypes);
             interfaze.addMethod(method);
         }
     }
 
-    public void addMapperAnnotations(Method method) {
-    }
-
-    public void addExtraImports(Interface interfaze) {
-
-    }
 }

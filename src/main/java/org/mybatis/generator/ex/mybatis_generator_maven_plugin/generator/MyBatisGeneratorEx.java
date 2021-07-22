@@ -234,8 +234,10 @@ public class MyBatisGeneratorEx {
 
         // 清理JAVA文件（存放待生成的数据）
         generatedJavaFiles.clear();
+
         // 清理XML文件（存放待生成的数据）
         generatedXmlFiles.clear();
+
         ObjectFactory.reset();
         RootClassInfo.reset();
 

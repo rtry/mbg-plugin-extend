@@ -524,7 +524,7 @@ public class Context extends PropertyHolder {
         BaseInterfaceUtil util = new BaseInterfaceUtil(this);
 
         // 不生成超类文件
-        if (notBuildBaseMapper != null && notBuildBaseMapper.equals("false")) {
+        if ("false".equals(notBuildBaseMapper)) {
             generatedJavaFiles.addAll(util.getBaseInterfaceGenerated());
         }
         // ============================
@@ -548,11 +548,11 @@ public class Context extends PropertyHolder {
                 // ============================
                 // M3.生成扩展的方法
                 // ============================
-                if (notBuildBaseMapper != null && notBuildBaseMapper.equals("false")) {
+                if ("false".equals(notBuildBaseMapper)) {
                     generatedJavaFiles.addAll(ej.getExtendMapper());
                     generatedJavaFiles.addAll(ej.getInsertBatchMapper());
-                    generatedJavaFiles.addAll(ej.getSelectOptionMappser());
-                    generatedJavaFiles.addAll(ej.getInsertIfAbsentMappser());
+                    generatedJavaFiles.addAll(ej.getSelectOptionMapper());
+                    generatedJavaFiles.addAll(ej.getInsertIfAbsentMapper());
                     generatedJavaFiles.addAll(ej.getUpdateBatchMapper());
                 }
                 // ============================

@@ -16,45 +16,33 @@ import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis
  * 类描述: 复写【超类BaseMapper-8大基本方法】计算总数 <br>
  * 创建人：felicity <br>
  * 创建时间：2019年9月3日 下午3:45:52 <br>
- * 备注:
  */
 public class BICountByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-	public BICountByExampleMethodGenerator() {
-		super();
-	}
+    public BICountByExampleMethodGenerator() {
+        super();
+    }
 
-	/**
-	 * Mapper.java，方法的生成
-	 * */
-	@Override
-	public void addInterfaceElements(Interface interfaze) {
-		FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
+    @Override
+    public void addInterfaceElements(Interface interfaze) {
+        FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(BIConstant.EXAMPLE);
 
-		Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
-		importedTypes.add(fqjt);
+        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
+        importedTypes.add(fqjt);
 
-		Method method = new Method();
-		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
-		method.setName("countByExample");
-		method.addParameter(new Parameter(fqjt, "example"));
-		context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
+        method.setName("countByExample");
+        method.addParameter(new Parameter(fqjt, "example"));
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-		interfaze.addImportedType(new FullyQualifiedJavaType("java.io.Serializable"));
-		addMapperAnnotations(method);
+        interfaze.addImportedType(new FullyQualifiedJavaType("java.io.Serializable"));
 
-		if (context.getPlugins().clientCountByExampleMethodGenerated(method, interfaze,
-				introspectedTable)) {
-			addExtraImports(interfaze);
-			interfaze.addImportedTypes(importedTypes);
-			interfaze.addMethod(method);
-		}
-	}
+        if (context.getPlugins().clientCountByExampleMethodGenerated(method, interfaze, introspectedTable)) {
+            interfaze.addImportedTypes(importedTypes);
+            interfaze.addMethod(method);
+        }
+    }
 
-	public void addMapperAnnotations(Method method) {
-	}
-
-	public void addExtraImports(Interface interfaze) {
-	}
 }
