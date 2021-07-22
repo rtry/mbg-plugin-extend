@@ -97,31 +97,32 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
         // 扩展的方法[ Extend ]
         // =========================
         String insertBatch = introspectedTable.getTableConfiguration().getProperty("insertBatch");
-        if (insertBatch.equals("true")) {
+        String booleanStr = "true";
+        if (booleanStr.equals(insertBatch)) {
             // 1. 批量插入(所有字段)
-            AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
-            initializeAndExecuteGenerator(elementGenerator, answer);
+            //            AbstractXmlElementGenerator elementGenerator = new InsertBatchElementGenerator();
+            //            initializeAndExecuteGenerator(elementGenerator, answer);
             // 2. 批量插入(非空字段)
             AbstractXmlElementGenerator insertBatchSelectElementGenerator = new InsertBatchSelectElementGenerator();
             initializeAndExecuteGenerator(insertBatchSelectElementGenerator, answer);
         }
 
         String selectOption = introspectedTable.getTableConfiguration().getProperty("selectOption");
-        if (selectOption.equals("true")) {
+        if (booleanStr.equals(selectOption)) {
             // 2. 按需查询
             AbstractXmlElementGenerator selectOptionGenerator = new SelectOptionElementGenerator();
             initializeAndExecuteGenerator(selectOptionGenerator, answer);
         }
 
         String insertIfAbsent = introspectedTable.getTableConfiguration().getProperty("insertIfAbsent");
-        if (insertIfAbsent.equals("true")) {
+        if (booleanStr.equals(insertIfAbsent)) {
             // 3. 不存在插入
             AbstractXmlElementGenerator insertIfAbsentGenerator = new InsertIfAbsentElementGenerator();
             initializeAndExecuteGenerator(insertIfAbsentGenerator, answer);
         }
 
         String updateBatch = introspectedTable.getTableConfiguration().getProperty("updateBatch");
-        if (updateBatch.equals("true")) {
+        if (booleanStr.equals(updateBatch)) {
             // 4. 根据Id批量更新
             AbstractXmlElementGenerator updateBatchElementGenerator = new UpdateBatchElementGenerator();
             initializeAndExecuteGenerator(updateBatchElementGenerator, answer);

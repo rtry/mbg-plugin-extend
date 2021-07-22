@@ -16,10 +16,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -342,7 +344,6 @@ public class MyBatisGeneratorEx {
                                     temp1.add(old);
                                 }
                             }
-                            olds = null;
                             olds = temp1;
 
                             // 新的接口
@@ -355,7 +356,6 @@ public class MyBatisGeneratorEx {
                                     temp2.add(n);
                                 }
                             }
-                            news = null;
                             news = temp2;
 
                             // old 需要移除的结果result
@@ -400,6 +400,27 @@ public class MyBatisGeneratorEx {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else if (shortName.equals("AbstractExample")) {
+                    //处理 AbstractExample 类的特殊生成
+                    System.out.println("生成... AbstractExample  ");
+
+                    try {
+                        String newMapperTargetPackage = baseModelJavaType.getPackageName();
+                        String daoTargetDir = javaFile.getTargetProject();
+                        File file = new File(shellCallback.getDirectory(daoTargetDir, newMapperTargetPackage),
+                                javaFile.getFileName());
+
+                        String fistLine = "package " + newMapperTargetPackage + "; \n";
+                        String readFile = readFile(new File(
+                                this.getClass().getClassLoader().getResource("AbstractExample.template").getFile()));
+                        writeFile(file, fistLine + readFile, "UTF-8");
+
+                        //移除自动写
+                        removes.add(javaFile);
+
+                    } catch (ShellException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -436,6 +457,10 @@ public class MyBatisGeneratorEx {
                 shellCallback.refreshProject(project);
             }
         }
+
+        // ========================
+        // 功能点：AbstractExample.java 文件 按模板输出
+        // ========================
 
         callback.done();
     }

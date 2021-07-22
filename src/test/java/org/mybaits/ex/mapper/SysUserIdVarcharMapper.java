@@ -15,7 +15,7 @@ import org.mybaits.ex.entity.SysUserIdVarcharExample;
  * 创建时间: 2020-11-26<br>
  * @version 0.0.3
  */
-public interface SysUserIdVarcharMapper extends UpdateBatchMapper<SysUserIdVarchar>,  InsertBatchMapper<SysUserIdVarchar>,
-        SelectOptionMapper<SysUserIdVarchar, String, SysUserIdVarcharExample>,
+public interface SysUserIdVarcharMapper extends UpdateBatchMapper<SysUserIdVarchar>,
+        InsertBatchMapper<SysUserIdVarchar>, SelectOptionMapper<SysUserIdVarchar, String, SysUserIdVarcharExample>,
         BaseMapper<SysUserIdVarchar, String, SysUserIdVarcharExample> {
 }

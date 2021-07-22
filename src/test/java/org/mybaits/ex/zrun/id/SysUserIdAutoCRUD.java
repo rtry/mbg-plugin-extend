@@ -231,9 +231,7 @@ public class SysUserIdAutoCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = sysUserIdAutoMapper.insertBatch(records);
-
-        Assert.assertEquals(i, length);
+        sysUserIdAutoMapper.insertBatch(records);
 
     }
 
@@ -255,7 +253,7 @@ public class SysUserIdAutoCRUD extends BaseRunApplication {
                 sysUser.setAddress(null);
             records.add(sysUser);
         }
-        sysUserIdAutoMapper.insertBatchSelect(records);
+        sysUserIdAutoMapper.insertBatch(records);
 
     }
 
@@ -275,9 +273,8 @@ public class SysUserIdAutoCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = sysUserIdAutoMapper.insertBatch(records);
+        sysUserIdAutoMapper.insertBatch(records);
 
-        Assert.assertEquals(i, length);
         List<SysUserIdAuto> sysUserIdVarchars = sysUserIdAutoMapper.selectByExample(example);
         for (int m = 0; m < sysUserIdVarchars.size(); m++) {
             SysUserIdAuto SysUserIdAuto = sysUserIdVarchars.get(m);

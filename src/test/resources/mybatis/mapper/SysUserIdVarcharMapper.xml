@@ -208,32 +208,6 @@
     </if>
   </update>
   <insert id="insertBatch" parameterType="java.util.List">
-    insert into sys_user_id_varchar
-    <foreach collection="list" index="index" item="item">
-      <if test="index==0">
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          user_id,
-          user_name,
-          head_image,
-          phone,
-          sex,
-          address,
-        </trim>
-      </if>
-    </foreach>
-    values
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        #{item.userId,jdbcType=VARCHAR},
-        #{item.userName,jdbcType=VARCHAR},
-        #{item.headImage,jdbcType=VARCHAR},
-        #{item.phone,jdbcType=CHAR},
-        #{item.sex,jdbcType=TINYINT},
-        #{item.address,jdbcType=VARCHAR},
-      </trim>
-    </foreach>
-  </insert>
-  <insert id="insertBatchSelect" parameterType="java.util.List">
     <foreach collection="list" index="index" item="item" separator=";">
       insert into sys_user_id_varchar
       <trim prefix="(" suffix=")" suffixOverrides=",">

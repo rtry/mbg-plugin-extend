@@ -21,7 +21,7 @@ public final class Version {
     /**
      * 小版本
      */
-    public final static int REVISION_VERSION = 6;
+    public final static int REVISION_VERSION = 7;
 
     /**
      * getVersionNumber 获取版本号，和Maven 中的version 是一致的

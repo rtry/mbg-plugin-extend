@@ -29,10 +29,6 @@ public class ExtendUtil {
         return pkgName.concat(brk).concat(BIConstant.ExtendInsertIfAbsentClass);
     }
 
-    public String getInsertBatchMethodName() {
-        return BIConstant.ExtendInsertMethodName;
-    }
-
     public String getInsertBatchSelectMethodName() {
         return BIConstant.ExtendInsertSelectMethodName;
     }
@@ -63,5 +59,9 @@ public class ExtendUtil {
 
     public String getExtendExampleClassName() {
         return pkgName.concat(brk).concat(BIConstant.ExtendExampleClass);
+    }
+
+    public String getAbstractExampleName() {
+        return pkgName.concat(brk).concat(BIConstant.AbstractExampleClass);
     }
 }

@@ -227,9 +227,7 @@ public class SysUserIdSnowCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = SysUserIdSnowMapper.insertBatch(records);
-
-        Assert.assertEquals(i, length);
+        SysUserIdSnowMapper.insertBatch(records);
 
     }
 

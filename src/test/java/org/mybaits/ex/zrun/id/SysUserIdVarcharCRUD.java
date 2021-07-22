@@ -229,9 +229,8 @@ public class SysUserIdVarcharCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = SysUserIdVarcharMapper.insertBatch(records);
+        SysUserIdVarcharMapper.insertBatch(records);
 
-        Assert.assertEquals(i, length);
     }
 
     @Test
@@ -252,7 +251,7 @@ public class SysUserIdVarcharCRUD extends BaseRunApplication {
                 sysUser.setAddress(null);
             records.add(sysUser);
         }
-        SysUserIdVarcharMapper.insertBatchSelect(records);
+        SysUserIdVarcharMapper.insertBatch(records);
 
     }
 
@@ -272,9 +271,8 @@ public class SysUserIdVarcharCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = SysUserIdVarcharMapper.insertBatch(records);
+        SysUserIdVarcharMapper.insertBatch(records);
 
-        Assert.assertEquals(i, length);
         List<SysUserIdVarchar> sysUserIdVarchars = SysUserIdVarcharMapper.selectByExample(example);
         for (int m = 0; m < sysUserIdVarchars.size(); m++) {
             SysUserIdVarchar sysUserIdVarchar = sysUserIdVarchars.get(m);

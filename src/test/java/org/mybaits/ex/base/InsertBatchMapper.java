@@ -8,12 +8,5 @@ public interface InsertBatchMapper<T> extends ExtendMapper {
      * @param records 数据集合
      * @return 受影响条数
      */
-    int insertBatch(List<T> records);
-
-    /**
-     * insertBatchSelect 批量插入非空数据数据
-     * @param records 数据集合
-     * 特别：该方法必须在allowMultiQueries=true才能执行
-     */
-    void insertBatchSelect(List<T> records);
+    void insertBatch(List<T> records);
 }

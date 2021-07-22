@@ -226,9 +226,7 @@ public class SysUserIdAliasCRUD extends BaseRunApplication {
             sysUser.setUserName(sysUser.getUserName() + "-" + i);
             records.add(sysUser);
         }
-        int i = sysUserIdAliasMapper.insertBatch(records);
-
-        Assert.assertEquals(i, length);
+        sysUserIdAliasMapper.insertBatch(records);
 
     }
 
@@ -239,7 +237,6 @@ public class SysUserIdAliasCRUD extends BaseRunApplication {
 
         SysUserIdAliasExample example2 = new SysUserIdAliasExample();
         SysUserIdAliasExample.Criteria criteria2 = example2.createCriteria().andUserIdEqualTo(2L);
-
 
         System.out.println(criteria.getAllCriteria().get(0).getValue());
         System.out.println(criteria2.getAllCriteria().get(0).getValue());

@@ -11,6 +11,7 @@ import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.AbstractExampleGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.InsertBatchGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.InsertIfAbsentGenerator;
 import org.mybatis.generator.ex.mybatis_generator_maven_plugin.generator.mybatis3.javamapper.extend.SelectOptionGenerator;
@@ -95,6 +96,15 @@ public class ExtendGenerator {
     public Collection<? extends GeneratedJavaFile> getUpdateBatchMapper() {
         List<GeneratedJavaFile> answer = new ArrayList<>();
         UpdateBatchGenerator ibj = new UpdateBatchGenerator(context, util);
+        return getGeneratedJavaFiles(answer, ibj.getCompilationUnits());
+    }
+
+    /**
+     * getAbstractExampleClass 获取 Example 超类
+     */
+    public Collection<? extends GeneratedJavaFile> getAbstractExampleClass() {
+        List<GeneratedJavaFile> answer = new ArrayList<>();
+        AbstractExampleGenerator ibj = new AbstractExampleGenerator(context, util);
         return getGeneratedJavaFiles(answer, ibj.getCompilationUnits());
     }
 

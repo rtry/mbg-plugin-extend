@@ -50,8 +50,6 @@ public class InsertBatchGenerator extends AbstractJavaClientGenerator {
         interfaze.addSuperInterface(siType);
         interfaze.addImportedType(siType);
 
-        //批量插入所有字段
-        addInsertBatchMethod(interfaze);
         //批量插入非空字段
         addInsertBatchSelectMethod(interfaze);
 
@@ -61,29 +59,10 @@ public class InsertBatchGenerator extends AbstractJavaClientGenerator {
         return answer;
     }
 
-    private void addInsertBatchMethod(Interface interfaze) {
-        Method method = new Method();
-
-        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-        method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName(util.getInsertBatchMethodName());
-
-        FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType("List<" + BIConstant.MODEL + ">");
-
-        Set<FullyQualifiedJavaType> importedTypes = new TreeSet<>();
-        method.addParameter(new Parameter(parameterType, "records"));
-
-        interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
-        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
-
-        interfaze.addImportedTypes(importedTypes);
-        interfaze.addMethod(method);
-    }
-
     private void addInsertBatchSelectMethod(Interface interfaze) {
         Method method = new Method();
 
-//        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        //        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName(util.getInsertBatchSelectMethodName());
 
